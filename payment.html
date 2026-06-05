@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment — Excellence Gateway Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#05080f;--surface:#0b0f1a;--surface2:#111827;--surface3:#161e2e;
+      --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.11);
+      --accent:#C9A84C;--accent2:#b8942f;--accent-dim:rgba(201,168,76,0.08);
+      --white:#f0f4f8;--gray:#7a8899;--gray2:#a0adb8;
+      --red:#f0566a;--green:#10d48e;--orange:#f59e0b;
+      --radius:9px;--radius-lg:13px;
+      --transition:.18s cubic-bezier(.4,0,.2,1)
+    }
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);min-height:100vh}
+    h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:400}
+    .header{
+      position:sticky;top:0;z-index:100;
+      background:rgba(5,8,15,0.92);backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 5%;height:64px
+    }
+    .header-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .header-logo img{height:32px}
+    .header-logo span{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--white)}
+    .header-logo span em{font-style:italic;color:var(--accent)}
+    main{padding:3rem 5%;max-width:600px;margin:0 auto}
+    .back-link{display:inline-flex;align-items:center;gap:0.5rem;color:var(--gray);text-decoration:none;font-size:0.85rem;margin-bottom:2rem}
+    .back-link:hover{color:var(--white)}
+    .payment-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem}
+    .course-info{margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+    .course-info h2{font-size:1.3rem;margin-bottom:0.5rem}
+    .course-info .amount{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;color:var(--accent)}
+    .payment-number-box{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:1.2rem;margin-bottom:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+    .payment-number-box .label{font-size:0.78rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em}
+    .payment-number-box .number{font-size:1.3rem;font-weight:500;letter-spacing:0.03em}
+    .payment-number-box.hidden-number .number{filter:blur(4px);user-select:none}
+    .btn-copy{padding:0.5rem 1rem;font-size:0.78rem;font-weight:500;background:var(--accent-dim);color:var(--accent);border:1px solid rgba(201,168,76,0.3);border-radius:var(--radius);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all var(--transition)}
+    .btn-copy:hover{background:var(--accent);color:#05080f}
+    .form-group{margin-bottom:1.2rem}
+    .form-group label{display:block;font-size:0.82rem;color:var(--gray2);margin-bottom:0.4rem;font-weight:500}
+    .form-group input{width:100%;padding:0.75rem 1rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--white);font-size:0.9rem;font-family:'DM Sans',sans-serif;outline:none;transition:border var(--transition)}
+    .form-group input:focus{border-color:var(--accent)}
+    .form-group input.error{border-color:var(--red)}
+    .radio-group{display:flex;gap:1rem;margin-bottom:1.2rem}
+    .radio-option{flex:1}
+    .radio-option input{display:none}
+    .radio-option label{display:block;text-align:center;padding:0.75rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;font-size:0.85rem;font-weight:500;transition:all var(--transition)}
+    .radio-option input:checked+label{border-color:var(--accent);background:var(--accent-dim);color:var(--accent)}
+    .btn{width:100%;padding:0.85rem;font-size:0.9rem;font-weight:500;border-radius:var(--radius);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all var(--transition);display:flex;align-items:center;justify-content:center;gap:0.5rem}
+    .btn-primary{background:var(--accent);color:#05080f}
+    .btn-primary:hover{background:var(--accent2)}
+    .btn-primary:disabled{opacity:0.5;cursor:not-allowed}
+    .spinner{width:18px;height:18px;border:2px solid transparent;border-top-color:#05080f;border-radius:50%;animation:spin 0.6s linear infinite;display:none}
+    .btn-loading .spinner{display:block}.btn-loading .btn-text{display:none}
+    .alert{padding:0.8rem 1rem;border-radius:var(--radius);font-size:0.82rem;margin-bottom:1rem;display:none}
+    .alert-error{background:rgba(240,86,106,0.09);border:1px solid var(--red);color:var(--red);display:block}
+    .alert-success{background:rgba(16,212,142,0.09);border:1px solid var(--green);color:var(--green);display:block}
+    .alert-warning{background:rgba(245,158,11,0.09);border:1px solid var(--orange);color:var(--orange);display:block}
+    .notice{padding:1rem;background:var(--accent-dim);border:1px solid rgba(201,168,76,0.25);border-radius:var(--radius);font-size:0.82rem;color:var(--accent);line-height:1.6;margin-top:1rem;display:flex;gap:0.8rem;align-items:flex-start}
+    .notice svg{width:18px;height:18px;flex-shrink:0;margin-top:2px}
+    .success-state{text-align:center;padding:2rem 0;display:none}
+    .success-state svg{margin-bottom:1rem}
+    .success-state h3{font-size:1.5rem;margin-bottom:0.5rem}
+    .success-state p{color:var(--gray);font-size:0.9rem;line-height:1.6}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @media(max-width:480px){.payment-card{padding:1.5rem}}
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <a href="/" class="header-logo">
+    <img src="/images/ega.png" height="32" alt="EGA">
+    <span>Excellence <em>Gateway</em></span>
+  </a>
+</header>
+
+<main>
+  <a href="#" class="back-link" id="backLink">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Course
+  </a>
+
+  <div class="payment-card" id="paymentForm">
+    <div class="course-info">
+      <h2 id="courseTitle">Loading...</h2>
+      <div class="amount" id="courseAmount">৳0</div>
+    </div>
+
+    <div class="payment-number-box" id="paymentNumberBox">
+      <div>
+        <div class="label">Send to this number</div>
+        <div class="number" id="paymentNumber">Loading...</div>
+      </div>
+      <button class="btn-copy" onclick="copyNumber()" id="copyBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy
+      </button>
+    </div>
+
+    <div id="alert"></div>
+
+    <div class="radio-group">
+      <div class="radio-option">
+        <input type="radio" name="method" id="methodBkash" value="bkash" checked>
+        <label for="methodBkash">bKash</label>
+      </div>
+      <div class="radio-option">
+        <input type="radio" name="method" id="methodNagad" value="nagad">
+        <label for="methodNagad">Nagad</label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="trxId">Transaction ID (TrxID)</label>
+      <input type="text" id="trxId" placeholder="Enter the transaction ID" required>
+    </div>
+
+    <div class="form-group">
+      <label for="senderPhone">Your Phone Number</label>
+      <input type="tel" id="senderPhone" placeholder="01XXXXXXXXX" required>
+    </div>
+
+    <button class="btn btn-primary" onclick="submitPayment()" id="submitBtn">
+      <span class="btn-text">Verify Payment</span>
+      <span class="spinner"></span>
+    </button>
+
+    <div class="notice">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span>After admin manually checks your payment, you will be added to the course. This usually takes a few hours. You'll receive a notification when approved.</span>
+    </div>
+  </div>
+
+  <div class="success-state" id="successState">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="16 10 12 14 8 10"/></svg>
+    <h3>Payment Submitted</h3>
+    <p>Your payment is pending verification. Once admin approves, you'll get access to the course. Check your dashboard for updates.</p>
+    <a href="/dashboard.html" class="btn btn-primary" style="width:auto;display:inline-flex;margin-top:1.5rem">Go to Dashboard</a>
+  </div>
+</main>
+
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
+function showAlert(msg,type='error'){const a=document.getElementById('alert');a.textContent=msg;a.className='alert alert-'+type;setTimeout(()=>a.className='alert',3000)}
+function hideAlert(){document.getElementById('alert').className='alert'}
+function setLoading(l){const b=document.getElementById('submitBtn');if(l){b.classList.add('btn-loading');b.disabled=true}else{b.classList.remove('btn-loading');b.disabled=false}}
+
+const token=localStorage.getItem('ega_token');
+const user=JSON.parse(localStorage.getItem('ega_user')||'null');
+if(!token||!user){window.location.href='/login.html'}
+
+const params=new URLSearchParams(window.location.search);
+const courseId=params.get('id');
+let courseData=null;
+let paymentInfo=null;
+
+document.getElementById('backLink').href='/course.html?id='+courseId;
+
+function copyNumber(){
+  const num=document.getElementById('paymentNumber').textContent;
+  navigator.clipboard.writeText(num).then(()=>{
+    const btn=document.getElementById('copyBtn');
+    btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied';
+    setTimeout(()=>{btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy'},2000);
+  });
+}
+
+async function loadPaymentInfo(){
+  try{
+    const [courseRes,metaRes]=await Promise.all([
+      fetch('/api/courses/'+courseId),
+      fetch('/api/meta/payment-info')
+    ]);
+    courseData=await courseRes.json();
+    paymentInfo=await metaRes.json();
+    document.getElementById('courseTitle').textContent=courseData.title;
+    document.getElementById('courseAmount').textContent='৳'+courseData.price;
+
+    const method=document.querySelector('input[name="method"]:checked').value;
+    updateNumber(method);
+    document.querySelectorAll('input[name="method"]').forEach(r=>r.addEventListener('change',()=>updateNumber(r.value)));
+
+    if(!paymentInfo.show){
+      document.getElementById('paymentNumberBox').classList.add('hidden-number');
+      document.getElementById('copyBtn').style.display='none';
+    }
+  }catch{showAlert('Failed to load course details','error')}
+}
+
+function updateNumber(method){
+  const num=method==='bkash'?paymentInfo.bkash:paymentInfo.nagad;
+  document.getElementById('paymentNumber').textContent=num||'Not available';
+  if(!num)document.getElementById('copyBtn').style.display='none';
+  else if(paymentInfo.show)document.getElementById('copyBtn').style.display='';
+}
+
+async function submitPayment(){
+  hideAlert();
+  const method=document.querySelector('input[name="method"]:checked').value;
+  const trxId=document.getElementById('trxId').value.trim();
+  const senderPhone=document.getElementById('senderPhone').value.trim();
+  if(!trxId)return showAlert('Please enter the Transaction ID');
+  if(!senderPhone)return showAlert('Please enter your phone number');
+  if(!/^01\d{9}$/.test(senderPhone))return showAlert('Phone must be 01XXXXXXXXX format');
+
+  setLoading(true);
+  try{
+    const res=await fetch('/api/payment/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+      body:JSON.stringify({course_id:parseInt(courseId),method,trx_id:trxId,phone:senderPhone})
+    });
+    const data=await res.json();
+    if(!res.ok){showAlert(data.error||'Payment submission failed');setLoading(false);return}
+    document.getElementById('paymentForm').style.display='none';
+    document.getElementById('successState').style.display='block';
+  }catch(e){showAlert('Network error. Please try again.');setLoading(false)}
+}
+
+loadPaymentInfo();
+</script>
+</body>
+</html>
