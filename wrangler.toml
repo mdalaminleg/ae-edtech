@@ -1,0 +1,8 @@
+name = "excellence-gateway-academy"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "."
+
+[[d1_databases]]
+binding = "EGA_DB"
+database_name = "edtech-db"
+database_id = "b85a1e9e-6ea7-4771-8cfc-4bfe80310086"
