@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excellence Gateway Academy — Master Skills with Structured Education</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --bg: #05080f;
+      --surface: #0b0f1a;
+      --surface2: #111827;
+      --surface3: #161e2e;
+      --border: rgba(255,255,255,0.07);
+      --border2: rgba(255,255,255,0.11);
+      --accent: #C9A84C;
+      --accent2: #b8942f;
+      --accent-dim: rgba(201,168,76,0.08);
+      --white: #f0f4f8;
+      --gray: #7a8899;
+      --gray2: #a0adb8;
+      --red: #f0566a;
+      --red-dim: rgba(240,86,106,0.09);
+      --green: #10d48e;
+      --green-dim: rgba(16,212,142,0.09);
+      --orange: #f59e0b;
+      --orange-dim: rgba(245,158,11,0.09);
+      --radius: 9px;
+      --radius-lg: 13px;
+      --transition: .18s cubic-bezier(.4,0,.2,1);
+    }
+    
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, h5 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
+
+    /* Header */
+    .header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 64px;
+      background: rgba(5,8,15,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+    }
+
+    .header-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .header-logo img { height: 32px; }
+    .header-logo span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.03em;
+    }
+    .header-logo span em { font-style: italic; color: var(--accent); }
+
+    .header-nav { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    .header-nav a {
+      font-size: 0.85rem;
+      color: var(--gray);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color var(--transition);
+    }
+    .header-nav a:hover { color: var(--white); }
+
+    .btn-nav {
+      background: var(--accent);
+      color: #05080f !important;
+      padding: 0.5rem 1.3rem;
+      border-radius: var(--radius);
+      font-weight: 500;
+      font-size: 0.82rem !important;
+      letter-spacing: 0.05em !important;
+      transition: all var(--transition) !important;
+    }
+    .btn-nav:hover { background: var(--accent2) !important; transform: translateY(-1px); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column; gap: 5px;
+      cursor: pointer;
+      background: none; border: none;
+      padding: 5px;
+    }
+    .hamburger span {
+      width: 24px; height: 2px;
+      background: var(--white);
+      border-radius: 1px;
+      transition: var(--transition);
+    }
+
+    /* Sidebar */
+    .sidebar-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.5);
+      display: none;
+    }
+    .sidebar-overlay.open { display: block; }
+
+    .sidebar {
+      position: fixed; top: 0; left: -260px; bottom: 0; z-index: 210;
+      width: 260px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 1.5rem;
+      display: flex; flex-direction: column;
+      transition: left var(--transition);
+    }
+    .sidebar.open { left: 0; }
+    .sidebar-logo { margin-bottom: 2rem; display: flex; align-items: center; gap: 8px; }
+    .sidebar-logo img { height: 28px; }
+    .sidebar-nav { list-style: none; flex: 1; }
+    .sidebar-nav li { margin-bottom: 0.5rem; }
+    .sidebar-nav a {
+      display: block; padding: 0.7rem 1rem;
+      color: var(--gray);
+      text-decoration: none;
+      border-radius: var(--radius);
+      transition: all var(--transition);
+      font-size: 0.9rem;
+    }
+    .sidebar-nav a:hover, .sidebar-nav a.active {
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+    .sidebar-footer { border-top: 1px solid var(--border); padding-top: 1rem; }
+    .sidebar-footer a { color: var(--gray); font-size: 0.82rem; text-decoration: none; }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 5% 80px;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,168,76,0.1) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 80% 80%, rgba(201,168,76,0.05) 0%, transparent 50%);
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--accent-dim);
+      border: 1px solid rgba(201,168,76,0.25);
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero-badge .dot {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--gray);
+      max-width: 580px;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .hero-tags {
+      display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+    .hero-tag {
+      display: flex; align-items: center; gap: 0.4rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 0.45rem 1rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      color: var(--gray2);
+    }
+    .hero-tag svg { width: 16px; height: 16px; color: var(--accent); }
+
+    .hero-actions {
+      display: flex; gap: 1rem;
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      font-size: 0.85rem; font-weight: 500;
+      letter-spacing: 0.04em;
+      border-radius: var(--radius);
+      border: none; cursor: pointer;
+      text-decoration: none;
+      transition: all var(--transition);
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #05080f;
+    }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid var(--border2);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Stats */
+    .hero-stats {
+      display: flex; gap: 3rem;
+      margin-top: 4rem;
+      animation: fadeUp 0.8s 0.5s ease both;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 400;
+    }
+    .stat-num span { color: var(--accent); }
+    .stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-top: 0.2rem;
+    }
+
+    /* Sections */
+    section { padding: 100px 5%; }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 3rem;
+      line-height: 1.2;
+    }
+
+    /* Marquee */
+    .marquee-wrap {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.2rem 0;
+      overflow: hidden;
+    }
+    .marquee {
+      display: flex; gap: 2rem;
+      animation: scroll 25s linear infinite;
+      white-space: nowrap;
+    }
+    .marquee:hover { animation-play-state: paused; }
+    .marquee span { color: var(--gray2); font-size: 0.85rem; letter-spacing: 0.05em; }
+    .marquee .sep { color: var(--accent); margin: 0 0.5rem; }
+
+    /* Values */
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+    .value-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--transition);
+    }
+    .value-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+      border-color: var(--accent);
+    }
+    .value-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-style: italic;
+      color: var(--gray);
+      transition: color var(--transition);
+    }
+    .value-card:hover .value-num { color: var(--accent); }
+    .value-icon { margin: 0.8rem 0; font-size: 1.5rem; }
+    .value-card h4 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .value-card p { font-size: 0.82rem; color: var(--gray); line-height: 1.6; }
+
+    /* Courses */
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .course-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: all var(--transition);
+    }
+    .course-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .course-thumb {
+      height: 180px;
+      background: var(--surface2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem;
+      position: relative;
+    }
+    .course-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .course-badge {
+      position: absolute; top: 1rem; left: 1rem;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      color: var(--white);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .course-body { padding: 1.5rem; }
+    .course-subject {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .course-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+    .course-meta {
+      font-size: 0.8rem;
+      color: var(--gray);
+      margin-bottom: 1rem;
+    }
+    .course-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .course-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    .course-price.free { color: var(--green); }
+
+    /* Features */
+    .features-section { background: var(--surface); }
+    .features-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    .features-sticky { position: sticky; top: 100px; }
+    .features-grid { display: grid; gap: 1rem; }
+    .feature-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      display: flex; gap: 1rem;
+      transition: all var(--transition);
+    }
+    .feature-item:hover {
+      transform: translateX(4px);
+      border-left: 3px solid var(--accent);
+    }
+    .feature-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .feature-item h4 { font-size: 0.95rem; margin-bottom: 0.3rem; }
+    .feature-item p { font-size: 0.8rem; color: var(--gray); line-height: 1.5; }
+
+    /* How it works */
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .how-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      transition: all var(--transition);
+    }
+    .how-card:hover {
+      background: var(--surface2);
+      border-color: var(--accent);
+      transform: translateY(-5px);
+    }
+    .how-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      color: rgba(201,168,76,0.15);
+      margin-bottom: 0.5rem;
+      transition: color var(--transition);
+    }
+    .how-card:hover .how-num { color: var(--accent); }
+    .how-card h3 { font-size: 1.5rem; margin-bottom: 0.8rem; }
+    .how-card p { font-size: 0.9rem; color: var(--gray); line-height: 1.7; }
+
+    /* Testimonials */
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .testi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+    }
+    .testi-card.featured { border-top: 3px solid var(--accent); }
+    .testi-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      color: var(--gray2);
+    }
+    .testi-author { font-weight: 500; font-size: 0.9rem; }
+    .testi-role { font-size: 0.78rem; color: var(--gray); margin-top: 0.2rem; }
+
+    /* FAQ */
+    .faq-list { max-width: 700px; margin: 0 auto; }
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 0.8rem;
+      overflow: hidden;
+    }
+    .faq-q {
+      padding: 1.2rem;
+      cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      font-weight: 500;
+      transition: background var(--transition);
+    }
+    .faq-q:hover { background: var(--surface); }
+    .faq-item.open .faq-q { border-bottom: 1px solid var(--accent); color: var(--accent); }
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .faq-item.open .faq-a { max-height: 200px; }
+    .faq-a p { padding: 1.2rem; color: var(--gray); font-size: 0.9rem; line-height: 1.7; }
+
+    /* CTA */
+    .cta-section {
+      background: var(--surface);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(201,168,76,0.1) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .cta-section h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1.5rem; position: relative; }
+    .cta-actions { display: flex; gap: 1rem; justify-content: center; position: relative; }
+
+    /* Footer */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 60px 5% 30px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .footer-brand p { font-size: 0.82rem; color: var(--gray); line-height: 1.7; margin-top: 1rem; }
+    .footer-col h5 {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray2);
+      margin-bottom: 1rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul a {
+      font-size: 0.82rem;
+      color: var(--gray);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .footer-col ul a:hover { color: var(--white); }
+    .footer-bottom {
+      display: flex; justify-content: space-between;
+      font-size: 0.78rem; color: var(--gray);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 500;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      opacity: 0; transform: translateX(100px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateX(0); }
+    .toast-success { background: var(--green-dim); border: 1px solid var(--green); color: var(--green); }
+    .toast-error { background: var(--red-dim); border: 1px solid var(--red); color: var(--red); }
+
+    /* Skeleton */
+    .skeleton {
+      background: linear-gradient(90deg, var(--surface2) 25%, var(--surface3) 50%, var(--surface2) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: var(--radius);
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .header-nav { display: none; }
+      .hamburger { display: flex; }
+      .values-grid { grid-template-columns: repeat(2, 1fr); }
+      .courses-grid { grid-template-columns: 1fr 1fr; }
+      .features-wrap { grid-template-columns: 1fr; }
+      .features-sticky { position: static; }
+      .how-grid { grid-template-columns: 1fr; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .hero-stats { gap: 1.5rem; }
+    }
+    @media (max-width: 560px) {
+      .values-grid { grid-template-columns: 1fr; }
+      .courses-grid { grid-template-columns: 1fr; }
+      .hero-stats { display: none; }
+      .cta-actions { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <a href="/" class="header-logo">
+    <img src="/images/ega.png" height="32" alt="EGA">
+    <span>Excellence <em>Gateway</em></span>
+  </a>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="header-nav">
+    <li><a href="#courses">Courses</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="/explore.html">Explore</a></li>
+    <li><a href="/login.html" class="btn-nav">Get Started</a></li>
+  </ul>
+</header>
+
+<!-- Sidebar Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <img src="/images/ega.png" height="28" alt="EGA">
+    <span style="font-family:'Cormorant Garamond',serif;color:var(--white)">EGA</span>
+  </div>
+  <ul class="sidebar-nav">
+    <li><a href="/" class="active">Home</a></li>
+    <li><a href="/explore.html">Explore Courses</a></li>
+    <li><a href="/login.html">Sign In</a></li>
+    <li><a href="/signup.html">Create Account</a></li>
+  </ul>
+  <div class="sidebar-footer">
+    <a href="/login.html">Sign In →</a>
+  </div>
+</aside>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="dot"></span> World-Class Learning Platform
+  </div>
+  <h1>Master skills with<br><em>structured</em> education.</h1>
+  <p>Premium video courses with downloadable resources, structured from fundamentals to mastery. Built for serious learners.</p>
+  <div class="hero-tags">
+    <span class="hero-tag">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+      Structured Curriculum
+    </span>
+    <span class="hero-tag">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Self-Paced
+    </span>
+    <span class="hero-tag">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      PDF Resources
+    </span>
+    <span class="hero-tag">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Progress Tracking
+    </span>
+  </div>
+  <div class="hero-actions">
+    <a href="/explore.html" class="btn btn-primary">Explore Programs</a>
+    <a href="/signup.html" class="btn btn-outline">Create Free Account</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num" id="statCourses">0<span>+</span></div><div class="stat-label">Courses</div></div>
+    <div class="stat"><div class="stat-num" id="statLectures">0<span>+</span></div><div class="stat-label">Lectures</div></div>
+    <div class="stat"><div class="stat-num" id="statStudents">0<span>+</span></div><div class="stat-label">Students</div></div>
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-wrap">
+  <div class="marquee" id="marquee">
+    <span>Structured Curriculum</span><span class="sep">·</span>
+    <span>Self-Paced Learning</span><span class="sep">·</span>
+    <span>Expert Video Lectures</span><span class="sep">·</span>
+    <span>Downloadable PDFs</span><span class="sep">·</span>
+    <span>Progress Tracking</span><span class="sep">·</span>
+    <span>Premium Player</span><span class="sep">·</span>
+    <span>Mobile Friendly</span><span class="sep">·</span>
+    <span>Structured Curriculum</span><span class="sep">·</span>
+    <span>Self-Paced Learning</span><span class="sep">·</span>
+    <span>Expert Video Lectures</span><span class="sep">·</span>
+    <span>Downloadable PDFs</span><span class="sep">·</span>
+    <span>Progress Tracking</span><span class="sep">·</span>
+    <span>Premium Player</span><span class="sep">·</span>
+    <span>Mobile Friendly</span>
+  </div>
+</div>
+
+<!-- Values -->
+<section>
+  <p class="section-label">Our Values</p>
+  <h2 class="section-title">Built for genuine <em style="color:var(--accent);font-style:italic">understanding</em>.</h2>
+  <div class="values-grid">
+    <div class="value-card">
+      <div class="value-num">01</div>
+      <div class="value-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+      </div>
+      <h4>Deep Structure</h4>
+      <p>Every subject organized into Subjects → Papers → Chapters → Lectures for systematic learning.</p>
+    </div>
+    <div class="value-card">
+      <div class="value-num">02</div>
+      <div class="value-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/></svg>
+      </div>
+      <h4>Genuine Depth</h4>
+      <p>No surface-level content. Every lecture builds real understanding from first principles.</p>
+    </div>
+    <div class="value-card">
+      <div class="value-num">03</div>
+      <div class="value-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h4>Self-Paced Freedom</h4>
+      <p>Study when you're ready. No schedules, no pressure. Replay lectures forever.</p>
+    </div>
+    <div class="value-card">
+      <div class="value-num">04</div>
+      <div class="value-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <h4>Rich Resources</h4>
+      <p>Downloadable PDFs, practice materials, and reference sheets with every course.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Courses -->
+<section id="courses">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2rem">
+    <div>
+      <p class="section-label">Featured Courses</p>
+      <h2 class="section-title" style="margin-bottom:0">Explore our programs.</h2>
+    </div>
+    <a href="/explore.html" class="btn btn-outline" style="white-space:nowrap">View All Programs</a>
+  </div>
+  <div class="courses-grid" id="coursesGrid">
+    <div class="skeleton" style="height:350px"></div>
+    <div class="skeleton" style="height:350px"></div>
+    <div class="skeleton" style="height:350px"></div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="features-section" id="features">
+  <div class="features-wrap">
+    <div class="features-sticky">
+      <p class="section-label">Platform Features</p>
+      <h2 class="section-title">Everything you need to <em style="color:var(--accent);font-style:italic">excel</em>.</h2>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem">
+        <span class="hero-tag">Premium Player</span>
+        <span class="hero-tag">PDF Downloads</span>
+        <span class="hero-tag">Mobile Ready</span>
+      </div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">▶️</div>
+        <div><h4>Premium Video Player</h4><p>Ad-free HD player with speed controls, skip, and keyboard shortcuts.</p></div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📚</div>
+        <div><h4>Structured Curriculum</h4><p>Subject → Paper → Chapter → Lecture hierarchy keeps learning organized.</p></div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📄</div>
+        <div><h4>Downloadable PDFs</h4><p>Lecture notes, formula sheets, and practice sets available offline.</p></div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📊</div>
+        <div><h4>Visual Progress Tracking</h4><p>See completed chapters and track your journey through each course.</p></div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🔔</div>
+        <div><h4>Smart Notifications</h4><p>Get alerts when payments are verified or new content is added.</p></div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📱</div>
+        <div><h4>Seamless Mobile Experience</h4><p>Full-featured on mobile — watch, read, and track progress anywhere.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section>
+  <p class="section-label">Getting Started</p>
+  <h2 class="section-title">Two simple steps.</h2>
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-num">01</div>
+      <h3>Create Your Account</h3>
+      <p>Sign up with your email. Browse the course catalog. Find what matches your goals. Takes less than a minute.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">02</div>
+      <h3>Enroll & Start Learning</h3>
+      <p>Complete payment via bKash or Nagad. Once verified by our team, you get full access. Start watching, downloading, and tracking your progress.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section style="background:var(--surface)">
+  <p class="section-label">Student Stories</p>
+  <h2 class="section-title">What our students say.</h2>
+  <div class="testi-grid">
+    <div class="testi-card featured">
+      <div class="testi-quote">"The structured approach changed how I study. Instead of jumping between random YouTube videos, I follow a clear path. Physics finally makes sense."</div>
+      <div class="testi-author">Aryan Mehta</div>
+      <div class="testi-role">JEE Advanced 2024</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"The PDF resources are gold. I print them out and study offline. The lecture notes are better than my coaching center's material."</div>
+      <div class="testi-author">Priya Nair</div>
+      <div class="testi-role">NEET 2024 — 680/720</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"Self-paced is exactly what I needed. I work during the day and study at night. EGA lets me learn when I'm actually ready to focus."</div>
+      <div class="testi-author">Rohan Sharma</div>
+      <div class="testi-role">CBSE Class 12</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <p class="section-label">FAQ</p>
+  <h2 class="section-title" style="text-align:center">Common questions.</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How do I access courses after payment? <span>+</span></div>
+      <div class="faq-a"><p>After submitting your payment via bKash or Nagad, our team verifies the transaction. Once approved, you get instant access through your dashboard.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What payment methods are available? <span>+</span></div>
+      <div class="faq-a"><p>We accept bKash and Nagad. After selecting a course, you'll see the payment number and can submit your transaction ID for verification.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How long do I have access to courses? <span>+</span></div>
+      <div class="faq-a"><p>All course enrollments are valid for 365 days from the date of payment verification. You can revisit lectures anytime during this period.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Can I download course materials? <span>+</span></div>
+      <div class="faq-a"><p>Yes! Every course includes downloadable PDFs — lecture notes, formula sheets, and practice sets. Download and study offline anytime.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Is there a mobile app? <span>+</span></div>
+      <div class="faq-a"><p>Our platform is fully mobile-responsive. You can access everything — videos, PDFs, progress tracking — directly from your phone browser.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Ready to build real skills?</h2>
+  <div class="cta-actions">
+    <a href="/signup.html" class="btn btn-primary">Create Free Account</a>
+    <a href="/explore.html" class="btn btn-outline">Browse Programs</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:10px">
+        <img src="/images/ega.png" height="32" alt="EGA">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--white)">Excellence <em style="color:var(--accent);font-style:italic">Gateway</em></span>
+      </div>
+      <p>Premium structured education for the next generation of thinkers, researchers, and problem solvers.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Learning</h5>
+      <ul>
+        <li><a href="/explore.html">Browse Courses</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#">Physics</a></li>
+        <li><a href="#">Chemistry</a></li>
+        <li><a href="#">Mathematics</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Account</h5>
+      <ul>
+        <li><a href="/login.html">Sign In</a></li>
+        <li><a href="/signup.html">Create Account</a></li>
+        <li><a href="/dashboard.html">Dashboard</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Excellence Gateway Academy. All rights reserved.</span>
+    <span>Privacy · Terms · Refunds</span>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // Sidebar
+  const hamburger = document.getElementById('hamburger');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  
+  function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('open'); }
+  function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('open'); }
+  hamburger.addEventListener('click', openSidebar);
+  overlay.addEventListener('click', closeSidebar);
+
+  // FAQ
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+    el.querySelector('span').textContent = isOpen ? '+' : '−';
+  }
+
+  // Toast
+  function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `toast toast-${type} show`;
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  // Escape
+  function esc(s) {
+    const d = document.createElement('div');
+    d.textContent = String(s || '');
+    return d.innerHTML;
+  }
+
+  // Load stats
+  async function loadStats() {
+    try {
+      const res = await fetch('/api/stats');
+      const data = await res.json();
+      document.getElementById('statCourses').innerHTML = data.courses + '<span>+</span>';
+      document.getElementById('statStudents').innerHTML = data.students + '<span>+</span>';
+      document.getElementById('statLectures').innerHTML = data.enrollments + '<span>+</span>';
+    } catch {}
+  }
+
+  // Load courses
+  async function loadCourses() {
+    try {
+      const res = await fetch('/api/courses?limit=6');
+      const courses = await res.json();
+      const grid = document.getElementById('coursesGrid');
+      if (!courses.length) {
+        grid.innerHTML = '<p style="color:var(--gray);grid-column:1/-1">No courses available yet.</p>';
+        return;
+      }
+      grid.innerHTML = courses.map(c => `
+        <a href="/course.html?id=${c.id}" style="text-decoration:none;color:inherit">
+          <div class="course-card">
+            <div class="course-thumb">
+              ${c.thumbnail_url ? `<img src="${esc(c.thumbnail_url)}" alt="${esc(c.title)}">` : c.thumbnail_icon || '📚'}
+              ${c.badge ? `<span class="course-badge">${esc(c.badge)}</span>` : ''}
+            </div>
+            <div class="course-body">
+              <div class="course-subject">${esc(c.subject_area)}</div>
+              <div class="course-title">${esc(c.title)}</div>
+              <div class="course-meta">${esc(c.difficulty)} · ${c.tree ? JSON.parse(c.tree).reduce((sum, s) => sum + s.papers.reduce((s2, p) => s2 + p.chapters.reduce((s3, ch) => s3 + ch.lectures.length, 0), 0), 0) : 0} lectures</div>
+              <div class="course-footer">
+                <span class="course-price ${c.price === 0 ? 'free' : ''}">${c.price === 0 ? 'Free' : '৳' + c.price}</span>
+                <span class="btn btn-primary" style="font-size:0.75rem;padding:0.5rem 1rem">Enroll Now</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      `).join('');
+    } catch {
+      document.getElementById('coursesGrid').innerHTML = '<p style="color:var(--red);grid-column:1/-1">Failed to load courses. <button onclick="loadCourses()" style="color:var(--accent);background:none;border:none;cursor:pointer;text-decoration:underline">Retry</button></p>';
+    }
+  }
+
+  loadStats();
+  loadCourses();
+</script>
+</body>
+</html>
