@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Courses — Excellence Gateway Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#05080f;--surface:#0b0f1a;--surface2:#111827;--surface3:#161e2e;
+      --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.11);
+      --accent:#C9A84C;--accent2:#b8942f;--accent-dim:rgba(201,168,76,0.08);
+      --white:#f0f4f8;--gray:#7a8899;--gray2:#a0adb8;
+      --red:#f0566a;--red-dim:rgba(240,86,106,0.09);
+      --green:#10d48e;--green-dim:rgba(16,212,142,0.09);
+      --orange:#f59e0b;--orange-dim:rgba(245,158,11,0.09);
+      --radius:9px;--radius-lg:13px;
+      --transition:.18s cubic-bezier(.4,0,.2,1)
+    }
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);min-height:100vh}
+    h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:400}
+    .header{
+      position:sticky;top:0;z-index:100;
+      background:rgba(5,8,15,0.92);backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 5%;height:64px
+    }
+    .header-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .header-logo img{height:32px}
+    .header-logo span{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--white)}
+    .header-logo span em{font-style:italic;color:var(--accent)}
+    .header-nav{display:flex;gap:1.5rem;list-style:none;align-items:center}
+    .header-nav a{font-size:0.85rem;color:var(--gray);text-decoration:none;transition:color var(--transition)}
+    .header-nav a:hover{color:var(--white)}
+    .btn-nav{background:var(--accent);color:#05080f!important;padding:0.5rem 1.2rem;border-radius:var(--radius);font-weight:500;font-size:0.82rem!important}
+    .btn-nav:hover{background:var(--accent2)!important}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:5px}
+    .hamburger span{width:24px;height:2px;background:var(--white);border-radius:1px}
+    .sidebar-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.5);display:none}
+    .sidebar-overlay.open{display:block}
+    .sidebar{
+      position:fixed;top:0;left:-260px;bottom:0;z-index:210;width:260px;
+      background:var(--surface);border-right:1px solid var(--border);
+      padding:1.5rem;transition:left var(--transition)
+    }
+    .sidebar.open{left:0}
+    .sidebar-nav{list-style:none}
+    .sidebar-nav li{margin-bottom:0.5rem}
+    .sidebar-nav a{display:block;padding:0.7rem 1rem;color:var(--gray);text-decoration:none;border-radius:var(--radius);font-size:0.9rem}
+    .sidebar-nav a:hover,.sidebar-nav a.active{background:var(--accent-dim);color:var(--accent)}
+    main{padding:3rem 5%}
+    .page-hero{margin-bottom:3rem}
+    .page-hero h1{font-size:clamp(2rem,4vw,3rem)}
+    .filter-bar{display:flex;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+    .filter-bar select,.filter-bar input{
+      padding:0.7rem 1rem;background:var(--surface2);border:1px solid var(--border);
+      border-radius:var(--radius);color:var(--white);font-size:0.85rem;
+      font-family:'DM Sans',sans-serif;outline:none
+    }
+    .filter-bar select:focus,.filter-bar input:focus{border-color:var(--accent)}
+    .filter-bar input{flex:1;min-width:200px}
+    .courses-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+    .course-card{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius-lg);overflow:hidden;transition:all var(--transition);text-decoration:none;color:inherit;display:block
+    }
+    .course-card:hover{transform:translateY(-8px);box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+    .course-thumb{height:180px;background:var(--surface2);display:flex;align-items:center;justify-content:center;position:relative}
+    .course-thumb svg{width:48px;height:48px;color:var(--accent)}
+    .course-thumb img{width:100%;height:100%;object-fit:cover}
+    .course-badge{
+      position:absolute;top:1rem;left:1rem;
+      background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);
+      color:var(--white);font-size:0.68rem;font-weight:500;
+      letter-spacing:0.08em;text-transform:uppercase;
+      padding:0.3rem 0.8rem;border-radius:4px;border:1px solid rgba(255,255,255,0.15)
+    }
+    .course-body{padding:1.5rem}
+    .course-subject{font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem}
+    .course-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:0.5rem;line-height:1.3}
+    .course-meta{font-size:0.8rem;color:var(--gray);margin-bottom:1rem}
+    .course-footer{display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:1px solid var(--border)}
+    .course-price{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600}
+    .course-price.free{color:var(--green)}
+    .empty-state{text-align:center;padding:4rem 2rem;grid-column:1/-1}
+    .empty-state svg{margin-bottom:1rem;color:var(--gray)}
+    .empty-state h3{font-size:1.5rem;margin-bottom:0.5rem}
+    .empty-state p{color:var(--gray)}
+    .skeleton{background:linear-gradient(90deg,var(--surface2) 25%,var(--surface3) 50%,var(--surface2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:var(--radius);height:350px}
+    .toast{position:fixed;bottom:2rem;right:2rem;z-index:500;padding:1rem 1.5rem;border-radius:var(--radius);font-size:0.9rem;opacity:0;transform:translateX(100px);transition:all 0.3s ease;pointer-events:none}
+    .toast.show{opacity:1;transform:translateX(0)}
+    .toast-success{background:var(--green-dim);border:1px solid var(--green);color:var(--green)}
+    .toast-error{background:var(--red-dim);border:1px solid var(--red);color:var(--red)}
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    @media(max-width:900px){.header-nav{display:none}.hamburger{display:flex}.courses-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:560px){.courses-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <a href="/" class="header-logo">
+    <img src="/images/ega.png" height="32" alt="EGA">
+    <span>Excellence <em>Gateway</em></span>
+  </a>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  <ul class="header-nav" id="headerNav"></ul>
+</header>
+
+<div class="sidebar-overlay" id="overlay"></div>
+<aside class="sidebar" id="sidebar">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:2rem">
+    <img src="/images/ega.png" height="28" alt="EGA">
+    <span style="font-family:'Cormorant Garamond',serif;color:var(--white)">EGA</span>
+  </div>
+  <ul class="sidebar-nav">
+    <li><a href="/">Home</a></li>
+    <li><a href="/explore.html" class="active">Explore</a></li>
+    <li><a href="/login.html" id="sbLogin">Sign In</a></li>
+    <li><a href="/dashboard.html" id="sbDashboard" style="display:none">Dashboard</a></li>
+    <li><a href="#" id="sbLogout" style="display:none" onclick="logout()">Sign Out</a></li>
+  </ul>
+</aside>
+
+<main>
+  <div class="page-hero">
+    <h1>Browse Programs</h1>
+  </div>
+  <div class="filter-bar">
+    <select id="subjectFilter" onchange="filterCourses()">
+      <option value="">All Subjects</option>
+    </select>
+    <select id="difficultyFilter" onchange="filterCourses()">
+      <option value="">All Levels</option>
+      <option value="Beginner">Beginner</option>
+      <option value="Intermediate">Intermediate</option>
+      <option value="Advanced">Advanced</option>
+    </select>
+    <input type="text" id="searchInput" placeholder="Search courses..." oninput="debounceFilter()">
+  </div>
+  <div class="courses-grid" id="coursesGrid">
+    <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function esc(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
+function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast toast-'+type+' show';setTimeout(()=>t.classList.remove('show'),3500)}
+
+const token=localStorage.getItem('ega_token');
+const user=JSON.parse(localStorage.getItem('ega_user')||'null');
+
+// Update nav
+function updateNav(){
+  const nav=document.getElementById('headerNav');
+  if(user){
+    nav.innerHTML=`
+      <li><a href="/">Home</a></li>
+      <li><a href="/explore.html">Explore</a></li>
+      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="#" onclick="logout()" style="color:var(--red)">Sign Out</a></li>
+    `;
+    document.getElementById('sbLogin').style.display='none';
+    document.getElementById('sbDashboard').style.display='block';
+    document.getElementById('sbLogout').style.display='block';
+  }else{
+    nav.innerHTML=`
+      <li><a href="/">Home</a></li>
+      <li><a href="/explore.html">Explore</a></li>
+      <li><a href="/login.html" class="btn-nav">Get Started</a></li>
+    `;
+  }
+}
+
+function logout(){localStorage.removeItem('ega_token');localStorage.removeItem('ega_user');window.location.href='/'}
+
+// Sidebar
+const hamburger=document.getElementById('hamburger');
+const sidebar=document.getElementById('sidebar');
+const overlay=document.getElementById('overlay');
+hamburger.addEventListener('click',()=>{sidebar.classList.add('open');overlay.classList.add('open')});
+overlay.addEventListener('click',()=>{sidebar.classList.remove('open');overlay.classList.remove('open')});
+
+// Load courses
+let allCourses=[];
+async function loadCourses(){
+  try{
+    const res=await fetch('/api/courses?limit=100');
+    allCourses=await res.json();
+    // Populate subject filter
+    const subjects=[...new Set(allCourses.map(c=>c.subject_area).filter(Boolean))];
+    const sf=document.getElementById('subjectFilter');
+    subjects.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sf.appendChild(o)});
+    renderCourses(allCourses);
+  }catch{
+    document.getElementById('coursesGrid').innerHTML='<div class="empty-state"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><h3>Failed to load</h3><p style="margin-bottom:1rem">Could not load courses</p><button onclick="loadCourses()" style="color:var(--accent);background:none;border:1px solid var(--accent);padding:0.5rem 1.5rem;border-radius:var(--radius);cursor:pointer;font-family:'DM Sans',sans-serif">Retry</button></div>';
+  }
+}
+
+function renderCourses(courses){
+  const grid=document.getElementById('coursesGrid');
+  if(!courses.length){
+    grid.innerHTML='<div class="empty-state"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--gray)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg><h3>No courses found</h3><p>Try adjusting your filters</p></div>';
+    return;
+  }
+  grid.innerHTML=courses.map(c=>{
+    const tree=c.tree?JSON.parse(c.tree):[];
+    const lectureCount=tree.reduce((sum,s)=>sum+s.papers.reduce((s2,p)=>s2+p.chapters.reduce((s3,ch)=>s3+ch.lectures.length,0),0),0);
+    return`
+    <a href="/course.html?id=${c.id}" class="course-card">
+      <div class="course-thumb">
+        ${c.thumbnail_url?`<img src="${esc(c.thumbnail_url)}" alt="${esc(c.title)}">`:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>`}
+        ${c.badge?`<span class="course-badge">${esc(c.badge)}</span>`:''}
+      </div>
+      <div class="course-body">
+        <div class="course-subject">${esc(c.subject_area)}</div>
+        <div class="course-title">${esc(c.title)}</div>
+        <div class="course-meta">${esc(c.difficulty)} &middot; ${lectureCount} lectures</div>
+        <div class="course-footer">
+          <span class="course-price ${c.price===0?'free':''}">${c.price===0?'Free':'৳'+c.price}</span>
+          <span style="font-size:0.78rem;color:var(--accent);font-weight:500">View Details</span>
+        </div>
+      </div>
+    </a>`;
+  }).join('');
+}
+
+function filterCourses(){
+  const subject=document.getElementById('subjectFilter').value;
+  const difficulty=document.getElementById('difficultyFilter').value;
+  const search=document.getElementById('searchInput').value.toLowerCase();
+  let filtered=allCourses;
+  if(subject)filtered=filtered.filter(c=>c.subject_area===subject);
+  if(difficulty)filtered=filtered.filter(c=>c.difficulty===difficulty);
+  if(search)filtered=filtered.filter(c=>c.title.toLowerCase().includes(search)||(c.description||'').toLowerCase().includes(search));
+  renderCourses(filtered);
+}
+
+let debounceTimer;
+function debounceFilter(){clearTimeout(debounceTimer);debounceTimer=setTimeout(filterCourses,400)}
+
+updateNav();
+loadCourses();
+</script>
+</body>
+</html>
