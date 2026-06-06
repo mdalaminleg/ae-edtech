@@ -1,1009 +1,628 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Excellence Gateway Academy — Master Skills with Structured Education</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    
-    :root {
-      --bg: #05080f;
-      --surface: #0b0f1a;
-      --surface2: #111827;
-      --surface3: #161e2e;
-      --border: rgba(255,255,255,0.07);
-      --border2: rgba(255,255,255,0.11);
-      --accent: #C9A84C;
-      --accent2: #b8942f;
-      --accent-dim: rgba(201,168,76,0.08);
-      --white: #f0f4f8;
-      --gray: #7a8899;
-      --gray2: #a0adb8;
-      --red: #f0566a;
-      --red-dim: rgba(240,86,106,0.09);
-      --green: #10d48e;
-      --green-dim: rgba(16,212,142,0.09);
-      --orange: #f59e0b;
-      --orange-dim: rgba(245,158,11,0.09);
-      --radius: 9px;
-      --radius-lg: 13px;
-      --transition: .18s cubic-bezier(.4,0,.2,1);
-    }
-    
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--white);
-      overflow-x: hidden;
-      line-height: 1.6;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Excellence Gateway Academy — AI-Powered Learning for the Next Generation</title>
+<meta name="description" content="Premium structured education platform. Master Physics, Chemistry, Math, Biology with expert video lectures and downloadable resources."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    h1, h2, h3, h4, h5 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
+:root {
+  --swatch--ivory-medium:   #F5F3EE;
+  --swatch--ivory-deep:     #EDE9DF;
+  --swatch--ivory-light:    #FAF9F5;
+  --swatch--slate-dark:     #141413;
+  --swatch--slate-light:    #3A3936;
+  --swatch--cloud-light:    #C9C7BE;
+  --swatch--cloud-medium:   #8E8C86;
+  --swatch--oat:            #F0ECE2;
+  --swatch--rust:           #CC7853;
+  --swatch--rust-hover:     #B86A47;
 
-    /* Header */
-    .header {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      height: 64px;
-      background: rgba(5,8,15,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 5%;
-    }
+  --_theme---background:        var(--swatch--ivory-medium);
+  --_theme---text:              var(--swatch--slate-dark);
+  --_theme---text-secondary:    var(--swatch--cloud-medium);
+  --_theme---border:            rgba(20,20,19,0.12);
+  --_theme---border-strong:     rgba(20,20,19,0.22);
+  --_theme---surface:           var(--swatch--ivory-light);
+  --_theme---surface-raised:    #FFFEFB;
+  --_theme---accent:            var(--swatch--rust);
+  --_theme---accent-hover:      var(--swatch--rust-hover);
+  --_theme---accent-dim:        rgba(204,120,83,0.10);
 
-    .header-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .header-logo img { height: 32px; }
-    .header-logo span {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem;
-      font-weight: 600;
-      color: var(--white);
-      letter-spacing: 0.03em;
-    }
-    .header-logo span em { font-style: italic; color: var(--accent); }
+  --_spacing---space--4:  1rem;
+  --_spacing---space--6:  1.5rem;
+  --_spacing---space--8:  2rem;
+  --_spacing---space--12: 3rem;
 
-    .header-nav { display: flex; gap: 2rem; list-style: none; align-items: center; }
-    .header-nav a {
-      font-size: 0.85rem;
-      color: var(--gray);
-      text-decoration: none;
-      letter-spacing: 0.04em;
-      transition: color var(--transition);
-    }
-    .header-nav a:hover { color: var(--white); }
+  --site--margin:         clamp(1.5rem, 4vw, 5rem);
+  --nav--height:          4.25rem;
+  --nav--height-total:    var(--nav--height);
 
-    .btn-nav {
-      background: var(--accent);
-      color: #05080f !important;
-      padding: 0.5rem 1.3rem;
-      border-radius: var(--radius);
-      font-weight: 500;
-      font-size: 0.82rem !important;
-      letter-spacing: 0.05em !important;
-      transition: all var(--transition) !important;
-    }
-    .btn-nav:hover { background: var(--accent2) !important; transform: translateY(-1px); }
+  ---font-size--display-xxl: clamp(3rem, 5.5vw, 5rem);
+  ---font-size--display-xl:  clamp(2.5rem, 4vw, 4rem);
+  ---font-size--display-l:   clamp(2rem, 3vw, 3.5rem);
+  ---font-size--display-m:   clamp(1.75rem, 2.5vw, 2rem);
+  ---font-size--display-s:   clamp(1.25rem, 2vw, 1.5rem);
+  ---font-size--paragraph-l: clamp(1.125rem, 1.5vw, 1.5rem);
+  ---font-size--paragraph-m: clamp(1rem, 1.2vw, 1.25rem);
+  ---font-size--paragraph-s: clamp(0.875rem, 1vw, 1.125rem);
+  ---font-size--detail-xs:   0.72rem;
 
-    .user-menu { position: relative; cursor: pointer; }
-    .user-menu-btn {
-      display: flex; align-items: center; gap: 0.5rem;
-      background: var(--surface2); border: 1px solid var(--border);
-      padding: 0.4rem 0.8rem; border-radius: var(--radius);
-      color: var(--white); font-size: 0.82rem; font-family: 'DM Sans', sans-serif; cursor: pointer;
-    }
-    .user-avatar {
-      width: 28px; height: 28px; border-radius: 50%;
-      background: var(--accent); color: #05080f;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 600; font-size: 0.78rem;
-    }
-    .user-dropdown {
-      position: absolute; top: 100%; right: 0; margin-top: 0.5rem;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 0.5rem 0; min-width: 180px;
-      display: none; z-index: 101;
-    }
-    .user-dropdown.show { display: block; }
-    .user-dropdown a {
-      display: block; padding: 0.6rem 1rem; color: var(--gray);
-      text-decoration: none; font-size: 0.85rem; transition: all var(--transition);
-    }
-    .user-dropdown a:hover { background: var(--surface2); color: var(--white); }
-    .user-dropdown .logout-link { color: var(--red); }
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body:    'Instrument Sans', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
 
-    .hamburger {
-      display: none;
-      flex-direction: column; gap: 5px;
-      cursor: pointer;
-      background: none; border: none;
-      padding: 5px;
-    }
-    .hamburger span {
-      width: 24px; height: 2px;
-      background: var(--white);
-      border-radius: 1px;
-      transition: var(--transition);
-    }
+  --radius-s:  4px;
+  --radius-m:  8px;
+  --radius-l:  12px;
+  --radius-xl: 16px;
 
-    /* Sidebar */
-    .sidebar-overlay {
-      position: fixed; inset: 0; z-index: 200;
-      background: rgba(0,0,0,0.5);
-      display: none;
-    }
-    .sidebar-overlay.open { display: block; }
+  --ease-main: cubic-bezier(.4,0,.2,1);
+  --dur-fast:  150ms;
+  --dur-main:  250ms;
+}
 
-    .sidebar {
-      position: fixed; top: 0; left: -260px; bottom: 0; z-index: 210;
-      width: 260px;
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      padding: 1.5rem;
-      display: flex; flex-direction: column;
-      transition: left var(--transition);
-    }
-    .sidebar.open { left: 0; }
-    .sidebar-logo { margin-bottom: 2rem; display: flex; align-items: center; gap: 8px; }
-    .sidebar-logo img { height: 28px; }
-    .sidebar-nav { list-style: none; flex: 1; }
-    .sidebar-nav li { margin-bottom: 0.5rem; }
-    .sidebar-nav a {
-      display: block; padding: 0.7rem 1rem;
-      color: var(--gray);
-      text-decoration: none;
-      border-radius: var(--radius);
-      transition: all var(--transition);
-      font-size: 0.9rem;
-    }
-    .sidebar-nav a:hover, .sidebar-nav a.active {
-      background: var(--accent-dim);
-      color: var(--accent);
-    }
-    .sidebar-footer { border-top: 1px solid var(--border); padding-top: 1rem; }
-    .sidebar-footer a { color: var(--gray); font-size: 0.82rem; text-decoration: none; }
+html { background: var(--_theme---background); scroll-behavior: smooth; }
 
-    /* Hero */
-    .hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center;
-      padding: 120px 5% 80px;
-      position: relative;
-      overflow: hidden;
-      background:
-        radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,168,76,0.1) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 80% 80%, rgba(201,168,76,0.05) 0%, transparent 50%);
-    }
+body {
+  font-family: var(--font-body);
+  background: var(--_theme---background);
+  color: var(--_theme---text);
+  overflow-x: hidden;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
 
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: var(--accent-dim);
-      border: 1px solid rgba(201,168,76,0.25);
-      color: var(--accent);
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0.4rem 1rem;
-      border-radius: 20px;
-      margin-bottom: 2rem;
-      animation: fadeUp 0.8s ease both;
-    }
-    .hero-badge .dot {
-      width: 8px; height: 8px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
+h1,h2,h3,h4,h5,h6 { font-family: var(--font-display); font-weight: 400; line-height: 1.15; }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; }
+button { background: none; border: none; cursor: pointer; font-family: inherit; }
+::selection { background: rgba(204,120,83,0.35); }
 
-    .hero h1 {
-      font-size: clamp(2.8rem, 7vw, 5.5rem);
-      line-height: 1.08;
-      letter-spacing: -0.01em;
-      margin-bottom: 1.5rem;
-      animation: fadeUp 0.8s 0.1s ease both;
-    }
-    .hero h1 em { font-style: italic; color: var(--accent); }
+.u-display-xl { font-family: var(--font-display); font-size: var(---font-size--display-xl); font-weight: 400; line-height: 1.08; letter-spacing: -0.02em; }
+.u-display-m { font-family: var(--font-display); font-size: var(---font-size--display-m); font-weight: 400; line-height: 1.2; letter-spacing: -0.01em; }
+.u-display-s { font-family: var(--font-display); font-size: var(---font-size--display-s); font-weight: 400; line-height: 1.25; }
+.u-paragraph-l { font-family: var(--font-body); font-size: var(---font-size--paragraph-l); font-weight: 300; line-height: 1.7; }
+.u-paragraph-m { font-family: var(--font-body); font-size: var(---font-size--paragraph-m); font-weight: 300; line-height: 1.7; }
+.u-container { width: 100%; max-width: min(1440px, 100vw); margin-inline: auto; padding-inline: var(--site--margin); }
 
-    .hero p {
-      font-size: 1.05rem;
-      color: var(--gray);
-      max-width: 580px;
-      line-height: 1.7;
-      margin-bottom: 2.5rem;
-      animation: fadeUp 0.8s 0.2s ease both;
-    }
+/* ── NAV ── */
+.nav_component { position: fixed; top: 0; left: 0; right: 0; z-index: 200; }
+.nav_wrap { height: var(--nav--height); background: rgba(245,243,238,0.94); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid var(--_theme---border); transition: box-shadow var(--dur-main) var(--ease-main); }
+.nav_wrap.scrolled { box-shadow: 0 1px 24px rgba(20,20,19,0.07); }
+.nav_contain { display: flex; align-items: center; justify-content: space-between; height: 100%; gap: 2rem; }
 
-    .hero-tags {
-      display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center;
-      margin-bottom: 2.5rem;
-      animation: fadeUp 0.8s 0.3s ease both;
-    }
-    .hero-tag {
-      display: flex; align-items: center; gap: 0.4rem;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      padding: 0.45rem 1rem;
-      border-radius: 20px;
-      font-size: 0.78rem;
-      color: var(--gray2);
-    }
-    .hero-tag svg { width: 16px; height: 16px; color: var(--accent); }
+.nav_logo_wrap { display: flex; align-items: center; gap: 0.65rem; text-decoration: none; flex-shrink: 0; }
+.nav_logo_wrap img { height: 28px; }
+.nav_logo_name { font-family: var(--font-display); font-size: 1.1rem; font-weight: 400; color: var(--_theme---text); letter-spacing: 0.005em; white-space: nowrap; }
 
-    .hero-actions {
-      display: flex; gap: 1rem;
-      animation: fadeUp 0.8s 0.4s ease both;
-    }
+.nav_links_wrap { display: flex; align-items: center; gap: 0; list-style: none; flex: 1; justify-content: center; }
+.nav_links_item { position: relative; }
+.nav_links_link { display: flex; align-items: center; gap: 0.3rem; padding: 0.5rem 0.9rem; text-decoration: none; transition: color var(--dur-fast) var(--ease-main); border-radius: var(--radius-s); cursor: pointer; }
+.nav_links_text { font-size: 0.875rem; font-weight: 400; color: var(--_theme---text); white-space: nowrap; transition: opacity var(--dur-fast) var(--ease-main); }
+.nav_links_link:hover .nav_links_text { opacity: 0.6; }
 
-    .btn {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.85rem 2rem;
-      font-size: 0.85rem; font-weight: 500;
-      letter-spacing: 0.04em;
-      border-radius: var(--radius);
-      border: none; cursor: pointer;
-      text-decoration: none;
-      transition: all var(--transition);
-      font-family: 'DM Sans', sans-serif;
-    }
-    .btn-primary {
-      background: var(--accent);
-      color: #05080f;
-    }
-    .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); }
-    .btn-outline {
-      background: transparent;
-      color: var(--white);
-      border: 1px solid var(--border2);
-    }
-    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+.nav_actions_wrap { display: flex; align-items: center; gap: 0.5rem; list-style: none; flex-shrink: 0; }
 
-    /* Stats */
-    .hero-stats {
-      display: flex; gap: 3rem;
-      margin-top: 4rem;
-      animation: fadeUp 0.8s 0.5s ease both;
-    }
-    .stat { text-align: center; }
-    .stat-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.2rem;
-      font-weight: 400;
-    }
-    .stat-num span { color: var(--accent); }
-    .stat-label {
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gray);
-      margin-top: 0.2rem;
-    }
+.btn_main_wrap { position: relative; display: inline-flex; align-items: center; gap: 0.375rem; border-radius: var(--radius-s); transition: all var(--dur-fast) var(--ease-main); overflow: hidden; cursor: pointer; text-decoration: none; }
+.btn_main_wrap.is-nav { background: var(--swatch--slate-dark); color: var(--swatch--ivory-light); border: 1px solid var(--swatch--slate-dark); }
+.btn_main_wrap.is-nav:hover { background: var(--swatch--slate-light); border-color: var(--swatch--slate-light); }
+.btn_main_wrap[data-style="tertiary"] { background: transparent; color: var(--_theme---text); border: 1px solid var(--_theme---border-strong); }
+.btn_main_wrap[data-style="tertiary"]:hover { border-color: var(--_theme---text); }
+.btn_main_wrap.is-rust { background: var(--swatch--rust); color: #fff; border: 1px solid var(--swatch--rust); }
+.btn_main_wrap.is-rust:hover { background: var(--swatch--rust-hover); transform: translateY(-1px); }
+.btn_main_text { font-family: var(--font-body); font-size: 0.875rem; font-weight: 500; letter-spacing: 0.01em; padding: 0.6rem 1.25rem; line-height: 1; white-space: nowrap; }
 
-    /* Sections */
-    section { padding: 100px 5%; }
+.nav_btn_wrap { display: none; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.5rem; cursor: pointer; background: none; border: none; }
+.nav_btn_layout { display: flex; flex-direction: column; gap: 0.4rem; }
+.nav_btn_line { width: 22px; height: 1px; background: var(--_theme---text); border-radius: 1px; transition: transform 0.4s cubic-bezier(.77,0,.175,1), opacity var(--dur-main) var(--ease-main); display: block; }
+.nav_btn_wrap.w--open .nav_btn_layout :first-child { transform: translateY(calc(1px * 0.5 + 0.4rem)) rotate(-45deg); }
+.nav_btn_wrap.w--open .nav_btn_layout :nth-child(2) { opacity: 0; }
+.nav_btn_wrap.w--open .nav_btn_layout :last-child { transform: translateY(calc(-1 * (1px * 0.5 + 0.4rem))) rotate(45deg); }
 
-    .section-label {
-      font-size: 0.72rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.8rem;
-    }
-    .section-title {
-      font-size: clamp(2rem, 4vw, 3rem);
-      margin-bottom: 3rem;
-      line-height: 1.2;
-    }
+.nav_menu_wrap { position: fixed; top: var(--nav--height); left: 0; right: 0; bottom: 0; z-index: 198; background: var(--swatch--ivory-medium); display: flex; flex-direction: column; overflow-y: auto; clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); pointer-events: none; transition: clip-path 0.4s cubic-bezier(.77,0,.175,1); }
+.nav_menu_wrap.open { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); pointer-events: all; }
+.nav_menu_scroll { overflow-y: auto; padding: 2rem var(--site--margin) 3rem; flex: 1; }
 
-    /* Marquee */
-    .marquee-wrap {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 1.2rem 0;
-      overflow: hidden;
-    }
-    .marquee {
-      display: flex; gap: 2rem;
-      animation: scroll 25s linear infinite;
-      white-space: nowrap;
-    }
-    .marquee:hover { animation-play-state: paused; }
-    .marquee span { color: var(--gray2); font-size: 0.85rem; letter-spacing: 0.05em; }
-    .marquee .sep { color: var(--accent); margin: 0 0.5rem; }
+.nav_links_wrap.is-mobile { flex-direction: column; align-items: flex-start; gap: 0; border-top: 1px solid var(--_theme---border); }
+.nav_links_item.is-mobile { width: 100%; border-bottom: 1px solid var(--_theme---border); }
+.nav_links_link.is-mobile { padding: 1rem 0; width: 100%; justify-content: space-between; }
+.nav_links_text.is-mobile { font-size: 1.05rem; }
+.nav_actions_wrap.is-mobile { margin-top: 2rem; flex-direction: column; gap: 0.75rem; align-items: stretch; }
+.nav_actions_wrap.is-mobile .btn_main_wrap { justify-content: center; }
 
-    /* Values */
-    .values-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-    }
-    .value-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 2rem;
-      position: relative;
-      overflow: hidden;
-      transition: all var(--transition);
-    }
-    .value-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 16px 48px rgba(0,0,0,0.3);
-      border-color: var(--accent);
-    }
-    .value-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 3rem;
-      font-style: italic;
-      color: var(--gray);
-      transition: color var(--transition);
-    }
-    .value-card:hover .value-num { color: var(--accent); }
-    .value-icon { margin: 0.8rem 0; }
-    .value-icon svg { width: 28px; height: 28px; color: var(--accent); }
-    .value-card h4 { font-size: 1.1rem; margin-bottom: 0.5rem; }
-    .value-card p { font-size: 0.82rem; color: var(--gray); line-height: 1.6; }
+@media (max-width: 55.999em) {
+  .nav_links_wrap:not(.is-mobile) { display: none; }
+  .nav_actions_wrap:not(.is-mobile) { display: none; }
+  .nav_btn_wrap { display: flex; }
+}
 
-    /* Courses */
-    .courses-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-    .course-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      transition: all var(--transition);
-      display: block;
-      text-decoration: none;
-      color: inherit;
-    }
-    .course-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-    }
-    .course-thumb {
-      height: 180px;
-      background: var(--surface2);
-      display: flex; align-items: center; justify-content: center;
-      position: relative;
-    }
-    .course-thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .course-thumb svg { width: 48px; height: 48px; color: var(--accent); }
-    .course-badge {
-      position: absolute; top: 1rem; left: 1rem;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(8px);
-      color: var(--white);
-      font-size: 0.68rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 0.3rem 0.8rem;
-      border-radius: 4px;
-      border: 1px solid rgba(255,255,255,0.15);
-    }
-    .course-body { padding: 1.5rem; }
-    .course-subject {
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-    }
-    .course-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem;
-      margin-bottom: 0.5rem;
-      line-height: 1.3;
-    }
-    .course-meta {
-      font-size: 0.8rem;
-      color: var(--gray);
-      margin-bottom: 1rem;
-    }
-    .course-footer {
-      display: flex; justify-content: space-between; align-items: center;
-      padding-top: 1rem;
-      border-top: 1px solid var(--border);
-    }
-    .course-price {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem;
-      font-weight: 600;
-    }
-    .course-price.free { color: var(--green); }
+.nav_spacer { height: var(--nav--height-total); }
 
-    /* Features */
-    .features-section { background: var(--surface); }
-    .features-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
-    .features-sticky { position: sticky; top: 100px; }
-    .features-grid { display: grid; gap: 1rem; }
-    .feature-item {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      display: flex; gap: 1rem;
-      transition: all var(--transition);
-    }
-    .feature-item:hover {
-      transform: translateX(4px);
-      border-left: 3px solid var(--accent);
-    }
-    .feature-item h4 { font-size: 0.95rem; margin-bottom: 0.3rem; }
-    .feature-item p { font-size: 0.8rem; color: var(--gray); line-height: 1.5; }
-    .feature-icon { font-size: 1.5rem; flex-shrink: 0; }
+/* ── HERO ── */
+.hero_wrap { padding-block: clamp(4rem, 8vw, 7rem) clamp(3rem, 5vw, 5rem); }
+.home_hero_grid { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(2rem, 4vw, 4rem); align-items: start; }
+.hero_eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--_theme---accent); margin-bottom: 1.5rem; }
+.hero_eyebrow .dot { width: 6px; height: 6px; background: var(--_theme---accent); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+.hero_heading { margin-bottom: 1.5rem; }
+.hero_heading em { font-style: italic; color: var(--_theme---accent); }
+.hero_desc { color: var(--swatch--cloud-medium); margin-bottom: 2.5rem; max-width: 44ch; }
+.hero_cta { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
 
-    /* How it works */
-    .how-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
-    }
-    .how-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 2.5rem;
-      transition: all var(--transition);
-    }
-    .how-card:hover {
-      background: var(--surface2);
-      border-color: var(--accent);
-      transform: translateY(-5px);
-    }
-    .how-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 5rem;
-      color: rgba(201,168,76,0.15);
-      margin-bottom: 0.5rem;
-      transition: color var(--transition);
-    }
-    .how-card:hover .how-num { color: var(--accent); }
-    .how-card h3 { font-size: 1.5rem; margin-bottom: 0.8rem; }
-    .how-card p { font-size: 0.9rem; color: var(--gray); line-height: 1.7; }
+.hero_stats { display: grid; grid-template-columns: repeat(3,1fr); border: 1px solid var(--_theme---border); border-radius: var(--radius-l); overflow: hidden; background: var(--_theme---surface); }
+.stat_item { padding: 1.5rem; border-right: 1px solid var(--_theme---border); text-align: center; }
+.stat_item:last-child { border-right: none; }
+.stat_num { font-family: var(--font-display); font-size: clamp(2rem, 3vw, 2.8rem); font-weight: 300; line-height: 1; color: var(--_theme---text); }
+.stat_num .accent { color: var(--_theme---accent); }
+.stat_label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--_theme---text-secondary); margin-top: 0.4rem; }
 
-    /* Testimonials */
-    .testi-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-    .testi-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 2rem;
-    }
-    .testi-card.featured { border-top: 3px solid var(--accent); }
-    .testi-quote {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
-      font-style: italic;
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
-      color: var(--gray2);
-    }
-    .testi-author { font-weight: 500; font-size: 0.9rem; }
-    .testi-role { font-size: 0.78rem; color: var(--gray); margin-top: 0.2rem; }
+.hero_panel { background: var(--_theme---surface-raised); border: 1px solid var(--_theme---border); border-radius: var(--radius-l); overflow: hidden; position: sticky; top: calc(var(--nav--height) + 1.5rem); }
+.hero_panel_head { background: var(--swatch--slate-dark); color: var(--swatch--ivory-light); padding: 1.5rem; }
+.hero_panel_head .catalog_label { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(250,249,245,0.45); margin-bottom: 0.4rem; }
+.hero_panel_head h3 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 400; }
+.hero_panel_body { padding: 0.5rem 0; }
+.panel_subject { display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1.5rem; border-bottom: 1px solid var(--_theme---border); transition: background var(--dur-fast) var(--ease-main); }
+.panel_subject:last-child { border-bottom: none; }
+.panel_subject:hover { background: var(--swatch--oat); }
+.subject_icon { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
+.subject_info { flex: 1; }
+.subject_name { font-size: 0.88rem; font-weight: 500; }
+.subject_count { font-size: 0.72rem; color: var(--_theme---text-secondary); margin-top: 0.1rem; }
+.subject_badge { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.25rem 0.6rem; border-radius: 4px; flex-shrink: 0; }
+.badge_rust { background: var(--_theme---accent-dim); color: var(--_theme---accent); }
+.badge_green { background: rgba(34,197,94,0.1); color: #16a34a; }
+.badge_gray { background: rgba(20,20,19,0.07); color: var(--_theme---text-secondary); }
+.hero_panel_footer { padding: 1.2rem 1.5rem; border-top: 1px solid var(--_theme---border); background: var(--swatch--oat); }
 
-    /* FAQ */
-    .faq-list { max-width: 700px; margin: 0 auto; }
-    .faq-item {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      margin-bottom: 0.8rem;
-      overflow: hidden;
-    }
-    .faq-q {
-      padding: 1.2rem;
-      cursor: pointer;
-      display: flex; justify-content: space-between; align-items: center;
-      font-weight: 500;
-      transition: background var(--transition);
-    }
-    .faq-q:hover { background: var(--surface); }
-    .faq-item.open .faq-q { border-bottom: 1px solid var(--accent); color: var(--accent); }
-    .faq-a {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-    }
-    .faq-item.open .faq-a { max-height: 200px; }
-    .faq-a p { padding: 1.2rem; color: var(--gray); font-size: 0.9rem; line-height: 1.7; }
+/* ── MARQUEE ── */
+.logo_marquee_section { border-top: 1px solid var(--_theme---border); border-bottom: 1px solid var(--_theme---border); background: var(--_theme---surface); padding: 0.9rem 0; overflow: hidden; }
+.logo_marquee { display: flex; overflow: hidden; }
+.logo_marquee_logo_component { display: flex; gap: 0; align-items: center; animation: marquee 36s linear infinite; white-space: nowrap; flex-shrink: 0; }
+.logo_marquee:hover .logo_marquee_logo_component { animation-play-state: paused; }
+.marquee_item { display: inline-flex; align-items: center; gap: 0.6rem; padding: 0 2.5rem; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--_theme---text-secondary); }
+.marquee_item::after { content: '·'; color: var(--_theme---accent); font-size: 1rem; }
 
-    /* CTA */
-    .cta-section {
-      background: var(--surface);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .cta-section::before {
-      content: '';
-      position: absolute; width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(201,168,76,0.1) 0%, transparent 70%);
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-    .cta-section h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1.5rem; position: relative; }
-    .cta-actions { display: flex; gap: 1rem; justify-content: center; position: relative; }
+/* ── SECTIONS ── */
+.g_section_wrap { }
+.g_section_space.is-main { padding-block: clamp(4rem, 7vw, 6rem); }
+.section_label { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--_theme---accent); margin-bottom: 0.75rem; }
 
-    /* Footer */
-    footer {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      padding: 60px 5% 30px;
-    }
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 3rem;
-      margin-bottom: 3rem;
-      padding-bottom: 3rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .footer-brand p { font-size: 0.82rem; color: var(--gray); line-height: 1.7; margin-top: 1rem; }
-    .footer-col h5 {
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--gray2);
-      margin-bottom: 1rem;
-    }
-    .footer-col ul { list-style: none; }
-    .footer-col ul li { margin-bottom: 0.6rem; }
-    .footer-col ul a {
-      font-size: 0.82rem;
-      color: var(--gray);
-      text-decoration: none;
-      transition: color var(--transition);
-    }
-    .footer-col ul a:hover { color: var(--white); }
-    .footer-bottom {
-      display: flex; justify-content: space-between;
-      font-size: 0.78rem; color: var(--gray);
-    }
+.courses_header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; }
+.courses_grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5px; border: 1px solid var(--_theme---border); border-radius: var(--radius-l); overflow: hidden; background: var(--_theme---border); }
+.course_card { background: var(--_theme---surface); padding: 2rem; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.75rem; position: relative; overflow: hidden; transition: background var(--dur-main) var(--ease-main); }
+.course_card::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--_theme---accent); transform: scaleX(0); transform-origin: left; transition: transform var(--dur-main) var(--ease-main); }
+.course_card:hover { background: var(--swatch--oat); }
+.course_card:hover::before { transform: scaleX(1); }
+.course_area { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--_theme---accent); }
+.course_title { font-family: var(--font-display); font-size: var(---font-size--display-s); line-height: 1.2; }
+.course_meta { display: flex; gap: 1rem; font-size: 0.78rem; color: var(--_theme---text-secondary); }
+.course_desc { font-size: 0.875rem; color: var(--_theme---text-secondary); line-height: 1.65; flex: 1; }
+.course_footer { display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--_theme---border); margin-top: auto; }
+.course_price { font-family: var(--font-display); font-size: 1.4rem; font-weight: 300; }
+.course_price.free { color: #16a34a; }
+.course_arrow { color: var(--_theme---accent); font-size: 1.1rem; transition: transform var(--dur-fast) var(--ease-main); }
+.course_card:hover .course_arrow { transform: translateX(4px); }
+.skeleton_card { background: var(--_theme---surface); min-height: 260px; background-image: linear-gradient(90deg, var(--swatch--ivory-deep) 25%, var(--swatch--cloud-light) 50%, var(--swatch--ivory-deep) 75%); background-size: 400% 100%; animation: shimmer 1.8s ease-in-out infinite; }
 
-    /* Toast */
-    .toast {
-      position: fixed; bottom: 2rem; right: 2rem; z-index: 500;
-      padding: 1rem 1.5rem;
-      border-radius: var(--radius);
-      font-size: 0.9rem;
-      opacity: 0; transform: translateX(100px);
-      transition: all 0.3s ease;
-      pointer-events: none;
-    }
-    .toast.show { opacity: 1; transform: translateX(0); }
-    .toast-success { background: var(--green-dim); border: 1px solid var(--green); color: var(--green); }
-    .toast-error { background: var(--red-dim); border: 1px solid var(--red); color: var(--red); }
+.values_section { background: var(--_theme---surface); }
+.values_grid { display: grid; grid-template-columns: repeat(2,1fr); border: 1px solid var(--_theme---border); border-radius: var(--radius-l); overflow: hidden; background: var(--_theme---border); gap: 1.5px; }
+.value_item { background: var(--_theme---surface); padding: 3rem; transition: background var(--dur-main) var(--ease-main); }
+.value_item:hover { background: var(--swatch--oat); }
+.value_num { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; color: var(--_theme---accent); margin-bottom: 1.5rem; text-transform: uppercase; }
+.value_item h3 { font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 0.75rem; }
+.value_item p { font-size: 0.875rem; color: var(--_theme---text-secondary); line-height: 1.8; }
 
-    /* Skeleton */
-    .skeleton {
-      background: linear-gradient(90deg, var(--surface2) 25%, var(--surface3) 50%, var(--surface2) 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
-      border-radius: var(--radius);
-    }
+.features_section { background: var(--swatch--slate-dark); color: var(--swatch--ivory-light); }
+.features_section .section_label { color: var(--swatch--cloud-light); }
+.features_grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5px; border: 1px solid rgba(250,249,245,0.1); border-radius: var(--radius-l); overflow: hidden; background: rgba(250,249,245,0.08); }
+.feature_card { background: var(--swatch--slate-dark); padding: 2.5rem; transition: background var(--dur-main) var(--ease-main); }
+.feature_card:hover { background: var(--swatch--slate-light); }
+.feature_icon { width: 44px; height: 44px; background: rgba(204,120,83,0.12); border: 1px solid rgba(204,120,83,0.2); border-radius: var(--radius-s); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
+.feature_icon svg { width: 20px; height: 20px; stroke: var(--_theme---accent); fill: none; stroke-width: 1.5; }
+.feature_card h4 { font-family: var(--font-display); font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--swatch--ivory-light); }
+.feature_card p { font-size: 0.84rem; color: rgba(250,249,245,0.5); line-height: 1.75; }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-    @keyframes scroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    @keyframes shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
+.how_grid { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--_theme---border); border-radius: var(--radius-l); overflow: hidden; background: var(--_theme---border); gap: 1.5px; }
+.how_step { background: var(--_theme---surface); padding: 2.5rem 2rem; transition: background var(--dur-main) var(--ease-main); }
+.how_step:hover { background: var(--swatch--oat); }
+.how_step_num { font-family: var(--font-display); font-size: 3.5rem; font-weight: 300; color: var(--swatch--cloud-light); line-height: 1; margin-bottom: 1rem; transition: color var(--dur-main) var(--ease-main); }
+.how_step:hover .how_step_num { color: var(--_theme---accent); }
+.how_step h4 { font-family: var(--font-display); font-size: 1rem; margin-bottom: 0.5rem; }
+.how_step p { font-size: 0.82rem; color: var(--_theme---text-secondary); line-height: 1.75; }
 
-    @media (max-width: 900px) {
-      .header-nav { display: none; }
-      .hamburger { display: flex; }
-      .values-grid { grid-template-columns: repeat(2, 1fr); }
-      .courses-grid { grid-template-columns: 1fr 1fr; }
-      .features-wrap { grid-template-columns: 1fr; }
-      .features-sticky { position: static; }
-      .how-grid { grid-template-columns: 1fr; }
-      .testi-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
-      .hero-stats { gap: 1.5rem; }
-    }
-    @media (max-width: 560px) {
-      .values-grid { grid-template-columns: 1fr; }
-      .courses-grid { grid-template-columns: 1fr; }
-      .hero-stats { display: none; }
-      .cta-actions { flex-direction: column; }
-    }
-  </style>
+.testi_grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5px; border: 1px solid var(--_theme---border); border-radius: var(--radius-l); overflow: hidden; background: var(--_theme---border); }
+.testi_card { background: var(--_theme---surface); padding: 2.5rem; display: flex; flex-direction: column; gap: 1rem; transition: background var(--dur-main) var(--ease-main); }
+.testi_card.featured { border-top: 2px solid var(--_theme---accent); }
+.testi_card:hover { background: var(--swatch--oat); }
+.quote_mark { font-family: var(--font-display); font-size: 3rem; line-height: 0.7; color: var(--_theme---accent); opacity: 0.35; }
+.testi_text { font-size: 0.88rem; line-height: 1.8; color: var(--_theme---text-secondary); font-style: italic; flex: 1; }
+.testi_author { font-weight: 500; font-size: 0.88rem; }
+.testi_role { font-size: 0.75rem; color: var(--_theme---text-secondary); font-family: var(--font-mono); letter-spacing: 0.04em; }
+
+.faq_section { background: var(--_theme---surface); }
+.faq_wrap { max-width: 800px; margin-inline: auto; }
+.faq_list { border: 1px solid var(--_theme---border); border-radius: var(--radius-l); overflow: hidden; }
+.faq_item { border-bottom: 1px solid var(--_theme---border); }
+.faq_item:last-child { border-bottom: none; }
+.faq_q { display: flex; justify-content: space-between; align-items: center; padding: 1.4rem 1.75rem; cursor: pointer; font-family: var(--font-body); font-weight: 500; font-size: 0.92rem; color: var(--_theme---text); background: none; border: none; width: 100%; text-align: left; transition: background var(--dur-fast) var(--ease-main), color var(--dur-fast) var(--ease-main); }
+.faq_q:hover { background: var(--swatch--oat); }
+.faq_item.open .faq_q { color: var(--_theme---accent); }
+.faq_icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--_theme---text-secondary); transition: transform var(--dur-main) var(--ease-main), color var(--dur-fast) var(--ease-main); }
+.faq_item.open .faq_icon { transform: rotate(45deg); color: var(--_theme---accent); }
+.faq_a { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(.4,0,.2,1); }
+.faq_item.open .faq_a { max-height: 400px; }
+.faq_a p { padding: 0 1.75rem 1.5rem; font-size: 0.875rem; color: var(--_theme---text-secondary); line-height: 1.8; }
+
+.cta_section { padding: 0 var(--site--margin) clamp(4rem, 6vw, 6rem); }
+.cta_scroll_bg { background: var(--swatch--slate-dark); border-radius: var(--radius-xl); overflow: hidden; position: relative; }
+.cta_container { padding: clamp(3rem, 6vw, 5rem); display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: center; position: relative; z-index: 1; }
+.cta_scroll_bg::before { content: ''; position: absolute; top: -120px; right: -120px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(204,120,83,0.18) 0%, transparent 65%); pointer-events: none; }
+.cta_label { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--swatch--cloud-light); margin-bottom: 0.75rem; }
+.cta_title { font-family: var(--font-display); font-size: var(---font-size--display-m); color: var(--swatch--ivory-light); margin-bottom: 0.75rem; }
+.cta_sub { font-size: 0.9rem; color: rgba(250,249,245,0.5); line-height: 1.75; max-width: 42ch; }
+.cta_actions { display: flex; flex-direction: column; gap: 0.75rem; align-items: stretch; min-width: 200px; }
+
+/* ── FOOTER ── */
+.footer_wrap { background: var(--swatch--slate-dark); color: rgba(250,249,245,0.6); padding: clamp(4rem, 7vw, 6rem) 0 0; }
+.footer_grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: clamp(2rem, 4vw, 4rem); padding-bottom: clamp(2.5rem, 4vw, 3rem); border-bottom: 1px solid rgba(250,249,245,0.08); margin-bottom: 2rem; }
+.footer_grid_logo { }
+.footer_logo_wrap { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; margin-bottom: 1.25rem; }
+.footer_logo_wrap img { height: 28px; }
+.footer_logo_name { font-family: var(--font-display); font-size: 1.15rem; color: rgba(250,249,245,0.8); }
+.footer_brand_desc { font-size: 0.82rem; color: rgba(250,249,245,0.4); line-height: 1.8; max-width: 30ch; margin-bottom: 1.5rem; }
+.footer_bottom_list { display: flex; gap: 0.75rem; list-style: none; }
+.footer_bottom_link_wrap { width: 36px; height: 36px; border: 1px solid rgba(250,249,245,0.12); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: rgba(250,249,245,0.45); text-decoration: none; transition: all var(--dur-fast) var(--ease-main); }
+.footer_bottom_link_wrap:hover { border-color: rgba(250,249,245,0.4); color: var(--swatch--ivory-light); }
+.footer_grid_content { display: contents; }
+.footer_group_wrap { }
+.footer_group_title { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(250,249,245,0.3); margin-bottom: 1.2rem; display: block; }
+.footer_group_list { list-style: none; }
+.footer_group_item { margin-bottom: 0.55rem; }
+.footer_link_wrap { display: inline-flex; align-items: center; gap: 0.3rem; text-decoration: none; }
+.footer_link_text { font-size: 0.84rem; color: rgba(250,249,245,0.55); transition: color var(--dur-fast) var(--ease-main); }
+.footer_link_wrap:hover .footer_link_text { color: rgba(250,249,245,0.9); }
+.footer_bottom_contain { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0 2rem; }
+.footer_bottom_text { font-size: 0.78rem; color: rgba(250,249,245,0.35); }
+
+/* ── ANIMATIONS ── */
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.fade_up { opacity: 0; transform: translateY(20px); transition: opacity 0.65s var(--ease-main), transform 0.65s var(--ease-main); }
+.fade_up.visible { opacity: 1; transform: none; }
+.hero_eyebrow { animation: fadeInUp 0.65s 0.1s ease both; }
+.home_hero_grid > :first-child .u-display-xl { animation: fadeInUp 0.65s 0.2s ease both; }
+.hero_desc { animation: fadeInUp 0.65s 0.3s ease both; }
+.hero_cta { animation: fadeInUp 0.65s 0.4s ease both; }
+.hero_stats { animation: fadeInUp 0.65s 0.5s ease both; }
+.hero_panel { animation: fadeInUp 0.65s 0.3s ease both; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .home_hero_grid { grid-template-columns: 1fr; }
+  .hero_panel { display: none; }
+  .courses_grid { grid-template-columns: repeat(2,1fr); }
+  .features_grid { grid-template-columns: repeat(2,1fr); }
+  .how_grid { grid-template-columns: repeat(2,1fr); }
+  .footer_grid { grid-template-columns: 1fr 1fr; }
+  .cta_container { grid-template-columns: 1fr; }
+  .cta_actions { flex-direction: row; }
+}
+@media (max-width: 768px) {
+  .courses_grid { grid-template-columns: 1fr; }
+  .features_grid { grid-template-columns: 1fr; }
+  .how_grid { grid-template-columns: 1fr 1fr; }
+  .values_grid { grid-template-columns: 1fr; }
+  .testi_grid { grid-template-columns: 1fr; }
+  .footer_grid { grid-template-columns: 1fr 1fr; }
+  .cta_actions { flex-direction: column; }
+}
+@media (max-width: 480px) {
+  .how_grid { grid-template-columns: 1fr; }
+  .footer_grid { grid-template-columns: 1fr; }
+  .courses_header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+}
+
+a:focus-visible, button:focus-visible { outline: 2px solid var(--_theme---text); outline-offset: 3px; border-radius: 2px; }
+</style>
 </head>
 <body>
 
-<header class="header">
-  <a href="/" class="header-logo">
-    <img src="/images/ega.png" height="32" alt="EGA">
-    <span>Excellence <em>Gateway</em></span>
-  </a>
-  <button class="hamburger" id="hamburger" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
-  <ul class="header-nav" id="headerNav">
-    <li><a href="#courses">Courses</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="/explore.html">Explore</a></li>
-    <li><a href="/login.html" class="btn-nav">Get Started</a></li>
-  </ul>
-</header>
-
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo">
-    <img src="/images/ega.png" height="28" alt="EGA">
-    <span style="font-family:'Cormorant Garamond',serif;color:var(--white)">EGA</span>
+<!-- ══ NAV ══ -->
+<div class="nav_component">
+  <div class="nav_wrap is-desktop" id="desktopNav">
+    <div class="nav_contain u-container">
+      <a class="nav_logo_wrap" href="/" aria-label="Excellence Gateway Academy — Home">
+        <img src="/images/ega.png" height="28" alt="EGA">
+        <span class="nav_logo_name">Excellence Gateway</span>
+      </a>
+      <nav>
+        <ul class="nav_links_wrap">
+          <li class="nav_links_item"><a href="#courses" class="nav_links_link"><span class="nav_links_text">Courses</span></a></li>
+          <li class="nav_links_item"><a href="#features" class="nav_links_link"><span class="nav_links_text">Features</span></a></li>
+          <li class="nav_links_item"><a href="#how" class="nav_links_link"><span class="nav_links_text">How It Works</span></a></li>
+          <li class="nav_links_item"><a href="/explore.html" class="nav_links_link"><span class="nav_links_text">Explore</span></a></li>
+        </ul>
+      </nav>
+      <ul class="nav_actions_wrap" id="navActions">
+        <li><a href="/login.html" class="btn_main_wrap" data-style="tertiary"><span class="btn_main_text">Log in</span></a></li>
+        <li><a href="/signup.html" class="btn_main_wrap is-nav"><span class="btn_main_text">Try EGA</span></a></li>
+      </ul>
+      <button class="nav_btn_wrap" id="hamburger" aria-label="Open navigation menu">
+        <div class="nav_btn_layout"><span class="nav_btn_line"></span><span class="nav_btn_line"></span><span class="nav_btn_line"></span></div>
+      </button>
+    </div>
   </div>
-  <ul class="sidebar-nav" id="sidebarNav">
-    <li><a href="/">Home</a></li>
-    <li><a href="/explore.html">Explore Courses</a></li>
-    <li><a href="/login.html">Sign In</a></li>
-    <li><a href="/signup.html">Create Account</a></li>
-  </ul>
-  <div class="sidebar-footer">
-    <a href="/login.html">Sign In</a>
-  </div>
-</aside>
-
-<!-- Hero -->
-<section class="hero">
-  <div class="hero-badge">
-    <span class="dot"></span> World-Class Learning Platform
-  </div>
-  <h1>Master skills with<br><em>structured</em> education.</h1>
-  <p>Premium video courses with downloadable resources, structured from fundamentals to mastery. Built for serious learners.</p>
-  <div class="hero-tags">
-    <span class="hero-tag">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-      Structured Curriculum
-    </span>
-    <span class="hero-tag">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      Self-Paced
-    </span>
-    <span class="hero-tag">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      PDF Resources
-    </span>
-    <span class="hero-tag">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      Progress Tracking
-    </span>
-  </div>
-  <div class="hero-actions">
-    <a href="/explore.html" class="btn btn-primary">Explore Programs</a>
-    <a href="/signup.html" class="btn btn-outline">Create Free Account</a>
-  </div>
-  <div class="hero-stats">
-    <div class="stat"><div class="stat-num" id="statCourses">0<span>+</span></div><div class="stat-label">Courses</div></div>
-    <div class="stat"><div class="stat-num" id="statLectures">0<span>+</span></div><div class="stat-label">Enrollments</div></div>
-    <div class="stat"><div class="stat-num" id="statStudents">0<span>+</span></div><div class="stat-label">Students</div></div>
-  </div>
-</section>
-
-<!-- Marquee -->
-<div class="marquee-wrap">
-  <div class="marquee" id="marquee">
-    <span>Structured Curriculum</span><span class="sep">·</span>
-    <span>Self-Paced Learning</span><span class="sep">·</span>
-    <span>Expert Video Lectures</span><span class="sep">·</span>
-    <span>Downloadable PDFs</span><span class="sep">·</span>
-    <span>Progress Tracking</span><span class="sep">·</span>
-    <span>Premium Player</span><span class="sep">·</span>
-    <span>Mobile Friendly</span><span class="sep">·</span>
-    <span>Structured Curriculum</span><span class="sep">·</span>
-    <span>Self-Paced Learning</span><span class="sep">·</span>
-    <span>Expert Video Lectures</span><span class="sep">·</span>
-    <span>Downloadable PDFs</span><span class="sep">·</span>
-    <span>Progress Tracking</span><span class="sep">·</span>
-    <span>Premium Player</span><span class="sep">·</span>
-    <span>Mobile Friendly</span>
+  <div class="nav_menu_wrap" id="mobileNav">
+    <div class="nav_menu_scroll">
+      <ul class="nav_links_wrap is-mobile">
+        <li class="nav_links_item is-mobile"><a href="#courses" class="nav_links_link is-mobile" onclick="closeMobileNav()"><span class="nav_links_text is-mobile">Courses</span></a></li>
+        <li class="nav_links_item is-mobile"><a href="#features" class="nav_links_link is-mobile" onclick="closeMobileNav()"><span class="nav_links_text is-mobile">Features</span></a></li>
+        <li class="nav_links_item is-mobile"><a href="#how" class="nav_links_link is-mobile" onclick="closeMobileNav()"><span class="nav_links_text is-mobile">How It Works</span></a></li>
+        <li class="nav_links_item is-mobile"><a href="/explore.html" class="nav_links_link is-mobile"><span class="nav_links_text is-mobile">Explore</span></a></li>
+      </ul>
+      <ul class="nav_actions_wrap is-mobile">
+        <li><a href="/login.html" class="btn_main_wrap" data-style="tertiary" style="justify-content:center"><span class="btn_main_text">Log in to EGA</span></a></li>
+        <li><a href="/signup.html" class="btn_main_wrap is-rust" style="justify-content:center"><span class="btn_main_text">Get Started</span></a></li>
+      </ul>
+    </div>
   </div>
 </div>
 
-<!-- Values -->
-<section>
-  <p class="section-label">Our Values</p>
-  <h2 class="section-title">Built for genuine <em style="color:var(--accent);font-style:italic">understanding</em>.</h2>
-  <div class="values-grid">
-    <div class="value-card">
-      <div class="value-num">01</div>
-      <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg></div>
-      <h4>Deep Structure</h4>
-      <p>Every subject organized into Subjects &rarr; Papers &rarr; Chapters &rarr; Lectures for systematic learning.</p>
-    </div>
-    <div class="value-card">
-      <div class="value-num">02</div>
-      <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/></svg></div>
-      <h4>Genuine Depth</h4>
-      <p>No surface-level content. Every lecture builds real understanding from first principles.</p>
-    </div>
-    <div class="value-card">
-      <div class="value-num">03</div>
-      <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-      <h4>Self-Paced Freedom</h4>
-      <p>Study when you're ready. No schedules, no pressure. Replay lectures forever.</p>
-    </div>
-    <div class="value-card">
-      <div class="value-num">04</div>
-      <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-      <h4>Rich Resources</h4>
-      <p>Downloadable PDFs, practice materials, and reference sheets with every course.</p>
-    </div>
-  </div>
-</section>
+<!-- ══ MAIN ══ -->
+<main class="page_wrap">
 
-<!-- Courses -->
-<section id="courses">
-  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2rem">
-    <div>
-      <p class="section-label">Featured Courses</p>
-      <h2 class="section-title" style="margin-bottom:0">Explore our programs.</h2>
-    </div>
-    <a href="/explore.html" class="btn btn-outline" style="white-space:nowrap">View All Programs</a>
-  </div>
-  <div class="courses-grid" id="coursesGrid">
-    <div class="skeleton" style="height:350px"></div>
-    <div class="skeleton" style="height:350px"></div>
-    <div class="skeleton" style="height:350px"></div>
-  </div>
-</section>
-
-<!-- Features -->
-<section class="features-section" id="features">
-  <div class="features-wrap">
-    <div class="features-sticky">
-      <p class="section-label">Platform Features</p>
-      <h2 class="section-title">Everything you need to <em style="color:var(--accent);font-style:italic">excel</em>.</h2>
-    </div>
-    <div class="features-grid">
-      <div class="feature-item"><div class="feature-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><div><h4>Premium Video Player</h4><p>Ad-free HD player with speed controls, skip, and keyboard shortcuts.</p></div></div>
-      <div class="feature-item"><div class="feature-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg></div><div><h4>Structured Curriculum</h4><p>Subject &rarr; Paper &rarr; Chapter &rarr; Lecture hierarchy keeps learning organized.</p></div></div>
-      <div class="feature-item"><div class="feature-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><h4>Downloadable PDFs</h4><p>Lecture notes, formula sheets, and practice sets available offline.</p></div></div>
-      <div class="feature-item"><div class="feature-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div><h4>Visual Progress Tracking</h4><p>See completed chapters and track your journey through each course.</p></div></div>
-      <div class="feature-item"><div class="feature-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="6" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div><h4>Smart Notifications</h4><p>Get alerts when payments are verified or new content is added.</p></div></div>
-      <div class="feature-item"><div class="feature-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><div><h4>Seamless Mobile Experience</h4><p>Full-featured on mobile — watch, read, and track progress anywhere.</p></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- How It Works -->
-<section>
-  <p class="section-label">Getting Started</p>
-  <h2 class="section-title">Two simple steps.</h2>
-  <div class="how-grid">
-    <div class="how-card">
-      <div class="how-num">01</div>
-      <h3>Create Your Account</h3>
-      <p>Sign up with your email. Browse the course catalog. Find what matches your goals. Takes less than a minute.</p>
-    </div>
-    <div class="how-card">
-      <div class="how-num">02</div>
-      <h3>Enroll & Start Learning</h3>
-      <p>Complete payment via bKash or Nagad. Once verified by our team, you get full access. Start watching, downloading, and tracking your progress.</p>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section>
-  <p class="section-label">FAQ</p>
-  <h2 class="section-title" style="text-align:center">Common questions.</h2>
-  <div class="faq-list">
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I access courses after payment? <span>+</span></div><div class="faq-a"><p>After submitting your payment via bKash or Nagad, our team verifies the transaction. Once approved, you get instant access through your dashboard.</p></div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What payment methods are available? <span>+</span></div><div class="faq-a"><p>We accept bKash and Nagad. After selecting a course, you'll see the payment number and can submit your transaction ID for verification.</p></div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How long do I have access? <span>+</span></div><div class="faq-a"><p>All course enrollments are valid for 365 days from the date of payment verification.</p></div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I download materials? <span>+</span></div><div class="faq-a"><p>Yes! Every course includes downloadable PDFs — lecture notes, formula sheets, and practice sets.</p></div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is there a mobile app? <span>+</span></div><div class="faq-a"><p>Our platform is fully mobile-responsive. Access everything directly from your phone browser.</p></div></div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-section">
-  <h2>Ready to build real skills?</h2>
-  <div class="cta-actions">
-    <a href="/signup.html" class="btn btn-primary">Create Free Account</a>
-    <a href="/explore.html" class="btn btn-outline">Browse Programs</a>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer>
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <div style="display:flex;align-items:center;gap:10px">
-        <img src="/images/ega.png" height="32" alt="EGA">
-        <span style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--white)">Excellence <em style="color:var(--accent);font-style:italic">Gateway</em></span>
+  <!-- HERO -->
+  <header class="hero_wrap">
+    <div class="u-container">
+      <div class="home_hero_grid">
+        <div>
+          <div class="hero_eyebrow"><span class="dot"></span>Premium EdTech Platform — Bangladesh</div>
+          <h1 class="u-display-xl hero_heading">Structured learning<br>that puts <em>mastery</em><br>at the frontier.</h1>
+          <p class="u-paragraph-l hero_desc">Excellence Gateway Academy delivers expert video courses in Physics, Chemistry, Math, and Biology — built for students who want real understanding, not shortcuts.</p>
+          <div class="hero_cta">
+            <a href="/explore.html" class="btn_main_wrap is-nav"><span class="btn_main_text">Explore Programs →</span></a>
+            <a href="/signup.html" class="btn_main_wrap" data-style="tertiary"><span class="btn_main_text">Create Free Account</span></a>
+          </div>
+          <div class="hero_stats">
+            <div class="stat_item"><div class="stat_num" id="statCourses">0<span class="accent">+</span></div><div class="stat_label">Courses</div></div>
+            <div class="stat_item"><div class="stat_num" id="statStudents">0<span class="accent">+</span></div><div class="stat_label">Students</div></div>
+            <div class="stat_item"><div class="stat_num" id="statLectures">0<span class="accent">+</span></div><div class="stat_label">Lectures</div></div>
+          </div>
+        </div>
+        <aside class="hero_panel">
+          <div class="hero_panel_head"><div class="catalog_label">Excellence Gateway Academy</div><h3>2026 Course Catalog</h3></div>
+          <div class="hero_panel_body">
+            <div class="panel_subject"><div class="subject_icon" style="background:rgba(59,130,246,0.12)">⚡</div><div class="subject_info"><div class="subject_name">Physics</div><div class="subject_count">Mechanics · Waves · Electricity · Modern</div></div><span class="subject_badge badge_rust">New</span></div>
+            <div class="panel_subject"><div class="subject_icon" style="background:rgba(34,197,94,0.12)">🧪</div><div class="subject_info"><div class="subject_name">Chemistry</div><div class="subject_count">Organic · Inorganic · Physical</div></div><span class="subject_badge badge_green">Open</span></div>
+            <div class="panel_subject"><div class="subject_icon" style="background:rgba(245,158,11,0.12)">∑</div><div class="subject_info"><div class="subject_name">Mathematics</div><div class="subject_count">Calculus · Algebra · Geometry</div></div><span class="subject_badge badge_gray">Soon</span></div>
+            <div class="panel_subject"><div class="subject_icon" style="background:rgba(168,85,247,0.12)">🌿</div><div class="subject_info"><div class="subject_name">Biology</div><div class="subject_count">Cell · Genetics · Physiology</div></div><span class="subject_badge badge_gray">Soon</span></div>
+          </div>
+          <div class="hero_panel_footer"><a href="/explore.html" class="btn_main_wrap is-rust" style="width:100%;justify-content:center"><span class="btn_main_text">View All Programs →</span></a></div>
+        </aside>
       </div>
-      <p>Premium structured education for the next generation of thinkers, researchers, and problem solvers.</p>
     </div>
-    <div class="footer-col">
-      <h5>Learning</h5>
-      <ul><li><a href="/explore.html">Browse Courses</a></li><li><a href="#features">Features</a></li><li><a href="#">Physics</a></li><li><a href="#">Chemistry</a></li><li><a href="#">Mathematics</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h5>Account</h5>
-      <ul><li><a href="/login.html">Sign In</a></li><li><a href="/signup.html">Create Account</a></li><li><a href="/dashboard.html">Dashboard</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h5>Company</h5>
-      <ul><li><a href="#">About Us</a></li><li><a href="#">Contact</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li></ul>
+  </header>
+
+  <!-- MARQUEE -->
+  <div class="logo_marquee_section">
+    <div class="logo_marquee">
+      <div class="logo_marquee_logo_component">
+        <span class="marquee_item">Expert Video Lectures</span><span class="marquee_item">Structured Curriculum</span><span class="marquee_item">Downloadable PDFs</span><span class="marquee_item">Self-Paced Learning</span><span class="marquee_item">Progress Tracking</span><span class="marquee_item">Physics &amp; Chemistry</span><span class="marquee_item">Math &amp; Biology</span><span class="marquee_item">bKash &amp; Nagad</span><span class="marquee_item">Expert Video Lectures</span><span class="marquee_item">Structured Curriculum</span><span class="marquee_item">Downloadable PDFs</span><span class="marquee_item">Self-Paced Learning</span><span class="marquee_item">Progress Tracking</span><span class="marquee_item">Physics &amp; Chemistry</span><span class="marquee_item">Math &amp; Biology</span><span class="marquee_item">bKash &amp; Nagad</span>
+      </div>
     </div>
   </div>
-  <div class="footer-bottom">
-    <span>2026 Excellence Gateway Academy. All rights reserved.</span>
-    <span>Privacy &middot; Terms &middot; Refunds</span>
+
+  <!-- COURSES -->
+  <section id="courses">
+    <div class="g_section_wrap"><div class="g_section_space is-main"></div>
+      <div class="u-container">
+        <div class="courses_header"><div><p class="section_label fade_up">Featured Programs</p><h2 class="u-display-m fade_up">Explore our courses.</h2></div><a href="/explore.html" class="btn_main_wrap fade_up" data-style="tertiary"><span class="btn_main_text">View All →</span></a></div>
+        <div class="courses_grid" id="coursesGrid"><div class="skeleton_card"></div><div class="skeleton_card"></div><div class="skeleton_card"></div></div>
+      </div>
+    <div class="g_section_space is-main"></div></div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="values_section" id="values">
+    <div class="g_section_wrap"><div class="g_section_space is-main"></div>
+      <div class="u-container">
+        <p class="section_label fade_up">Our Philosophy</p>
+        <h2 class="u-display-m fade_up" style="max-width:36ch;margin-bottom:3rem">Built for genuine understanding, not just exam marks.</h2>
+        <div class="values_grid">
+          <div class="value_item fade_up"><div class="value_num">01 — Deep Structure</div><h3>Subject → Paper → Chapter → Lecture</h3><p>Every course is organized into a precise hierarchy so you always know where you are, what you've learned, and what comes next.</p></div>
+          <div class="value_item fade_up"><div class="value_num">02 — Genuine Depth</div><h3>First principles, not shortcuts.</h3><p>We don't teach you to memorize. Every lecture builds real intuition for solving unfamiliar problems.</p></div>
+          <div class="value_item fade_up"><div class="value_num">03 — Learner Freedom</div><h3>Your pace. Your schedule.</h3><p>Replay lectures, jump ahead, revisit chapters. Download materials for offline study. Learn when and how it works for you.</p></div>
+          <div class="value_item fade_up"><div class="value_num">04 — Rich Resources</div><h3>PDFs, notes, and practice sets.</h3><p>Every course includes downloadable lecture notes, formula sheets, and practice materials to reinforce learning beyond the screen.</p></div>
+        </div>
+      </div>
+    <div class="g_section_space is-main"></div></div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features_section" id="features">
+    <div class="g_section_wrap"><div class="g_section_space is-main"></div>
+      <div class="u-container">
+        <p class="section_label fade_up">Platform Features</p>
+        <h2 class="u-display-m fade_up" style="color:var(--swatch--ivory-light);margin-bottom:0.75rem">Everything you need to excel.</h2>
+        <p class="u-paragraph-m fade_up" style="color:rgba(250,249,245,0.5);max-width:52ch;margin-bottom:3rem">A purpose-built learning experience — from the video player to the progress tracker — designed for serious students.</p>
+        <div class="features_grid">
+          <div class="feature_card fade_up"><div class="feature_icon"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><h4>Premium Video Player</h4><p>Ad-free HD player with custom controls, speed selection, keyboard shortcuts, and clean full-screen mode.</p></div>
+          <div class="feature_card fade_up"><div class="feature_icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div><h4>Structured Curriculum</h4><p>Subject → Paper → Chapter → Lecture hierarchy. Always know where you are in your learning journey.</p></div>
+          <div class="feature_card fade_up"><div class="feature_icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><h4>Downloadable PDFs</h4><p>Lecture notes, formula sheets, and practice sets available for offline reading and revision.</p></div>
+          <div class="feature_card fade_up"><div class="feature_icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><h4>Visual Progress Tracking</h4><p>See completed lectures and chapters at a glance. Track your progress through each course in real time.</p></div>
+          <div class="feature_card fade_up"><div class="feature_icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><h4>Mobile-First Design</h4><p>Full experience on every screen — watch, read, and track progress from your phone, tablet, or desktop.</p></div>
+          <div class="feature_card fade_up"><div class="feature_icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h4>Secure Enrollment</h4><p>Verified payment via bKash and Nagad. Our team confirms every transaction before access is granted.</p></div>
+        </div>
+      </div>
+    <div class="g_section_space is-main"></div></div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div class="g_section_wrap"><div class="g_section_space is-main"></div>
+      <div class="u-container">
+        <p class="section_label fade_up">Getting Started</p>
+        <h2 class="u-display-m fade_up" style="margin-bottom:0.75rem">Simple, transparent process.</h2>
+        <p class="u-paragraph-m fade_up" style="color:var(--_theme---text-secondary);max-width:50ch;margin-bottom:3rem">From sign-up to watching your first lecture in four clear steps.</p>
+        <div class="how_grid">
+          <div class="how_step fade_up"><div class="how_step_num">01</div><h4>Create Your Account</h4><p>Sign up with your email in under a minute. No payment required just to browse.</p></div>
+          <div class="how_step fade_up"><div class="how_step_num">02</div><h4>Browse Programs</h4><p>Explore the catalog. Preview course structures, lecture counts, and pricing.</p></div>
+          <div class="how_step fade_up"><div class="how_step_num">03</div><h4>Pay via bKash / Nagad</h4><p>Complete payment and submit your transaction ID. Safe, simple, local.</p></div>
+          <div class="how_step fade_up"><div class="how_step_num">04</div><h4>Start Learning</h4><p>Once verified by our team, you get immediate, full lifetime access to your course.</p></div>
+        </div>
+      </div>
+    <div class="g_section_space is-main"></div></div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section style="background:var(--_theme---surface);border-top:1px solid var(--_theme---border)">
+    <div class="g_section_wrap"><div class="g_section_space is-main"></div>
+      <div class="u-container">
+        <p class="section_label fade_up">Student Stories</p>
+        <h2 class="u-display-m fade_up" style="margin-bottom:3rem">What learners are saying.</h2>
+        <div class="testi_grid">
+          <div class="testi_card featured fade_up"><div class="quote_mark">"</div><p class="testi_text">The structured curriculum changed everything for me. I stopped cramming and started actually understanding Physics from the ground up.</p><div><div class="testi_author">Farhan Rahman</div><div class="testi_role">A-Unit Aspirant, Dhaka</div></div></div>
+          <div class="testi_card fade_up"><div class="quote_mark">"</div><p class="testi_text">The PDF notes saved my revision weeks. Having everything organized by chapter makes reviewing so much faster before exams.</p><div><div class="testi_author">Nusrat Jahan</div><div class="testi_role">HSC Student, Chittagong</div></div></div>
+          <div class="testi_card fade_up"><div class="quote_mark">"</div><p class="testi_text">I love that I can watch at 1.5× speed and still pause to take notes. The video player feels premium — way better than random YouTube playlists.</p><div><div class="testi_author">Rakib Hossain</div><div class="testi_role">Medical Aspirant, Rajshahi</div></div></div>
+        </div>
+      </div>
+    <div class="g_section_space is-main"></div></div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq_section">
+    <div class="g_section_wrap"><div class="g_section_space is-main"></div>
+      <div class="u-container"><div class="faq_wrap">
+        <p class="section_label fade_up" style="text-align:center">Common Questions</p>
+        <h2 class="u-display-m fade_up" style="text-align:center;margin-bottom:3rem">Everything you need to know.</h2>
+        <div class="faq_list fade_up">
+          <div class="faq_item"><button class="faq_q" onclick="toggleFaq(this)">How do I access courses after payment?<svg class="faq_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><div class="faq_a"><p>After submitting your bKash or Nagad payment, our team reviews and verifies the transaction. Once confirmed (usually within a few hours), your dashboard unlocks full access to all course content.</p></div></div>
+          <div class="faq_item"><button class="faq_q" onclick="toggleFaq(this)">What payment methods are accepted?<svg class="faq_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><div class="faq_a"><p>We accept bKash and Nagad. After selecting a course, you'll find the payment number and instructions. Submit your transaction ID and we'll verify it manually.</p></div></div>
+          <div class="faq_item"><button class="faq_q" onclick="toggleFaq(this)">How long do I have access to a course?<svg class="faq_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><div class="faq_a"><p>All course enrollments give you 365 days of access from the date of payment verification. Replay lectures as many times as you need within that period.</p></div></div>
+          <div class="faq_item"><button class="faq_q" onclick="toggleFaq(this)">Can I download the study materials?<svg class="faq_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><div class="faq_a"><p>Yes. Every course includes downloadable PDFs — lecture notes, formula sheets, and practice problem sets — that you can save and study offline.</p></div></div>
+          <div class="faq_item"><button class="faq_q" onclick="toggleFaq(this)">Is there a mobile app?<svg class="faq_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><div class="faq_a"><p>Our platform is fully mobile-responsive. Access everything — videos, PDFs, progress tracking — directly from your phone browser with no app download needed.</p></div></div>
+        </div>
+      </div></div>
+    <div class="g_section_space is-main"></div></div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta_section">
+    <div class="cta_scroll_bg fade_up">
+      <div class="cta_container">
+        <div><p class="cta_label">Start Today</p><h2 class="cta_title">Ready to build real mastery?</h2><p class="cta_sub">Join thousands of students who chose structured learning over scattered YouTube playlists.</p></div>
+        <div class="cta_actions">
+          <a href="/signup.html" class="btn_main_wrap is-rust" style="justify-content:center"><span class="btn_main_text">Create Free Account</span></a>
+          <a href="/explore.html" class="btn_main_wrap" style="justify-content:center;background:transparent;border:1px solid rgba(250,249,245,0.2);color:rgba(250,249,245,0.7)"><span class="btn_main_text">Browse Programs</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer_wrap">
+  <div class="u-container">
+    <nav class="footer_grid">
+      <div class="footer_grid_logo">
+        <a class="footer_logo_wrap" href="/"><img src="/images/ega.png" height="28" alt="EGA"><span class="footer_logo_name">Excellence Gateway</span></a>
+        <p class="footer_brand_desc">Premium structured education for the next generation of scientists, engineers, and thinkers. Built in Bangladesh.</p>
+        <div class="footer_bottom_contain">
+          <div class="footer_bottom_text">&copy; <span id="year"></span> Excellence Gateway Academy</div>
+          <ul class="footer_bottom_list">
+            <li><a href="#" class="footer_bottom_link_wrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a></li>
+            <li><a href="#" class="footer_bottom_link_wrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer_grid_content">
+        <section><span class="footer_group_title">Learning</span><ul class="footer_group_list"><li class="footer_group_item"><a href="/explore.html" class="footer_link_wrap"><span class="footer_link_text">Browse Courses</span></a></li><li class="footer_group_item"><a href="#" class="footer_link_wrap"><span class="footer_link_text">Physics</span></a></li><li class="footer_group_item"><a href="#" class="footer_link_wrap"><span class="footer_link_text">Chemistry</span></a></li><li class="footer_group_item"><a href="#" class="footer_link_wrap"><span class="footer_link_text">Mathematics</span></a></li></ul></section>
+        <section><span class="footer_group_title">Account</span><ul class="footer_group_list"><li class="footer_group_item"><a href="/login.html" class="footer_link_wrap"><span class="footer_link_text">Sign In</span></a></li><li class="footer_group_item"><a href="/signup.html" class="footer_link_wrap"><span class="footer_link_text">Create Account</span></a></li><li class="footer_group_item"><a href="/dashboard.html" class="footer_link_wrap"><span class="footer_link_text">Dashboard</span></a></li></ul></section>
+        <section><span class="footer_group_title">Company</span><ul class="footer_group_list"><li class="footer_group_item"><a href="#" class="footer_link_wrap"><span class="footer_link_text">About</span></a></li><li class="footer_group_item"><a href="#" class="footer_link_wrap"><span class="footer_link_text">Contact</span></a></li><li class="footer_group_item"><a href="#" class="footer_link_wrap"><span class="footer_link_text">Privacy Policy</span></a></li><li class="footer_group_item"><a href="#" class="footer_link_wrap"><span class="footer_link_text">Terms</span></a></li></ul></section>
+      </div>
+    </nav>
   </div>
 </footer>
 
-<div class="toast" id="toast"></div>
-
 <script>
-// ─── Auth state ───
-const token = localStorage.getItem('ega_token');
-const user = JSON.parse(localStorage.getItem('ega_user') || 'null');
+document.getElementById('year').textContent = new Date().getFullYear();
 
-function updateNav() {
-  const headerNav = document.getElementById('headerNav');
-  const sidebarNav = document.getElementById('sidebarNav');
-  const sidebarFooter = document.querySelector('.sidebar-footer');
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobileNav');
+let menuOpen = false;
+hamburger.addEventListener('click', function() {
+  menuOpen = !menuOpen;
+  hamburger.classList.toggle('w--open', menuOpen);
+  mobileNav.classList.toggle('open', menuOpen);
+  document.body.style.overflow = menuOpen ? 'hidden' : '';
+});
+function closeMobileNav() { menuOpen = false; hamburger.classList.remove('w--open'); mobileNav.classList.remove('open'); document.body.style.overflow = ''; }
+document.addEventListener('click', function(e) { if (menuOpen && !hamburger.contains(e.target) && !mobileNav.contains(e.target)) closeMobileNav(); });
 
-  if (user && token) {
-    const initials = (user.name || 'U').charAt(0).toUpperCase();
-    const isAdmin = user.role === 'admin';
-
-    headerNav.innerHTML = `
-      <li><a href="/#courses">Courses</a></li>
-      <li><a href="/#features">Features</a></li>
-      <li><a href="/explore.html">Explore</a></li>
-      ${isAdmin ? '<li><a href="/admin.html">Admin</a></li>' : ''}
-      <li><a href="/dashboard.html">Dashboard</a></li>
-      <li class="user-menu">
-        <button class="user-menu-btn" onclick="toggleUserMenu()">
-          <span class="user-avatar">${esc(initials)}</span>
-          ${esc(user.name)}
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="user-dropdown" id="userDropdown">
-          <a href="/dashboard.html">Dashboard</a>
-          ${isAdmin ? '<a href="/admin.html">Admin Panel</a>' : ''}
-          <a href="#" class="logout-link" onclick="logout()">Sign Out</a>
-        </div>
-      </li>
-    `;
-
-    sidebarNav.innerHTML = `
-      <li><a href="/">Home</a></li>
-      <li><a href="/explore.html">Explore Courses</a></li>
-      <li><a href="/dashboard.html">Dashboard</a></li>
-      ${isAdmin ? '<li><a href="/admin.html">Admin Panel</a></li>' : ''}
-    `;
-    sidebarFooter.innerHTML = '<a href="#" onclick="logout()">Sign Out</a>';
-  }
-}
-
-function toggleUserMenu() {
-  document.getElementById('userDropdown').classList.toggle('show');
-}
-
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.user-menu')) {
-    document.getElementById('userDropdown').classList.remove('show');
-  }
+window.addEventListener('scroll', function() {
+  var nav = document.querySelector('.nav_wrap');
+  if (nav) nav.classList.toggle('scrolled', window.scrollY > 20);
 });
 
-function logout() {
-  localStorage.removeItem('ega_token');
-  localStorage.removeItem('ega_user');
-  window.location.href = '/';
+function esc(s) { var d = document.createElement('div'); d.textContent = String(s || ''); return d.innerHTML; }
+
+var token, user = null;
+try { token = localStorage.getItem('ega_token'); user = JSON.parse(localStorage.getItem('ega_user') || 'null'); } catch(e) {}
+
+function updateNav() {
+  if (!user || !token) return;
+  var init = (user.name || 'U').charAt(0).toUpperCase();
+  var isAdmin = user.role === 'admin';
+  var navActions = document.getElementById('navActions');
+  navActions.innerHTML =
+    (isAdmin ? '<li><a href="/admin.html" class="btn_main_wrap" data-style="tertiary"><span class="btn_main_text">Admin</span></a></li>' : '') +
+    '<li><a href="/dashboard.html" class="btn_main_wrap" data-style="tertiary"><span class="btn_main_text">Dashboard</span></a></li>' +
+    '<li><button class="btn_main_wrap is-nav" onclick="logout()"><span class="btn_main_text">' + esc(init) + ' &middot; Sign Out</span></button></li>';
+}
+function logout() { localStorage.removeItem('ega_token'); localStorage.removeItem('ega_user'); window.location.href = '/'; }
+
+function animateCount(el, target, suffix) {
+  var step = Math.max(1, Math.ceil(target / 40)), val = 0;
+  var timer = setInterval(function() { val = Math.min(val + step, target); el.innerHTML = val + '<span class="accent">' + suffix + '</span>'; if (val >= target) clearInterval(timer); }, 35);
 }
 
-// Sidebar
-const hamburger = document.getElementById('hamburger');
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('sidebarOverlay');
-
-function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('open'); }
-function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('open'); }
-hamburger.addEventListener('click', openSidebar);
-overlay.addEventListener('click', closeSidebar);
-
-function esc(s) {
-  const d = document.createElement('div');
-  d.textContent = String(s || '');
-  return d.innerHTML;
-}
-
-// FAQ
-function toggleFaq(el) {
-  const item = el.parentElement;
-  const isOpen = item.classList.contains('open');
-  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-  if (!isOpen) item.classList.add('open');
-}
-
-// Toast
-function showToast(msg, type) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast toast-' + (type || 'success') + ' show';
-  setTimeout(function() { t.classList.remove('show'); }, 3500);
-}
-
-// Stats
 async function loadStats() {
   try {
     var res = await fetch('/api/stats');
+    if (!res.ok) throw new Error();
     var data = await res.json();
-    document.getElementById('statCourses').innerHTML = data.courses + '<span>+</span>';
-    document.getElementById('statStudents').innerHTML = data.students + '<span>+</span>';
-    document.getElementById('statLectures').innerHTML = data.enrollments + '<span>+</span>';
-  } catch(e) {}
+    animateCount(document.getElementById('statCourses'), data.courses || 0, '+');
+    animateCount(document.getElementById('statStudents'), data.students || 0, '+');
+    animateCount(document.getElementById('statLectures'), data.lectures || 0, '+');
+  } catch(e) { animateCount(document.getElementById('statCourses'), 0, '+'); animateCount(document.getElementById('statStudents'), 0, '+'); animateCount(document.getElementById('statLectures'), 0, '+'); }
 }
 
-// Courses
 async function loadCourses() {
   try {
     var res = await fetch('/api/courses?limit=6');
+    if (!res.ok) throw new Error();
     var courses = await res.json();
     var grid = document.getElementById('coursesGrid');
-    if (!courses.length) {
-      grid.innerHTML = '<p style="color:var(--gray);grid-column:1/-1">No courses available yet.</p>';
-      return;
-    }
+    if (!courses.length) { grid.innerHTML = '<div style="padding:3rem;color:var(--_theme---text-secondary);grid-column:1/-1;text-align:center;background:var(--_theme---surface)">No courses available yet. Check back soon.</div>'; return; }
     grid.innerHTML = courses.map(function(c) {
-      var tree = [];
-      try { tree = typeof c.tree === 'string' ? JSON.parse(c.tree) : c.tree; } catch(e) {}
-      var lectureCount = 0;
-      if (tree && tree.length) {
-        tree.forEach(function(s) {
-          (s.papers||[]).forEach(function(p) {
-            (p.chapters||[]).forEach(function(ch) {
-              lectureCount += (ch.lectures||[]).length;
-            });
-          });
-        });
-      }
-      return '<a href="/course.html?id=' + c.id + '" class="course-card">' +
-        '<div class="course-thumb">' +
-          (c.thumbnail_url ? '<img src="' + esc(c.thumbnail_url) + '" alt="' + esc(c.title) + '">' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>') +
-          (c.badge ? '<span class="course-badge">' + esc(c.badge) + '</span>' : '') +
-        '</div>' +
-        '<div class="course-body">' +
-          '<div class="course-subject">' + esc(c.subject_area) + '</div>' +
-          '<div class="course-title">' + esc(c.title) + '</div>' +
-          '<div class="course-meta">' + esc(c.difficulty) + ' &middot; ' + lectureCount + ' lectures</div>' +
-          '<div class="course-footer">' +
-            '<span class="course-price' + (c.price === 0 ? ' free' : '') + '">' + (c.price === 0 ? 'Free' : '৳' + c.price) + '</span>' +
-            '<span class="btn btn-primary" style="font-size:0.75rem;padding:0.5rem 1rem">Enroll Now</span>' +
-          '</div>' +
-        '</div>' +
-      '</a>';
+      var tree = []; try { tree = typeof c.tree === 'string' ? JSON.parse(c.tree) : (c.tree || []); } catch(e) {}
+      var lc = 0; tree.forEach(function(s) { (s.papers||[]).forEach(function(p) { (p.chapters||[]).forEach(function(ch) { lc += (ch.lectures||[]).length; }); }); });
+      return '<a href="/course.html?id=' + c.id + '" class="course_card"><div class="course_area">' + esc(c.subject_area||'Course') + '</div><div class="course_title">' + esc(c.title) + '</div><div class="course_meta"><span>' + lc + ' lectures</span><span>' + esc(c.difficulty||'All levels') + '</span></div><div class="course_desc">' + esc(c.description||'A comprehensive structured course.') + '</div><div class="course_footer"><span class="course_price' + (c.price===0?' free':'') + '">' + (c.price===0?'Free':'&#2547;'+c.price) + '</span><span class="course_arrow">&rarr;</span></div></a>';
     }).join('');
-  } catch(e) {
-    document.getElementById('coursesGrid').innerHTML = '<p style="color:var(--red);grid-column:1/-1">Failed to load. <button onclick="loadCourses()" style="color:var(--accent);background:none;border:none;cursor:pointer;text-decoration:underline">Retry</button></p>';
-  }
+  } catch(e) { document.getElementById('coursesGrid').innerHTML = '<div style="padding:3rem;color:#dc2626;grid-column:1/-1;text-align:center;background:var(--_theme---surface)">Could not load courses. <button onclick="loadCourses()" style="color:var(--_theme---accent);background:none;border:none;cursor:pointer;text-decoration:underline;font-family:inherit">Retry</button></div>'; }
 }
+
+function toggleFaq(btn) { var item = btn.parentElement; var isOpen = item.classList.contains('open'); document.querySelectorAll('.faq_item').forEach(function(i) { i.classList.remove('open'); }); if (!isOpen) item.classList.add('open'); }
+
+var observer = new IntersectionObserver(function(entries) { entries.forEach(function(entry) { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } }); }, { threshold: 0.1 });
+document.querySelectorAll('.fade_up').forEach(function(el) { observer.observe(el); });
 
 updateNav();
 loadStats();
