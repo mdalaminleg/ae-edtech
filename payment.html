@@ -13,18 +13,11 @@
       --accent:#C9A84C;--accent2:#b8942f;--accent-dim:rgba(201,168,76,0.08);
       --white:#f0f4f8;--gray:#7a8899;--gray2:#a0adb8;
       --red:#f0566a;--green:#10d48e;--orange:#f59e0b;
-      --radius:9px;--radius-lg:13px;
-      --transition:.18s cubic-bezier(.4,0,.2,1)
+      --radius:9px;--radius-lg:13px;--transition:.18s cubic-bezier(.4,0,.2,1)
     }
     body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);min-height:100vh}
     h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:400}
-    .header{
-      position:sticky;top:0;z-index:100;
-      background:rgba(5,8,15,0.92);backdrop-filter:blur(12px);
-      border-bottom:1px solid var(--border);
-      display:flex;align-items:center;justify-content:space-between;
-      padding:0 5%;height:64px
-    }
+    .header{position:sticky;top:0;z-index:100;background:rgba(5,8,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:64px}
     .header-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
     .header-logo img{height:32px}
     .header-logo span{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--white)}
@@ -61,7 +54,6 @@
     .alert{padding:0.8rem 1rem;border-radius:var(--radius);font-size:0.82rem;margin-bottom:1rem;display:none}
     .alert-error{background:rgba(240,86,106,0.09);border:1px solid var(--red);color:var(--red);display:block}
     .alert-success{background:rgba(16,212,142,0.09);border:1px solid var(--green);color:var(--green);display:block}
-    .alert-warning{background:rgba(245,158,11,0.09);border:1px solid var(--orange);color:var(--orange);display:block}
     .notice{padding:1rem;background:var(--accent-dim);border:1px solid rgba(201,168,76,0.25);border-radius:var(--radius);font-size:0.82rem;color:var(--accent);line-height:1.6;margin-top:1rem;display:flex;gap:0.8rem;align-items:flex-start}
     .notice svg{width:18px;height:18px;flex-shrink:0;margin-top:2px}
     .success-state{text-align:center;padding:2rem 0;display:none}
@@ -75,127 +67,88 @@
 <body>
 
 <header class="header">
-  <a href="/" class="header-logo">
-    <img src="/images/ega.png" height="32" alt="EGA">
-    <span>Excellence <em>Gateway</em></span>
-  </a>
+  <a href="/" class="header-logo"><img src="/images/ega.png" height="32" alt="EGA"><span>Excellence <em>Gateway</em></span></a>
 </header>
 
 <main>
-  <a href="#" class="back-link" id="backLink">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-    Back to Course
-  </a>
+  <a href="#" class="back-link" id="backLink"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Course</a>
 
   <div class="payment-card" id="paymentForm">
-    <div class="course-info">
-      <h2 id="courseTitle">Loading...</h2>
-      <div class="amount" id="courseAmount">৳0</div>
-    </div>
+    <div class="course-info"><h2 id="courseTitle">Loading...</h2><div class="amount" id="courseAmount">৳0</div></div>
 
     <div class="payment-number-box" id="paymentNumberBox">
-      <div>
-        <div class="label">Send to this number</div>
-        <div class="number" id="paymentNumber">Loading...</div>
-      </div>
-      <button class="btn-copy" onclick="copyNumber()" id="copyBtn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        Copy
-      </button>
+      <div><div class="label">Send to this number</div><div class="number" id="paymentNumber">Loading...</div></div>
+      <button class="btn-copy" onclick="copyNumber()" id="copyBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
     </div>
 
     <div id="alert"></div>
 
     <div class="radio-group">
-      <div class="radio-option">
-        <input type="radio" name="method" id="methodBkash" value="bkash" checked>
-        <label for="methodBkash">bKash</label>
-      </div>
-      <div class="radio-option">
-        <input type="radio" name="method" id="methodNagad" value="nagad">
-        <label for="methodNagad">Nagad</label>
-      </div>
+      <div class="radio-option"><input type="radio" name="method" id="methodBkash" value="bkash" checked><label for="methodBkash">bKash</label></div>
+      <div class="radio-option"><input type="radio" name="method" id="methodNagad" value="nagad"><label for="methodNagad">Nagad</label></div>
     </div>
 
-    <div class="form-group">
-      <label for="trxId">Transaction ID (TrxID)</label>
-      <input type="text" id="trxId" placeholder="Enter the transaction ID" required>
-    </div>
+    <div class="form-group"><label for="trxId">Transaction ID (TrxID)</label><input type="text" id="trxId" placeholder="Enter the transaction ID" required></div>
+    <div class="form-group"><label for="senderPhone">Your Phone Number</label><input type="tel" id="senderPhone" placeholder="01XXXXXXXXX" required></div>
 
-    <div class="form-group">
-      <label for="senderPhone">Your Phone Number</label>
-      <input type="tel" id="senderPhone" placeholder="01XXXXXXXXX" required>
-    </div>
+    <button class="btn btn-primary" onclick="submitPayment()" id="submitBtn"><span class="btn-text">Verify Payment</span><span class="spinner"></span></button>
 
-    <button class="btn btn-primary" onclick="submitPayment()" id="submitBtn">
-      <span class="btn-text">Verify Payment</span>
-      <span class="spinner"></span>
-    </button>
-
-    <div class="notice">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <span>After admin manually checks your payment, you will be added to the course. This usually takes a few hours. You'll receive a notification when approved.</span>
-    </div>
+    <div class="notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>After admin manually checks your payment, you will be added to the course. This usually takes a few hours.</span></div>
   </div>
 
   <div class="success-state" id="successState">
     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="16 10 12 14 8 10"/></svg>
-    <h3>Payment Submitted</h3>
-    <p>Your payment is pending verification. Once admin approves, you'll get access to the course. Check your dashboard for updates.</p>
+    <h3>Payment Submitted</h3><p>Your payment is pending verification. Check your dashboard for updates.</p>
     <a href="/dashboard.html" class="btn btn-primary" style="width:auto;display:inline-flex;margin-top:1.5rem">Go to Dashboard</a>
   </div>
 </main>
 
 <script>
-function esc(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
-function showAlert(msg,type='error'){const a=document.getElementById('alert');a.textContent=msg;a.className='alert alert-'+type;setTimeout(()=>a.className='alert',3000)}
+function esc(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
+function showAlert(msg,type){var a=document.getElementById('alert');a.textContent=msg;a.className='alert alert-'+(type||'error');setTimeout(function(){a.className='alert'},3000)}
 function hideAlert(){document.getElementById('alert').className='alert'}
-function setLoading(l){const b=document.getElementById('submitBtn');if(l){b.classList.add('btn-loading');b.disabled=true}else{b.classList.remove('btn-loading');b.disabled=false}}
+function setLoading(l){var b=document.getElementById('submitBtn');if(l){b.classList.add('btn-loading');b.disabled=true}else{b.classList.remove('btn-loading');b.disabled=false}}
 
-const token=localStorage.getItem('ega_token');
-const user=JSON.parse(localStorage.getItem('ega_user')||'null');
+var token=localStorage.getItem('ega_token');
+var user=JSON.parse(localStorage.getItem('ega_user')||'null');
 if(!token||!user){window.location.href='/login.html'}
 
-const params=new URLSearchParams(window.location.search);
-const courseId=params.get('id');
-let courseData=null;
-let paymentInfo=null;
+var params=new URLSearchParams(window.location.search);
+var courseId=params.get('id');
+var courseData=null;
+var paymentInfo=null;
 
 document.getElementById('backLink').href='/course.html?id='+courseId;
 
 function copyNumber(){
-  const num=document.getElementById('paymentNumber').textContent;
-  navigator.clipboard.writeText(num).then(()=>{
-    const btn=document.getElementById('copyBtn');
+  var num=document.getElementById('paymentNumber').textContent;
+  navigator.clipboard.writeText(num).then(function(){
+    var btn=document.getElementById('copyBtn');
     btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied';
-    setTimeout(()=>{btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy'},2000);
+    setTimeout(function(){btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy'},2000);
   });
 }
 
 async function loadPaymentInfo(){
   try{
-    const [courseRes,metaRes]=await Promise.all([
-      fetch('/api/courses/'+courseId),
-      fetch('/api/meta/payment-info')
-    ]);
+    var courseRes=await fetch('/api/courses/'+courseId);
     courseData=await courseRes.json();
+    var metaRes=await fetch('/api/meta/payment-info');
     paymentInfo=await metaRes.json();
+
     document.getElementById('courseTitle').textContent=courseData.title;
     document.getElementById('courseAmount').textContent='৳'+courseData.price;
 
-    const method=document.querySelector('input[name="method"]:checked').value;
+    var method=document.querySelector('input[name="method"]:checked').value;
     updateNumber(method);
-    document.querySelectorAll('input[name="method"]').forEach(r=>r.addEventListener('change',()=>updateNumber(r.value)));
+    document.querySelectorAll('input[name="method"]').forEach(function(r){r.addEventListener('change',function(){updateNumber(r.value)})});
 
-    if(!paymentInfo.show){
-      document.getElementById('paymentNumberBox').classList.add('hidden-number');
-      document.getElementById('copyBtn').style.display='none';
-    }
-  }catch{showAlert('Failed to load course details','error')}
+    if(!paymentInfo.show){document.getElementById('paymentNumberBox').classList.add('hidden-number');document.getElementById('copyBtn').style.display='none'}
+  }catch(e){showAlert('Failed to load','error')}
 }
 
 function updateNumber(method){
-  const num=method==='bkash'?paymentInfo.bkash:paymentInfo.nagad;
+  var num=method==='bkash'?paymentInfo.bkash:paymentInfo.nagad;
   document.getElementById('paymentNumber').textContent=num||'Not available';
   if(!num)document.getElementById('copyBtn').style.display='none';
   else if(paymentInfo.show)document.getElementById('copyBtn').style.display='';
@@ -203,21 +156,21 @@ function updateNumber(method){
 
 async function submitPayment(){
   hideAlert();
-  const method=document.querySelector('input[name="method"]:checked').value;
-  const trxId=document.getElementById('trxId').value.trim();
-  const senderPhone=document.getElementById('senderPhone').value.trim();
+  var method=document.querySelector('input[name="method"]:checked').value;
+  var trxId=document.getElementById('trxId').value.trim();
+  var senderPhone=document.getElementById('senderPhone').value.trim();
   if(!trxId)return showAlert('Please enter the Transaction ID');
   if(!senderPhone)return showAlert('Please enter your phone number');
   if(!/^01\d{9}$/.test(senderPhone))return showAlert('Phone must be 01XXXXXXXXX format');
 
   setLoading(true);
   try{
-    const res=await fetch('/api/payment/submit',{
+    var res=await fetch('/api/payment/submit',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
-      body:JSON.stringify({course_id:parseInt(courseId),method,trx_id:trxId,phone:senderPhone})
+      body:JSON.stringify({course_id:parseInt(courseId),method:method,trx_id:trxId,phone:senderPhone})
     });
-    const data=await res.json();
+    var data=await res.json();
     if(!res.ok){showAlert(data.error||'Payment submission failed');setLoading(false);return}
     document.getElementById('paymentForm').style.display='none';
     document.getElementById('successState').style.display='block';
