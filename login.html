@@ -4,157 +4,78 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign In — Excellence Gateway Academy</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
-      --bg:#05080f;--surface:#0b0f1a;--surface2:#111827;--surface3:#161e2e;
-      --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.11);
-      --accent:#C9A84C;--accent2:#b8942f;--accent-dim:rgba(201,168,76,0.08);
-      --white:#f0f4f8;--gray:#7a8899;--gray2:#a0adb8;
-      --red:#f0566a;--red-dim:rgba(240,86,106,0.09);
-      --green:#10d48e;--green-dim:rgba(16,212,142,0.09);
-      --radius:9px;--radius-lg:13px;
-      --transition:.18s cubic-bezier(.4,0,.2,1)
+      --bg:#F5F3EE;--paper:#FFFDF8;--slate:#1A1A1A;--slate-mid:#5A5A5A;--cloud:#C8C5BA;
+      --rust:#CC7853;--rust-hover:#B86A47;--rust-dim:rgba(204,120,83,0.12);
+      --border:rgba(26,26,26,0.1);--border-strong:rgba(26,26,26,0.18);
+      --radius:6px;--radius-lg:10px;--transition:.2s cubic-bezier(.4,0,.2,1);
+      --font-display:'Source Serif 4',Georgia,serif;--font-body:'DM Sans',system-ui,sans-serif
     }
-    body{
-      font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);
-      min-height:100vh;display:flex;align-items:center;justify-content:center;
-      padding:2rem;
-    }
-    .auth-container{width:100%;max-width:440px}
-    .auth-logo{text-align:center;margin-bottom:2rem}
-    .auth-logo img{height:40px}
-    .auth-logo h1{
-      font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;
-      margin-top:0.8rem
-    }
-    .auth-logo h1 em{font-style:italic;color:var(--accent)}
-    .auth-card{
-      background:var(--surface);border:1px solid var(--border);
-      border-radius:var(--radius-lg);padding:2rem
-    }
-    .auth-tabs{display:flex;margin-bottom:1.5rem;border-bottom:1px solid var(--border)}
-    .auth-tab{
-      flex:1;text-align:center;padding:0.8rem;font-size:0.9rem;font-weight:500;
-      color:var(--gray);cursor:pointer;border-bottom:2px solid transparent;
-      transition:all var(--transition);background:none;border-top:none;border-left:none;border-right:none;
-      font-family:'DM Sans',sans-serif
-    }
-    .auth-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+    body{font-family:var(--font-body);background:var(--bg);color:var(--slate);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;-webkit-font-smoothing:antialiased}
+    .auth-wrap{width:100%;max-width:440px}
+    .auth-logo{text-align:center;margin-bottom:2rem;text-decoration:none;display:block}
+    .auth-logo svg{height:28px;color:var(--slate)}
+    .auth-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2.5rem}
+    .auth-card h1{font-family:var(--font-display);font-size:1.6rem;font-weight:400;margin-bottom:0.3rem}
+    .auth-card .sub{font-size:0.85rem;color:var(--slate-mid);margin-bottom:2rem}
     .form-group{margin-bottom:1.2rem}
-    .form-group label{display:block;font-size:0.82rem;color:var(--gray2);margin-bottom:0.4rem;font-weight:500}
-    .form-group input{
-      width:100%;padding:0.75rem 1rem;
-      background:var(--surface2);border:1px solid var(--border);
-      border-radius:var(--radius);color:var(--white);font-size:0.9rem;
-      font-family:'DM Sans',sans-serif;transition:border var(--transition);outline:none
-    }
-    .form-group input:focus{border-color:var(--accent)}
-    .form-group input.error{border-color:var(--red)}
-    .alert{
-      padding:0.8rem 1rem;border-radius:var(--radius);font-size:0.82rem;
-      margin-bottom:1rem;display:none
-    }
-    .alert-error{background:var(--red-dim);border:1px solid var(--red);color:var(--red);display:block}
-    .alert-success{background:var(--green-dim);border:1px solid var(--green);color:var(--green);display:block}
-    .btn{
-      width:100%;padding:0.85rem;font-size:0.9rem;font-weight:500;
-      border-radius:var(--radius);border:none;cursor:pointer;
-      font-family:'DM Sans',sans-serif;transition:all var(--transition);
-      display:flex;align-items:center;justify-content:center;gap:0.5rem
-    }
-    .btn-primary{background:var(--accent);color:#05080f}
-    .btn-primary:hover{background:var(--accent2)}
+    .form-group label{display:block;font-size:0.8rem;color:var(--slate-mid);margin-bottom:0.3rem;font-weight:500}
+    .form-group input{width:100%;padding:0.7rem 0.9rem;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);font-size:0.9rem;font-family:var(--font-body);color:var(--slate);outline:none;transition:border var(--transition)}
+    .form-group input:focus{border-color:var(--rust)}
+    .btn{width:100%;padding:0.8rem;font-size:0.9rem;font-weight:500;border-radius:var(--radius);border:none;cursor:pointer;font-family:var(--font-body);transition:all var(--transition);display:flex;align-items:center;justify-content:center;gap:0.5rem}
+    .btn-primary{background:var(--slate);color:#fff}.btn-primary:hover{background:#333}
     .btn-primary:disabled{opacity:0.5;cursor:not-allowed}
-    .spinner{
-      width:18px;height:18px;border:2px solid transparent;
-      border-top-color:#05080f;border-radius:50%;
-      animation:spin 0.6s linear infinite;display:none
-    }
-    .btn-loading .spinner{display:block}
-    .btn-loading .btn-text{display:none}
-    .auth-footer{text-align:center;margin-top:1.5rem;font-size:0.85rem;color:var(--gray)}
-    .auth-footer a{color:var(--accent);text-decoration:none}
-    .auth-footer a:hover{text-decoration:underline}
-    .back-link{display:block;text-align:center;margin-top:1rem;color:var(--gray);font-size:0.85rem;text-decoration:none}
-    .back-link:hover{color:var(--white)}
+    .spinner{width:18px;height:18px;border:2px solid transparent;border-top-color:#fff;border-radius:50%;animation:spin 0.6s linear infinite;display:none}
+    .btn-loading .spinner{display:block}.btn-loading .btn-text{display:none}
+    .alert{padding:0.7rem 0.9rem;border-radius:var(--radius);font-size:0.82rem;margin-bottom:1rem;display:none}
+    .alert-error{background:rgba(220,38,38,0.08);border:1px solid #dc2626;color:#dc2626;display:block}
+    .link{color:var(--rust);text-decoration:none;font-weight:500}.link:hover{text-decoration:underline}
+    .auth-footer{text-align:center;margin-top:1.5rem;font-size:0.85rem;color:var(--slate-mid)}
+    .back-link{display:block;text-align:center;margin-top:1rem;color:var(--slate-mid);font-size:0.85rem;text-decoration:none}
+    .back-link:hover{color:var(--slate)}
     @keyframes spin{to{transform:rotate(360deg)}}
-    @media(max-width:480px){.auth-card{padding:1.5rem}}
   </style>
 </head>
 <body>
-<div class="auth-container">
-  <a href="/" class="auth-logo" style="text-decoration:none">
-    <img src="/images/ega.png" height="40" alt="EGA">
-    <h1>Excellence <em>Gateway</em></h1>
+<div class="auth-wrap">
+  <a href="/" class="auth-logo">
+    <svg viewBox="0 0 40 26" fill="none"><path d="M28 0H22.5L34 26H39.5L28 0Z" fill="currentColor"/><path d="M11 0L0 26H5.5L7.8 20H17.8L20.1 26H25.6L14.6 0H11ZM9.7 15.5L13.8 5.5L17.9 15.5H9.7Z" fill="currentColor"/></svg>
   </a>
   <div class="auth-card">
-    <div class="auth-tabs">
-      <button class="auth-tab active" onclick="switchTab('login')">Sign In</button>
-      <button class="auth-tab" onclick="window.location.href='/signup.html'">Create Account</button>
-    </div>
+    <h1>Welcome back</h1>
+    <p class="sub">Sign in to your Excellence Gateway account.</p>
     <div id="alert"></div>
-    <form id="loginForm" onsubmit="handleLogin(event)">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="you@example.com" required>
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Min 6 characters" required minlength="6">
-      </div>
-      <button type="submit" class="btn btn-primary" id="loginBtn">
-        <span class="btn-text">Sign In</span>
-        <span class="spinner"></span>
-      </button>
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group"><label>Email</label><input type="email" id="email" placeholder="you@example.com" required></div>
+      <div class="form-group"><label>Password</label><input type="password" id="password" placeholder="Min 6 characters" required minlength="6"></div>
+      <button type="submit" class="btn btn-primary" id="loginBtn"><span class="btn-text">Sign In</span><span class="spinner"></span></button>
     </form>
   </div>
-  <p class="auth-footer">Don't have an account? <a href="/signup.html">Create one</a></p>
-  <a href="/" class="back-link">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-    Back to Home
-  </a>
+  <p class="auth-footer">Don't have an account? <a href="/signup.html" class="link">Create one</a></p>
+  <a href="/" class="back-link">← Back to Home</a>
 </div>
-
 <script>
-function esc(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
-function showAlert(msg,type='error'){const a=document.getElementById('alert');a.textContent=msg;a.className='alert alert-'+type;setTimeout(()=>a.className='alert',5000)}
-function hideAlert(){document.getElementById('alert').className='alert'}
-
-async function sha256(text){const d=new TextEncoder().encode(text);const h=await crypto.subtle.digest('SHA-256',d);return Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,'0')).join('')}
-
-function deviceFingerprint(){
-  const d=[navigator.hardwareConcurrency,navigator.deviceMemory,screen.width+'x'+screen.height,navigator.language,navigator.platform];
-  return d.join('|');
-}
-
-function setLoading(loading){
-  const btn=document.getElementById('loginBtn');
-  if(loading){btn.classList.add('btn-loading');btn.disabled=true}
-  else{btn.classList.remove('btn-loading');btn.disabled=false}
-}
-
+function esc(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
+function showAlert(msg){var a=document.getElementById('alert');a.textContent=msg;a.className='alert alert-error';setTimeout(function(){a.className='alert'},5000)}
+function setLoading(l){var b=document.getElementById('loginBtn');if(l){b.classList.add('btn-loading');b.disabled=true}else{b.classList.remove('btn-loading');b.disabled=false}}
 async function handleLogin(e){
-  e.preventDefault();hideAlert();
-  const email=document.getElementById('email').value.trim();
-  const password=document.getElementById('password').value;
+  e.preventDefault();document.getElementById('alert').className='alert';
+  var email=document.getElementById('email').value.trim();
+  var password=document.getElementById('password').value;
   if(!email||!password)return showAlert('Email and password required');
   if(password.length<6)return showAlert('Password must be at least 6 characters');
   setLoading(true);
   try{
-    const res=await fetch('/api/auth/login',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({email,password,device_fingerprint:deviceFingerprint()})
-    });
-    const data=await res.json();
+    var res=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,password:password})});
+    var data=await res.json();
     if(!res.ok){showAlert(data.error||'Login failed');setLoading(false);return}
-    localStorage.setItem('ega_token',data.token);
-    localStorage.setItem('ega_user',JSON.stringify(data.user));
-    if(data.user.role==='admin'){window.location.href='/admin.html'}
-    else{window.location.href='/dashboard.html'}
-  }catch(e){showAlert('Network error. Please try again.');setLoading(false)}
+    localStorage.setItem('ega_token',data.token);localStorage.setItem('ega_user',JSON.stringify(data.user));
+    window.location.href=data.user.role==='admin'?'/admin.html':'/dashboard.html';
+  }catch(e){showAlert('Network error');setLoading(false)}
 }
 </script>
 </body>
