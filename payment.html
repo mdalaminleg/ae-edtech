@@ -4,109 +4,106 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Payment — Excellence Gateway Academy</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
-      --bg:#05080f;--surface:#0b0f1a;--surface2:#111827;--surface3:#161e2e;
-      --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.11);
-      --accent:#C9A84C;--accent2:#b8942f;--accent-dim:rgba(201,168,76,0.08);
-      --white:#f0f4f8;--gray:#7a8899;--gray2:#a0adb8;
-      --red:#f0566a;--green:#10d48e;--orange:#f59e0b;
-      --radius:9px;--radius-lg:13px;--transition:.18s cubic-bezier(.4,0,.2,1)
+      --swatch--ivory-medium:#F5F3EE;--swatch--ivory-light:#FAF9F5;
+      --swatch--slate-dark:#141413;--swatch--slate-light:#3A3936;
+      --swatch--cloud-medium:#8E8C86;--swatch--rust:#CC7853;--swatch--rust-hover:#B86A47;
+      --_theme---background:var(--swatch--ivory-medium);--_theme---text:var(--swatch--slate-dark);
+      --_theme---text-secondary:var(--swatch--cloud-medium);--_theme---border:rgba(20,20,19,0.12);
+      --_theme---border-strong:rgba(20,20,19,0.22);--_theme---surface:var(--swatch--ivory-light);
+      --_theme---accent:var(--swatch--rust);--_theme---accent-dim:rgba(204,120,83,0.1);
+      --font-display:'Instrument Serif',Georgia,serif;--font-body:'Instrument Sans',system-ui,sans-serif;
+      --font-mono:'JetBrains Mono',monospace;--radius-s:4px;--radius-m:8px;--radius-l:12px;
+      --ease-main:cubic-bezier(.4,0,.2,1);--dur-fast:150ms;--site--margin:clamp(1.5rem,4vw,5rem);--nav--height:4.25rem;
     }
-    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);min-height:100vh}
-    h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:400}
-    .header{position:sticky;top:0;z-index:100;background:rgba(5,8,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:64px}
-    .header-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-    .header-logo img{height:32px}
-    .header-logo span{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--white)}
-    .header-logo span em{font-style:italic;color:var(--accent)}
-    main{padding:3rem 5%;max-width:600px;margin:0 auto}
-    .back-link{display:inline-flex;align-items:center;gap:0.5rem;color:var(--gray);text-decoration:none;font-size:0.85rem;margin-bottom:2rem}
-    .back-link:hover{color:var(--white)}
-    .payment-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem}
-    .course-info{margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
-    .course-info h2{font-size:1.3rem;margin-bottom:0.5rem}
-    .course-info .amount{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;color:var(--accent)}
-    .payment-number-box{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:1.2rem;margin-bottom:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-    .payment-number-box .label{font-size:0.78rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em}
-    .payment-number-box .number{font-size:1.3rem;font-weight:500;letter-spacing:0.03em}
-    .payment-number-box.hidden-number .number{filter:blur(4px);user-select:none}
-    .btn-copy{padding:0.5rem 1rem;font-size:0.78rem;font-weight:500;background:var(--accent-dim);color:var(--accent);border:1px solid rgba(201,168,76,0.3);border-radius:var(--radius);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all var(--transition)}
-    .btn-copy:hover{background:var(--accent);color:#05080f}
+    body{font-family:var(--font-body);background:var(--_theme---background);color:var(--_theme---text);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+    .nav_wrap{height:var(--nav--height);background:rgba(245,243,238,0.94);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--_theme---border);display:flex;align-items:center}
+    .nav_contain{width:100%;max-width:1440px;margin:0 auto;padding:0 var(--site--margin);display:flex;align-items:center;justify-content:space-between}
+    .nav_logo_wrap{display:flex;align-items:center;gap:0.65rem;text-decoration:none}.nav_logo_wrap img{height:28px}
+    .nav_logo_name{font-family:var(--font-display);font-size:1.1rem;font-weight:400;color:var(--_theme---text)}
+    .nav_actions{display:flex;align-items:center;gap:0.5rem}
+    .btn_main_wrap{display:inline-flex;align-items:center;border-radius:var(--radius-s);transition:all var(--dur-fast) var(--ease-main);cursor:pointer;text-decoration:none}
+    .btn_main_wrap.is-nav{background:var(--swatch--slate-dark);color:var(--swatch--ivory-light);border:1px solid var(--swatch--slate-dark)}
+    .btn_main_wrap.is-nav:hover{background:var(--swatch--slate-light)}
+    .btn_main_text{font-family:var(--font-body);font-size:0.875rem;font-weight:500;letter-spacing:0.01em;padding:0.6rem 1.25rem;line-height:1;white-space:nowrap}
+    .main{flex:1;padding:2rem var(--site--margin);max-width:600px;margin:0 auto;width:100%}
+    .back-link{display:inline-flex;align-items:center;gap:0.4rem;color:var(--_theme---text-secondary);font-size:0.85rem;margin-bottom:2rem}
+    .back-link:hover{color:var(--_theme---text)}
+    .card{background:var(--_theme---surface);border:1px solid var(--_theme---border);border-radius:var(--radius-l);padding:2rem}
+    .course-info{margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--_theme---border)}
+    .course-info h2{font-family:var(--font-display);font-size:1.3rem;margin-bottom:0.5rem}
+    .amount{font-family:var(--font-display);font-size:2rem;font-weight:300;color:var(--_theme---accent)}
+    .number-box{background:var(--_theme---background);border:1px solid var(--_theme---border);border-radius:var(--radius-m);padding:1.2rem;margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+    .number-box .lbl{font-size:0.75rem;color:var(--_theme---text-secondary);text-transform:uppercase;letter-spacing:0.08em}
+    .number-box .num{font-size:1.2rem;font-weight:500;letter-spacing:0.03em}
+    .number-box.hidden .num{filter:blur(4px);user-select:none}
+    .btn-copy{padding:0.5rem 1rem;font-size:0.78rem;font-weight:500;background:var(--_theme---accent-dim);color:var(--_theme---accent);border:1px solid rgba(204,120,83,0.3);border-radius:var(--radius-s);cursor:pointer;font-family:var(--font-body)}
+    .btn-copy:hover{background:var(--_theme---accent);color:#fff}
     .form-group{margin-bottom:1.2rem}
-    .form-group label{display:block;font-size:0.82rem;color:var(--gray2);margin-bottom:0.4rem;font-weight:500}
-    .form-group input{width:100%;padding:0.75rem 1rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--white);font-size:0.9rem;font-family:'DM Sans',sans-serif;outline:none;transition:border var(--transition)}
-    .form-group input:focus{border-color:var(--accent)}
-    .form-group input.error{border-color:var(--red)}
+    .form-group label{display:block;font-size:0.8rem;color:var(--_theme---text-secondary);margin-bottom:0.3rem;font-weight:500}
+    .form-group input{width:100%;padding:0.7rem 0.9rem;background:var(--_theme---background);border:1px solid var(--_theme---border);border-radius:var(--radius-s);font-size:0.9rem;font-family:var(--font-body);color:var(--_theme---text);outline:none}
+    .form-group input:focus{border-color:var(--_theme---accent)}
     .radio-group{display:flex;gap:1rem;margin-bottom:1.2rem}
-    .radio-option{flex:1}
-    .radio-option input{display:none}
-    .radio-option label{display:block;text-align:center;padding:0.75rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;font-size:0.85rem;font-weight:500;transition:all var(--transition)}
-    .radio-option input:checked+label{border-color:var(--accent);background:var(--accent-dim);color:var(--accent)}
-    .btn{width:100%;padding:0.85rem;font-size:0.9rem;font-weight:500;border-radius:var(--radius);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all var(--transition);display:flex;align-items:center;justify-content:center;gap:0.5rem}
-    .btn-primary{background:var(--accent);color:#05080f}
-    .btn-primary:hover{background:var(--accent2)}
+    .radio-opt{flex:1}.radio-opt input{display:none}
+    .radio-opt label{display:block;text-align:center;padding:0.7rem;background:var(--_theme---background);border:1px solid var(--_theme---border);border-radius:var(--radius-s);cursor:pointer;font-size:0.85rem;font-weight:500;transition:all var(--dur-fast)}
+    .radio-opt input:checked+label{border-color:var(--_theme---accent);background:var(--_theme---accent-dim);color:var(--_theme---accent)}
+    .btn{width:100%;padding:0.85rem;font-size:0.9rem;font-weight:500;border-radius:var(--radius-s);border:none;cursor:pointer;font-family:var(--font-body);display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:all var(--dur-fast)}
+    .btn-primary{background:var(--swatch--slate-dark);color:#fff}.btn-primary:hover{background:var(--swatch--slate-light)}
     .btn-primary:disabled{opacity:0.5;cursor:not-allowed}
-    .spinner{width:18px;height:18px;border:2px solid transparent;border-top-color:#05080f;border-radius:50%;animation:spin 0.6s linear infinite;display:none}
+    .spinner{width:18px;height:18px;border:2px solid transparent;border-top-color:#fff;border-radius:50%;animation:spin 0.6s linear infinite;display:none}
     .btn-loading .spinner{display:block}.btn-loading .btn-text{display:none}
-    .alert{padding:0.8rem 1rem;border-radius:var(--radius);font-size:0.82rem;margin-bottom:1rem;display:none}
-    .alert-error{background:rgba(240,86,106,0.09);border:1px solid var(--red);color:var(--red);display:block}
-    .alert-success{background:rgba(16,212,142,0.09);border:1px solid var(--green);color:var(--green);display:block}
-    .notice{padding:1rem;background:var(--accent-dim);border:1px solid rgba(201,168,76,0.25);border-radius:var(--radius);font-size:0.82rem;color:var(--accent);line-height:1.6;margin-top:1rem;display:flex;gap:0.8rem;align-items:flex-start}
-    .notice svg{width:18px;height:18px;flex-shrink:0;margin-top:2px}
+    .alert{padding:0.7rem 0.9rem;border-radius:var(--radius-s);font-size:0.82rem;margin-bottom:1rem;display:none}
+    .alert-error{background:rgba(220,38,38,0.08);border:1px solid #dc2626;color:#dc2626;display:block}
+    .notice{padding:1rem;background:var(--_theme---accent-dim);border:1px solid rgba(204,120,83,0.25);border-radius:var(--radius-m);font-size:0.82rem;color:var(--_theme---accent);line-height:1.6;margin-top:1.5rem;display:flex;gap:0.8rem;align-items:flex-start}
     .success-state{text-align:center;padding:2rem 0;display:none}
-    .success-state svg{margin-bottom:1rem}
-    .success-state h3{font-size:1.5rem;margin-bottom:0.5rem}
-    .success-state p{color:var(--gray);font-size:0.9rem;line-height:1.6}
+    .success-state svg{margin-bottom:1rem;color:#16a34a}
+    .success-state h3{font-family:var(--font-display);font-size:1.3rem;margin-bottom:0.5rem}
+    .success-state p{color:var(--_theme---text-secondary)}
+    footer{background:var(--swatch--slate-dark);color:rgba(250,249,245,0.4);padding:1.5rem 0;text-align:center;font-size:0.78rem;margin-top:auto}
     @keyframes spin{to{transform:rotate(360deg)}}
-    @media(max-width:480px){.payment-card{padding:1.5rem}}
   </style>
 </head>
 <body>
+<nav class="nav_wrap"><div class="nav_contain">
+  <a href="/" class="nav_logo_wrap"><img src="/images/ega.png" height="28" alt="EGA"><span class="nav_logo_name">Excellence Gateway</span></a>
+  <div class="nav_actions"><a href="/dashboard.html" class="btn_main_wrap is-nav"><span class="btn_main_text">Dashboard</span></a></div>
+</div></nav>
 
-<header class="header">
-  <a href="/" class="header-logo"><img src="/images/ega.png" height="32" alt="EGA"><span>Excellence <em>Gateway</em></span></a>
-</header>
-
-<main>
-  <a href="#" class="back-link" id="backLink"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Course</a>
-
-  <div class="payment-card" id="paymentForm">
-    <div class="course-info"><h2 id="courseTitle">Loading...</h2><div class="amount" id="courseAmount">৳0</div></div>
-
-    <div class="payment-number-box" id="paymentNumberBox">
-      <div><div class="label">Send to this number</div><div class="number" id="paymentNumber">Loading...</div></div>
-      <button class="btn-copy" onclick="copyNumber()" id="copyBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+<main class="main">
+  <a href="#" class="back-link" id="backLink">&larr; Back to Course</a>
+  <div class="card" id="paymentForm">
+    <div class="course-info"><h2 id="courseTitle">Loading...</h2><div class="amount" id="courseAmount">&#2547;0</div></div>
+    <div class="number-box" id="numberBox">
+      <div><div class="lbl">Send to this number</div><div class="num" id="payNumber">Loading...</div></div>
+      <button class="btn-copy" onclick="copyNumber()" id="copyBtn">Copy</button>
     </div>
-
     <div id="alert"></div>
-
     <div class="radio-group">
-      <div class="radio-option"><input type="radio" name="method" id="methodBkash" value="bkash" checked><label for="methodBkash">bKash</label></div>
-      <div class="radio-option"><input type="radio" name="method" id="methodNagad" value="nagad"><label for="methodNagad">Nagad</label></div>
+      <div class="radio-opt"><input type="radio" name="method" id="mBkash" value="bkash" checked><label for="mBkash">bKash</label></div>
+      <div class="radio-opt"><input type="radio" name="method" id="mNagad" value="nagad"><label for="mNagad">Nagad</label></div>
     </div>
-
-    <div class="form-group"><label for="trxId">Transaction ID (TrxID)</label><input type="text" id="trxId" placeholder="Enter the transaction ID" required></div>
-    <div class="form-group"><label for="senderPhone">Your Phone Number</label><input type="tel" id="senderPhone" placeholder="01XXXXXXXXX" required></div>
-
+    <div class="form-group"><label>Transaction ID (TrxID)</label><input type="text" id="trxId" placeholder="Enter the transaction ID" required></div>
+    <div class="form-group"><label>Your Phone Number</label><input type="tel" id="senderPhone" placeholder="01XXXXXXXXX" required></div>
     <button class="btn btn-primary" onclick="submitPayment()" id="submitBtn"><span class="btn-text">Verify Payment</span><span class="spinner"></span></button>
-
-    <div class="notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>After admin manually checks your payment, you will be added to the course. This usually takes a few hours.</span></div>
+    <div class="notice"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>After admin manually checks your payment, you will be added to the course. This usually takes a few hours.</span></div>
   </div>
-
   <div class="success-state" id="successState">
-    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="16 10 12 14 8 10"/></svg>
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="16 10 12 14 8 10"/></svg>
     <h3>Payment Submitted</h3><p>Your payment is pending verification. Check your dashboard for updates.</p>
-    <a href="/dashboard.html" class="btn btn-primary" style="width:auto;display:inline-flex;margin-top:1.5rem">Go to Dashboard</a>
+    <a href="/dashboard.html" class="btn_main_wrap is-nav" style="display:inline-flex;margin-top:1.5rem"><span class="btn_main_text">Go to Dashboard</span></a>
   </div>
 </main>
 
+<footer>&copy; 2026 Excellence Gateway Academy. All rights reserved.</footer>
+
 <script>
 function esc(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
-function showAlert(msg,type){var a=document.getElementById('alert');a.textContent=msg;a.className='alert alert-'+(type||'error');setTimeout(function(){a.className='alert'},3000)}
-function hideAlert(){document.getElementById('alert').className='alert'}
+function showAlert(msg){var a=document.getElementById('alert');a.textContent=msg;a.className='alert alert-error';setTimeout(function(){a.className='alert'},3000)}
 function setLoading(l){var b=document.getElementById('submitBtn');if(l){b.classList.add('btn-loading');b.disabled=true}else{b.classList.remove('btn-loading');b.disabled=false}}
 
 var token=localStorage.getItem('ega_token');
@@ -115,66 +112,51 @@ if(!token||!user){window.location.href='/login.html'}
 
 var params=new URLSearchParams(window.location.search);
 var courseId=params.get('id');
-var courseData=null;
-var paymentInfo=null;
-
 document.getElementById('backLink').href='/course.html?id='+courseId;
 
 function copyNumber(){
-  var num=document.getElementById('paymentNumber').textContent;
+  var num=document.getElementById('payNumber').textContent;
   navigator.clipboard.writeText(num).then(function(){
-    var btn=document.getElementById('copyBtn');
-    btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied';
-    setTimeout(function(){btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy'},2000);
+    var btn=document.getElementById('copyBtn');btn.textContent='Copied';
+    setTimeout(function(){btn.textContent='Copy'},2000);
   });
 }
 
+var paymentInfo=null;
 async function loadPaymentInfo(){
   try{
-    var courseRes=await fetch('/api/courses/'+courseId);
-    courseData=await courseRes.json();
-    var metaRes=await fetch('/api/meta/payment-info');
-    paymentInfo=await metaRes.json();
-
-    document.getElementById('courseTitle').textContent=courseData.title;
-    document.getElementById('courseAmount').textContent='৳'+courseData.price;
-
-    var method=document.querySelector('input[name="method"]:checked').value;
-    updateNumber(method);
+    var cr=await fetch('/api/courses/'+courseId);
+    var course=await cr.json();
+    document.getElementById('courseTitle').textContent=course.title;
+    document.getElementById('courseAmount').innerHTML='&#2547;'+course.price;
+    var mr=await fetch('/api/meta/payment-info');
+    paymentInfo=await mr.json();
+    updateNumber('bkash');
     document.querySelectorAll('input[name="method"]').forEach(function(r){r.addEventListener('change',function(){updateNumber(r.value)})});
-
-    if(!paymentInfo.show){document.getElementById('paymentNumberBox').classList.add('hidden-number');document.getElementById('copyBtn').style.display='none'}
-  }catch(e){showAlert('Failed to load','error')}
+    if(!paymentInfo.show){document.getElementById('numberBox').classList.add('hidden');document.getElementById('copyBtn').style.display='none'}
+  }catch(e){showAlert('Failed to load payment info')}
 }
-
 function updateNumber(method){
   var num=method==='bkash'?paymentInfo.bkash:paymentInfo.nagad;
-  document.getElementById('paymentNumber').textContent=num||'Not available';
-  if(!num)document.getElementById('copyBtn').style.display='none';
-  else if(paymentInfo.show)document.getElementById('copyBtn').style.display='';
+  document.getElementById('payNumber').textContent=num||'Not available';
 }
 
 async function submitPayment(){
-  hideAlert();
+  document.getElementById('alert').className='alert';
   var method=document.querySelector('input[name="method"]:checked').value;
   var trxId=document.getElementById('trxId').value.trim();
-  var senderPhone=document.getElementById('senderPhone').value.trim();
+  var phone=document.getElementById('senderPhone').value.trim();
   if(!trxId)return showAlert('Please enter the Transaction ID');
-  if(!senderPhone)return showAlert('Please enter your phone number');
-  if(!/^01\d{9}$/.test(senderPhone))return showAlert('Phone must be 01XXXXXXXXX format');
-
+  if(!phone)return showAlert('Please enter your phone number');
+  if(!/^01\d{9}$/.test(phone))return showAlert('Phone must be 01XXXXXXXXX format');
   setLoading(true);
   try{
-    var res=await fetch('/api/payment/submit',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
-      body:JSON.stringify({course_id:parseInt(courseId),method:method,trx_id:trxId,phone:senderPhone})
-    });
+    var res=await fetch('/api/payment/submit',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({course_id:parseInt(courseId),method:method,trx_id:trxId,phone:phone})});
     var data=await res.json();
-    if(!res.ok){showAlert(data.error||'Payment submission failed');setLoading(false);return}
+    if(!res.ok){showAlert(data.error||'Submission failed');setLoading(false);return}
     document.getElementById('paymentForm').style.display='none';
     document.getElementById('successState').style.display='block';
-  }catch(e){showAlert('Network error. Please try again.');setLoading(false)}
+  }catch(e){showAlert('Network error');setLoading(false)}
 }
 
 loadPaymentInfo();
