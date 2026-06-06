@@ -155,6 +155,7 @@ async function runMigrations(db) {
   }
 }
 
+// ─── AUTH ───
 async function handleAuth(method, path, body, db, request) {
   if (method === 'POST' && path === '/auth/signup') {
     const { name, email, password, phone, institution } = body;
@@ -198,6 +199,7 @@ async function handleAuth(method, path, body, db, request) {
   return null;
 }
 
+// ─── PUBLIC ───
 async function handlePublic(method, path, body, db, request) {
   if (method === 'GET' && path === '/courses') {
     const url = new URL(request.url);
@@ -248,6 +250,7 @@ async function handlePublic(method, path, body, db, request) {
   return null;
 }
 
+// ─── STUDENT ───
 async function handleStudent(method, path, body, db, user) {
   if (method === 'GET' && path === '/user/profile') {
     const u = await db.prepare('SELECT id, name, email, phone, institution, role, is_approved, created_at FROM users WHERE id = ?').bind(user.id).first();
@@ -291,6 +294,7 @@ async function handleStudent(method, path, body, db, user) {
   return null;
 }
 
+// ─── ADMIN ───
 async function handleAdmin(method, path, body, db, user) {
   if (user.role !== 'admin') return err('Forbidden', 403);
 
@@ -369,17 +373,61 @@ async function handleAdmin(method, path, body, db, user) {
     return json({ message: 'Course deleted' });
   }
 
+  // ─── ENROLLMENTS (FIXED) ───
   if (method === 'GET' && path === '/admin/enrollments') {
-    try {
-      const url = new URL(request.url);
-      const sf = url.searchParams.get('status');
-      let q = `SELECT e.id, e.user_id, e.course_id, e.payment_method, e.trx_id, e.sender_phone, e.status, e.expires_at, e.created_at, u.name AS user_name, u.email AS user_email, c.title AS course_title FROM enrollments e LEFT JOIN users u ON e.user_id = u.id LEFT JOIN courses c ON e.course_id = c.id`;
-      const params = [];
-      if (sf) { q += ' WHERE e.status = ?'; params.push(sf); }
-      q += ' ORDER BY e.created_at DESC LIMIT 500';
-      const result = await db.prepare(q).bind(...params).all();
-      return json(result.results || []);
-    } catch (e) { return json([], 200); }
+    const url = new URL(request.url);
+    const sf = url.searchParams.get('status');
+
+    let rows;
+    if (sf) {
+      const r = await db.prepare('SELECT * FROM enrollments WHERE status = ? ORDER BY created_at DESC LIMIT 500').bind(sf).all();
+      rows = r.results;
+    } else {
+      const r = await db.prepare('SELECT * FROM enrollments ORDER BY created_at DESC LIMIT 500').all();
+      rows = r.results;
+    }
+
+    if (!rows || !rows.length) return json([]);
+
+    const out = [];
+    for (const e of rows) {
+      let userName = '';
+      let userEmail = '';
+      let courseTitle = '';
+
+      try {
+        const u = await db.prepare('SELECT name, email FROM users WHERE id = ?').bind(e.user_id).first();
+        if (u) { userName = u.name; userEmail = u.email; }
+      } catch {}
+
+      try {
+        const c = await db.prepare('SELECT title FROM courses WHERE id = ?').bind(e.course_id).first();
+        if (c) { courseTitle = c.title; }
+      } catch {}
+
+      out.push({
+        id: e.id,
+        user_id: e.user_id,
+        course_id: e.course_id,
+        payment_method: e.payment_method,
+        trx_id: e.trx_id,
+        sender_phone: e.sender_phone,
+        status: e.status,
+        expires_at: e.expires_at,
+        created_at: e.created_at,
+        user_name: userName || ('User #' + e.user_id),
+        user_email: userEmail,
+        course_title: courseTitle || ('Course #' + e.course_id)
+      });
+    }
+
+    return json(out);
+  }
+
+  // ─── DEBUG RAW ENROLLMENTS ───
+  if (method === 'GET' && path === '/admin/raw-enrollments') {
+    const r = await db.prepare('SELECT * FROM enrollments').all();
+    return json({ count: r.results.length, rows: r.results });
   }
 
   if (method === 'PUT' && path.match(/^\/admin\/enrollments\/\d+\/verify$/)) {
@@ -428,6 +476,7 @@ async function handleAdmin(method, path, body, db, user) {
   return null;
 }
 
+// ─── MAIN ───
 export async function onRequest(context) {
   const { request, env } = context;
   const db = env.EGA_DB;
