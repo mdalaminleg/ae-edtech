@@ -16,180 +16,163 @@
       --radius:9px;--radius-lg:13px;--transition:.18s cubic-bezier(.4,0,.2,1)
     }
     body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);display:flex;height:100vh;overflow:hidden}
-    h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:400}
+    h2{font-family:'Cormorant Garamond',serif;font-weight:400}
 
-    .sidebar-admin{
-      width:240px;min-width:240px;background:var(--surface);border-right:1px solid var(--border);
-      display:flex;flex-direction:column;padding:1.5rem 0;z-index:50
+    .sidebar{
+      width:220px;min-width:220px;background:var(--surface);border-right:1px solid var(--border);
+      display:flex;flex-direction:column;padding:1.2rem 0
     }
-    .sidebar-admin .logo{padding:0 1.5rem 1.5rem;border-bottom:1px solid var(--border);margin-bottom:1rem;display:flex;align-items:center;gap:10px}
-    .sidebar-admin .logo img{height:28px}
-    .sidebar-admin .logo span{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--white)}
-    .sidebar-admin nav{flex:1;overflow-y:auto}
-    .sidebar-admin nav a{
-      display:flex;align-items:center;gap:0.7rem;padding:0.7rem 1.5rem;
-      color:var(--gray);text-decoration:none;font-size:0.85rem;
+    .sidebar .logo{padding:0 1.5rem 1.2rem;border-bottom:1px solid var(--border);margin-bottom:1rem;display:flex;align-items:center;gap:10px}
+    .sidebar .logo img{height:26px}
+    .sidebar .logo span{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--white)}
+    .sidebar nav{flex:1}
+    .sidebar nav a{
+      display:flex;align-items:center;gap:0.6rem;padding:0.6rem 1.5rem;
+      color:var(--gray);text-decoration:none;font-size:0.83rem;
       border-left:3px solid transparent;transition:all var(--transition);cursor:pointer
     }
-    .sidebar-admin nav a:hover{color:var(--white);background:var(--surface2)}
-    .sidebar-admin nav a.active{border-left-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
-    .sidebar-admin nav a svg{width:16px;height:16px;flex-shrink:0}
-    .sidebar-admin .sidebar-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);font-size:0.78rem;color:var(--gray)}
-    .sidebar-admin .sidebar-footer a{color:var(--red);text-decoration:none;cursor:pointer}
+    .sidebar nav a:hover{color:var(--white);background:var(--surface2)}
+    .sidebar nav a.active{border-left-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+    .sidebar nav a svg{width:15px;height:15px;flex-shrink:0}
+    .sidebar .sfooter{padding:1rem 1.5rem;border-top:1px solid var(--border);font-size:0.75rem;color:var(--gray)}
+    .sidebar .sfooter a{color:var(--red);cursor:pointer;text-decoration:none}
 
-    .main-area{flex:1;overflow-y:auto;padding:2rem}
-    .view{display:none}
-    .view.active{display:block}
+    .main{flex:1;overflow-y:auto;padding:2rem}
+    .view{display:none}.view.active{display:block}
 
-    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
-    .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem}
-    .stat-card .label{font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--gray)}
-    .stat-card .value{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--accent);margin-top:0.3rem}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0.8rem;margin-bottom:2rem}
+    .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem}
+    .stat-card .lbl{font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--gray)}
+    .stat-card .val{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);margin-top:0.2rem}
 
-    .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}
-    .section-header h2{font-size:1.5rem}
+    .section-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}
+    .section-h h2{font-size:1.5rem}
 
-    table{width:100%;border-collapse:collapse;font-size:0.85rem}
-    th{text-align:left;padding:0.8rem;color:var(--gray2);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;border-bottom:1px solid var(--border);white-space:nowrap}
-    td{padding:0.7rem 0.8rem;border-bottom:1px solid var(--border)}
+    table{width:100%;border-collapse:collapse;font-size:0.83rem}
+    th{text-align:left;padding:0.7rem 0.8rem;color:var(--gray2);font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;border-bottom:1px solid var(--border);white-space:nowrap}
+    td{padding:0.6rem 0.8rem;border-bottom:1px solid var(--border)}
     tr:hover td{background:var(--surface2)}
 
-    .badge{display:inline-block;padding:0.2rem 0.6rem;border-radius:20px;font-size:0.7rem;font-weight:500}
-    .badge-green{background:rgba(16,212,142,0.1);color:var(--green)}
-    .badge-orange{background:rgba(245,158,11,0.1);color:var(--orange)}
-    .badge-red{background:rgba(240,86,106,0.1);color:var(--red)}
-    .badge-accent{background:var(--accent-dim);color:var(--accent)}
+    .badge{display:inline-block;padding:0.18rem 0.55rem;border-radius:20px;font-size:0.66rem;font-weight:500}
+    .b-g{background:rgba(16,212,142,0.1);color:var(--green)}
+    .b-o{background:rgba(245,158,11,0.1);color:var(--orange)}
+    .b-r{background:rgba(240,86,106,0.1);color:var(--red)}
+    .b-a{background:var(--accent-dim);color:var(--accent)}
 
-    .btn-sm{
-      padding:0.35rem 0.8rem;font-size:0.72rem;font-weight:500;border-radius:var(--radius);
+    .btn{
+      padding:0.3rem 0.7rem;font-size:0.68rem;font-weight:500;border-radius:var(--radius);
       border:1px solid var(--border2);cursor:pointer;font-family:'DM Sans',sans-serif;
-      background:var(--surface2);color:var(--white);transition:all var(--transition);margin:0 2px;white-space:nowrap
+      background:var(--surface2);color:var(--white);transition:all var(--transition);margin:1px;white-space:nowrap
     }
-    .btn-sm:hover{border-color:var(--accent);color:var(--accent)}
-    .btn-sm.danger{color:var(--red);border-color:rgba(240,86,106,0.3)}
-    .btn-sm.danger:hover{background:rgba(240,86,106,0.1)}
-    .btn-sm.success{color:var(--green);border-color:rgba(16,212,142,0.3)}
-    .btn-sm.success:hover{background:rgba(16,212,142,0.1)}
-    .btn-sm.accent{color:var(--accent);border-color:rgba(201,168,76,0.3)}
-    .btn-sm.accent:hover{background:var(--accent-dim)}
+    .btn:hover{border-color:var(--accent);color:var(--accent)}
+    .btn-d{color:var(--red);border-color:rgba(240,86,106,0.3)}.btn-d:hover{background:rgba(240,86,106,0.1)}
+    .btn-s{color:var(--green);border-color:rgba(16,212,142,0.3)}.btn-s:hover{background:rgba(16,212,142,0.1)}
 
     .modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center}
     .modal-overlay.show{display:flex}
-    .modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;width:90%;max-width:550px;max-height:85vh;overflow-y:auto}
-    .modal h3{margin-bottom:1.5rem;font-family:'Cormorant Garamond',serif;font-size:1.3rem}
-    .modal h4{font-size:1rem;margin:1.2rem 0 0.8rem;color:var(--accent)}
-    .form-group{margin-bottom:1rem}
-    .form-group label{display:block;font-size:0.8rem;color:var(--gray2);margin-bottom:0.3rem}
-    .form-group input,.form-group select,.form-group textarea{
-      width:100%;padding:0.65rem 0.8rem;background:var(--surface2);border:1px solid var(--border);
-      border-radius:var(--radius);color:var(--white);font-size:0.85rem;font-family:'DM Sans',sans-serif;outline:none;resize:vertical
-    }
-    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--accent)}
-    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
-    .modal-actions{display:flex;gap:0.8rem;justify-content:flex-end;margin-top:1.5rem}
+    .modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.8rem;width:90%;max-width:500px;max-height:85vh;overflow-y:auto}
+    .modal h3{font-family:'Cormorant Garamond',serif;font-weight:400;margin-bottom:1.5rem;font-size:1.2rem}
+    .fg{margin-bottom:0.9rem}
+    .fg label{display:block;font-size:0.76rem;color:var(--gray2);margin-bottom:0.25rem}
+    .fg input,.fg select,.fg textarea{width:100%;padding:0.55rem 0.7rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--white);font-size:0.85rem;font-family:'DM Sans',sans-serif;outline:none}
+    .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent)}
+    .fg textarea{resize:vertical;min-height:60px}
+    .fr{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem}
+    .ma{display:flex;gap:0.7rem;justify-content:flex-end;margin-top:1.5rem}
 
-    .tree-section{border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-bottom:0.8rem}
-    .tree-section-title{font-weight:500;font-size:0.9rem;color:var(--accent);display:flex;justify-content:space-between;align-items:center}
-    .tree-paper{margin-left:1rem;padding:0.5rem 0;border-left:1px solid var(--border);padding-left:1rem;margin-bottom:0.5rem}
-    .tree-paper-title{font-weight:500;font-size:0.85rem;color:var(--gray2);display:flex;justify-content:space-between;align-items:center}
-    .tree-chapter{margin-left:2rem;padding:0.3rem 0;font-size:0.82rem;color:var(--gray);display:flex;justify-content:space-between;align-items:center}
-    .tree-lecture{margin-left:3rem;padding:0.2rem 0;font-size:0.78rem;color:var(--gray);display:flex;justify-content:space-between;align-items:center}
-    .tree-actions{display:flex;gap:4px}
-    .tree-actions button{background:none;border:none;color:var(--gray);cursor:pointer;padding:2px 4px;font-size:0.7rem;border-radius:3px;transition:all var(--transition)}
-    .tree-actions button:hover{color:var(--accent);background:var(--accent-dim)}
-    .tree-actions button.del:hover{color:var(--red);background:rgba(240,86,106,0.1)}
-
-    .resource-row{display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0;font-size:0.82rem}
-    .resource-row a{color:var(--accent);text-decoration:none;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .resource-row a:hover{text-decoration:underline}
-
-    .settings-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.5rem}
-    .settings-card h4{margin-bottom:1rem;font-size:1rem}
-    .checkbox-label{display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-size:0.85rem}
-    .checkbox-label input{accent-color:var(--accent)}
-
-    .toast{position:fixed;bottom:2rem;right:2rem;z-index:600;padding:1rem 1.5rem;border-radius:var(--radius);font-size:0.9rem;opacity:0;transform:translateX(100px);transition:all 0.3s ease;pointer-events:none}
+    .toast{position:fixed;bottom:2rem;right:2rem;z-index:600;padding:0.8rem 1.2rem;border-radius:var(--radius);font-size:0.85rem;opacity:0;transform:translateX(100px);transition:all 0.3s ease;pointer-events:none}
     .toast.show{opacity:1;transform:translateX(0)}
-    .toast-success{background:rgba(16,212,142,0.09);border:1px solid var(--green);color:var(--green)}
-    .toast-error{background:rgba(240,86,106,0.09);border:1px solid var(--red);color:var(--red)}
+    .toast-ok{background:rgba(16,212,142,0.09);border:1px solid var(--green);color:var(--green)}
+    .toast-err{background:rgba(240,86,106,0.09);border:1px solid var(--red);color:var(--red)}
+    .empty{text-align:center;padding:2.5rem;color:var(--gray)}
+
+    .settings-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.2rem}
+    .settings-card h4{font-size:0.95rem;margin-bottom:1rem}
+    .cb{display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-size:0.85rem}
+    .cb input{accent-color:var(--accent)}
 
     @media(max-width:768px){
       body{flex-direction:column}
-      .sidebar-admin{width:100%;min-width:100%;flex-direction:row;padding:0.5rem;overflow-x:auto}
-      .sidebar-admin .logo{display:none}
-      .sidebar-admin nav{display:flex;flex-direction:row}
-      .sidebar-admin nav a{padding:0.5rem 0.8rem;font-size:0.75rem;border-left:none;border-bottom:2px solid transparent;white-space:nowrap}
-      .sidebar-admin nav a.active{border-left:none;border-bottom-color:var(--accent)}
-      .sidebar-footer{display:none}
-      .stats-grid{grid-template-columns:repeat(2,1fr)}
-      .main-area{padding:1rem}
+      .sidebar{width:100%;min-width:100%;flex-direction:row;padding:0.4rem;overflow-x:auto;flex-shrink:0}
+      .sidebar .logo,.sidebar .sfooter{display:none}
+      .sidebar nav{display:flex;gap:0}
+      .sidebar nav a{padding:0.45rem 0.6rem;font-size:0.7rem;border-left:none;border-bottom:2px solid transparent;white-space:nowrap}
+      .sidebar nav a.active{border-left:none;border-bottom-color:var(--accent)}
+      .main{padding:1rem}
+      .stats{grid-template-columns:1fr 1fr}
     }
   </style>
 </head>
 <body>
 
-<aside class="sidebar-admin">
-  <div class="logo"><img src="/images/ega.png" height="28" alt="EGA"><span>EGA Admin</span></div>
+<aside class="sidebar">
+  <div class="logo"><img src="/images/ega.png" height="26" alt="EGA"><span>EGA Admin</span></div>
   <nav>
-    <a data-view="dashboard" class="active" onclick="showView('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg> Dashboard</a>
-    <a data-view="users" onclick="showView('users')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Users</a>
-    <a data-view="courses" onclick="showView('courses')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg> Courses</a>
-    <a data-view="enrollments" onclick="showView('enrollments')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg> Payments</a>
-    <a data-view="settings" onclick="showView('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg> Settings</a>
+    <a data-v="dashboard" class="active" onclick="showView('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+    <a data-v="users" onclick="showView('users')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Users</a>
+    <a data-v="courses" onclick="showView('courses')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>Courses</a>
+    <a data-v="payments" onclick="showView('payments')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>Payments</a>
+    <a data-v="settings" onclick="showView('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>Settings</a>
   </nav>
-  <div class="sidebar-footer"><span id="adminEmail"></span><br><a onclick="logout()">Sign Out</a></div>
+  <div class="sfooter"><span id="adminEmail"></span><br><a onclick="logout()">Sign Out</a></div>
 </aside>
 
-<main class="main-area">
+<main class="main">
+
   <div class="view active" id="view-dashboard">
-    <div class="section-header"><h2>Dashboard Overview</h2></div>
-    <div class="stats-grid">
-      <div class="stat-card"><div class="label">Total Users</div><div class="value" id="sUsers">-</div></div>
-      <div class="stat-card"><div class="label">Pending Approval</div><div class="value" id="sPending">-</div></div>
-      <div class="stat-card"><div class="label">Total Courses</div><div class="value" id="sCourses">-</div></div>
-      <div class="stat-card"><div class="label">Pending Payments</div><div class="value" id="sPayments">-</div></div>
+    <div class="section-h"><h2>Dashboard</h2></div>
+    <div class="stats">
+      <div class="stat-card"><div class="lbl">Users</div><div class="val" id="sUsers">-</div></div>
+      <div class="stat-card"><div class="lbl">Courses</div><div class="val" id="sCourses">-</div></div>
+      <div class="stat-card"><div class="lbl">Pending Payments</div><div class="val" id="sPendingPay">-</div></div>
+      <div class="stat-card"><div class="lbl">Active Members</div><div class="val" id="sActiveMem">-</div></div>
     </div>
   </div>
+
   <div class="view" id="view-users">
-    <div class="section-header"><h2>User Management</h2></div>
-    <div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead><tbody id="usersTable"></tbody></table></div>
+    <div class="section-h"><h2>Users</h2></div>
+    <div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead><tbody id="usersTbl"></tbody></table></div>
   </div>
+
   <div class="view" id="view-courses">
-    <div class="section-header"><h2>Course Management</h2><button class="btn-sm success" onclick="openCourseModal()">+ New Course</button></div>
-    <div style="overflow-x:auto"><table><thead><tr><th>Title</th><th>Subject</th><th>Price</th><th>Featured</th><th>Active</th><th>Actions</th></tr></thead><tbody id="coursesTable"></tbody></table></div>
+    <div class="section-h"><h2>Courses</h2><button class="btn btn-s" onclick="openCourseModal()">+ New Course</button></div>
+    <div style="overflow-x:auto"><table><thead><tr><th>Title</th><th>Subject</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead><tbody id="coursesTbl"></tbody></table></div>
   </div>
-  <div class="view" id="view-enrollments">
-    <div class="section-header"><h2>Payment Verification</h2></div>
-    <div style="overflow-x:auto"><table><thead><tr><th>User</th><th>Course</th><th>Method</th><th>TrxID</th><th>Phone</th><th>Status</th><th>Actions</th></tr></thead><tbody id="enrollmentsTable"></tbody></table></div>
+
+  <div class="view" id="view-payments">
+    <div class="section-h"><h2>Payment Verification</h2></div>
+    <div style="overflow-x:auto"><table><thead><tr><th>User</th><th>Course</th><th>Method</th><th>TrxID</th><th>Phone</th><th>Status</th><th>Actions</th></tr></thead><tbody id="paymentsTbl"></tbody></table></div>
   </div>
+
   <div class="view" id="view-settings">
-    <div class="section-header"><h2>Platform Settings</h2></div>
+    <div class="section-h"><h2>Settings</h2></div>
     <div class="settings-card">
       <h4>Payment Numbers</h4>
-      <div class="form-group"><label>bKash Number</label><input type="text" id="setBkash" placeholder="01XXXXXXXXX"></div>
-      <div class="form-group"><label>Nagad Number</label><input type="text" id="setNagad" placeholder="01XXXXXXXXX"></div>
-      <label class="checkbox-label"><input type="checkbox" id="setShowNumbers" checked> Show numbers on payment page</label>
-      <div style="margin-top:1rem"><button class="btn-sm success" onclick="saveSettings()">Save Settings</button></div>
+      <div class="fg"><label>bKash Number</label><input type="text" id="setBkash" placeholder="01XXXXXXXXX"></div>
+      <div class="fg"><label>Nagad Number</label><input type="text" id="setNagad" placeholder="01XXXXXXXXX"></div>
+      <label class="cb"><input type="checkbox" id="setShow"> Show numbers on payment page</label>
+      <div style="margin-top:1rem"><button class="btn btn-s" onclick="saveSettings()">Save</button></div>
     </div>
   </div>
+
 </main>
 
-<div class="modal-overlay" id="gModal"><div class="modal" id="gModalContent"></div></div>
+<div class="modal-overlay" id="gModal"><div class="modal" id="gModalInner"></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
-function esc(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
-function showToast(msg,type){var t=document.getElementById('toast');t.textContent=msg;t.className='toast toast-'+(type||'success')+' show';setTimeout(function(){t.classList.remove('show')},2500)}
-
-var token=localStorage.getItem('ega_token');
-var user=JSON.parse(localStorage.getItem('ega_user')||'null');
-if(!token||!user||user.role!=='admin'){window.location.href='/login.html'}
-document.getElementById('adminEmail').textContent=user.email;
+var T=localStorage.getItem('ega_token');
+var U=JSON.parse(localStorage.getItem('ega_user')||'null');
+if(!T||!U||U.role!=='admin'){window.location.href='/login.html'}
+document.getElementById('adminEmail').textContent=U.email;
 function logout(){localStorage.clear();window.location.href='/'}
+
+function esc(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
+function toast(msg,ok){var t=document.getElementById('toast');t.textContent=msg;t.className='toast toast-'+(ok===false?'err':'ok')+' show';setTimeout(function(){t.classList.remove('show')},2500)}
 
 async function api(method,path,body){
   try{
-    var opts={method:method,headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}};
+    var opts={method:method,headers:{'Content-Type':'application/json',Authorization:'Bearer '+T}};
     if(body)opts.body=JSON.stringify(body);
     var res=await fetch('/api'+path,opts);
     var data=await res.json();
@@ -200,81 +183,79 @@ async function api(method,path,body){
 function showView(id){
   document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active')});
   var ve=document.getElementById('view-'+id);if(ve)ve.classList.add('active');
-  document.querySelectorAll('.sidebar-admin nav a').forEach(function(a){a.classList.remove('active')});
-  var ne=document.querySelector('[data-view="'+id+'"]');if(ne)ne.classList.add('active');
+  document.querySelectorAll('.sidebar nav a').forEach(function(a){a.classList.remove('active')});
+  var ne=document.querySelector('[data-v="'+id+'"]');if(ne)ne.classList.add('active');
   if(id==='dashboard')loadStats();
   if(id==='users')loadUsers();
   if(id==='courses')loadCourses();
-  if(id==='enrollments')loadEnrollments();
+  if(id==='payments')loadPayments();
   if(id==='settings')loadSettings();
 }
 
-function openModal(title,bodyHtml,footerHtml){
-  document.getElementById('gModalContent').innerHTML='<h3>'+esc(title)+'</h3><div id="_alert"></div>'+bodyHtml+(footerHtml?'<div class="modal-actions">'+footerHtml+'</div>':'');
+function openModal(title,body,footer){
+  document.getElementById('gModalInner').innerHTML='<h3>'+esc(title)+'</h3><div id="_alert"></div>'+body+(footer?'<div class="ma">'+footer+'</div>':'');
   document.getElementById('gModal').classList.add('show');
 }
 function closeModal(){document.getElementById('gModal').classList.remove('show')}
-function showModalAlert(msg,type){
-  var a=document.getElementById('_alert');if(!a)return;
-  a.textContent=msg;a.style.cssText='padding:0.6rem 0.8rem;border-radius:var(--radius);font-size:0.8rem;margin-bottom:0.5rem;background:'+(type==='error'?'rgba(240,86,106,0.09)':'rgba(16,212,142,0.09)')+';border:1px solid var(--'+(type==='error'?'red':'green')+');color:var(--'+(type==='error'?'red':'green')+')';
-}
+function modalAlert(msg,err){var a=document.getElementById('_alert');if(a){a.textContent=msg;a.style.cssText='padding:0.5rem 0.7rem;border-radius:var(--radius);font-size:0.78rem;margin-bottom:0.5rem;background:'+(err?'rgba(240,86,106,0.09)':'rgba(16,212,142,0.09)')+';border:1px solid var(--'+(err?'red':'green')+');color:var(--'+(err?'red':'green')+')'}}
 document.getElementById('gModal').addEventListener('click',function(e){if(e.target===document.getElementById('gModal'))closeModal()});
 
 // ─── STATS ───
 async function loadStats(){
-  var res=await api('GET','/admin/stats');
-  if(res.ok){
-    document.getElementById('sUsers').textContent=res.data.users;
-    document.getElementById('sPending').textContent=res.data.pendingUsers;
-    document.getElementById('sCourses').textContent=res.data.courses;
-    document.getElementById('sPayments').textContent=res.data.pendingPayments;
+  var r=await api('GET','/admin/stats');
+  if(r.ok){
+    document.getElementById('sUsers').textContent=r.data.users||0;
+    document.getElementById('sCourses').textContent=r.data.courses||0;
+    document.getElementById('sPendingPay').textContent=r.data.pendingPayments||0;
+    document.getElementById('sActiveMem').textContent=r.data.activeMembers||0;
   }
 }
 
 // ─── USERS ───
 async function loadUsers(){
-  var res=await api('GET','/admin/users');
-  var tbody=document.getElementById('usersTable');
-  if(!res.ok){tbody.innerHTML='<tr><td colspan="6" style="color:var(--red)">Failed to load</td></tr>';return}
-  if(!res.data.length){tbody.innerHTML='<tr><td colspan="6" style="color:var(--gray);text-align:center;padding:2rem">No users yet.</td></tr>';return}
-  tbody.innerHTML=res.data.map(function(u){
-    return '<tr><td>'+esc(u.name)+'</td><td>'+esc(u.email)+'</td><td><span class="badge '+(u.role==='admin'?'badge-accent':'badge-green')+'">'+esc(u.role)+'</span></td><td><span class="badge '+(u.is_blocked?'badge-red':u.is_approved?'badge-green':'badge-orange')+'">'+(u.is_blocked?'Blocked':u.is_approved?'Approved':'Pending')+'</span></td><td>'+new Date(u.created_at).toLocaleDateString()+'</td><td>'+
-    (u.is_approved?'':'<button class="btn-sm success" onclick="approveUser('+u.id+')">Approve</button> ')+
-    '<button class="btn-sm '+(u.is_blocked?'success':'danger')+'" onclick="toggleBlock('+u.id+')">'+(u.is_blocked?'Unblock':'Block')+'</button> '+
-    '<button class="btn-sm" onclick="clearDevice('+u.id+')">Clear Device</button> '+
-    '<button class="btn-sm danger" onclick="deleteUser('+u.id+')">Delete</button></td></tr>';
+  var r=await api('GET','/admin/users');
+  var t=document.getElementById('usersTbl');
+  if(!r.ok){t.innerHTML='<tr><td colspan="6" class="empty">Failed to load</td></tr>';return}
+  if(!r.data.length){t.innerHTML='<tr><td colspan="6" class="empty">No users registered yet</td></tr>';return}
+  t.innerHTML=r.data.map(function(u){
+    var sb=u.is_blocked?'b-r':(u.is_approved?'b-g':'b-o');
+    var st=u.is_blocked?'Blocked':(u.is_approved?'Approved':'Pending');
+    return '<tr><td>'+esc(u.name)+'</td><td>'+esc(u.email)+'</td><td><span class="badge '+(u.role==='admin'?'b-a':'b-g')+'">'+esc(u.role)+'</span></td><td><span class="badge '+sb+'">'+st+'</span></td><td>'+new Date(u.created_at).toLocaleDateString()+'</td><td>'+
+    (!u.is_approved?'<button class="btn btn-s" onclick="approveUser('+u.id+')">Approve</button> ':'')+
+    '<button class="btn '+(u.is_blocked?'btn-s':'btn-d')+'" onclick="toggleBlock('+u.id+')">'+(u.is_blocked?'Unblock':'Block')+'</button> '+
+    '<button class="btn" onclick="clearDevice('+u.id+')">Clear</button> '+
+    '<button class="btn btn-d" onclick="deleteUser('+u.id+')">Delete</button></td></tr>';
   }).join('');
 }
-async function approveUser(id){await api('PUT','/admin/users/'+id+'/approve');loadUsers();showToast('User approved')}
-async function toggleBlock(id){await api('PUT','/admin/users/'+id+'/block');loadUsers();showToast('Toggled')}
-async function clearDevice(id){await api('PUT','/admin/users/'+id+'/clear-device');loadUsers();showToast('Device cleared')}
-async function deleteUser(id){if(confirm('Delete user?')){await api('DELETE','/admin/users/'+id);loadUsers();showToast('Deleted')}}
+async function approveUser(id){await api('PUT','/admin/users/'+id+'/approve');loadUsers();toast('Approved')}
+async function toggleBlock(id){await api('PUT','/admin/users/'+id+'/block');loadUsers();toast('Done')}
+async function clearDevice(id){await api('PUT','/admin/users/'+id+'/clear-device');loadUsers();toast('Cleared')}
+async function deleteUser(id){if(confirm('Delete this user?')){await api('DELETE','/admin/users/'+id);loadUsers();toast('Deleted')}}
 
 // ─── COURSES ───
 var allCourses=[];
 async function loadCourses(){
-  var res=await api('GET','/admin/courses');
-  var tbody=document.getElementById('coursesTable');
-  if(!res.ok){tbody.innerHTML='<tr><td colspan="6" style="color:var(--red)">Failed</td></tr>';return}
-  allCourses=res.data;
-  if(!allCourses.length){tbody.innerHTML='<tr><td colspan="6" style="color:var(--gray);text-align:center;padding:2rem">No courses. Create your first course.</td></tr>';return}
-  tbody.innerHTML=allCourses.map(function(c){
-    return '<tr><td>'+esc(c.title)+'</td><td>'+esc(c.subject_area||'-')+'</td><td>'+(c.price===0?'Free':'৳'+c.price)+'</td><td><span class="badge '+(c.is_featured?'badge-accent':'badge-green')+'">'+(c.is_featured?'Featured':'Normal')+'</span></td><td><span class="badge '+(c.is_active?'badge-green':'badge-red')+'">'+(c.is_active?'Active':'Hidden')+'</span></td><td>'+
-    '<button class="btn-sm accent" onclick="openTreeEditor('+c.id+')">Tree</button> '+
-    '<button class="btn-sm" onclick="editCourse('+c.id+')">Edit</button> '+
-    '<button class="btn-sm danger" onclick="deleteCourse('+c.id+')">Delete</button></td></tr>';
+  var r=await api('GET','/admin/courses');
+  var t=document.getElementById('coursesTbl');
+  if(!r.ok){t.innerHTML='<tr><td colspan="5" class="empty">Failed to load</td></tr>';return}
+  allCourses=r.data;
+  if(!allCourses.length){t.innerHTML='<tr><td colspan="5" class="empty">No courses yet. Create one.</td></tr>';return}
+  t.innerHTML=allCourses.map(function(c){
+    return '<tr><td>'+esc(c.title)+'</td><td>'+esc(c.subject_area||'-')+'</td><td>'+(c.price===0?'Free':'৳'+c.price)+'</td><td><span class="badge '+(c.is_active?'b-g':'b-r')+'">'+(c.is_active?'Active':'Hidden')+'</span></td><td>'+
+    '<button class="btn" onclick="editCourse('+c.id+')">Edit</button> '+
+    '<button class="btn btn-d" onclick="deleteCourse('+c.id+')">Delete</button></td></tr>';
   }).join('');
 }
 
 function openCourseModal(course){
-  var isEdit=!!course;
-  openModal(isEdit?'Edit Course':'New Course',
-    '<div class="form-group"><label>Title *</label><input type="text" id="cTitle" value="'+esc(course?.title||'')+'"></div>'+
-    '<div class="form-group"><label>Description</label><textarea id="cDesc" rows="3">'+esc(course?.description||'')+'</textarea></div>'+
-    '<div class="form-row"><div class="form-group"><label>Subject Area</label><input type="text" id="cSubject" value="'+esc(course?.subject_area||'')+'" placeholder="Physics"></div><div class="form-group"><label>Difficulty</label><select id="cDifficulty"><option value="All Levels">All Levels</option><option value="Beginner" '+(course?.difficulty==='Beginner'?'selected':'')+'>Beginner</option><option value="Intermediate" '+(course?.difficulty==='Intermediate'?'selected':'')+'>Intermediate</option><option value="Advanced" '+(course?.difficulty==='Advanced'?'selected':'')+'>Advanced</option></select></div></div>'+
-    '<div class="form-row"><div class="form-group"><label>Thumbnail URL</label><input type="text" id="cThumb" value="'+esc(course?.thumbnail_url||'')+'" placeholder="https://i.imgbb.com/..."></div><div class="form-group"><label>Badge</label><input type="text" id="cBadge" value="'+esc(course?.badge||'')+'" placeholder="Bestseller"></div></div>'+
-    '<div class="form-row"><div class="form-group"><label>Price (0=free)</label><input type="number" id="cPrice" value="'+(course?.price||0)+'" step="1"></div><div class="form-group"><label>&nbsp;</label><label class="checkbox-label"><input type="checkbox" id="cFeatured" '+(course?.is_featured?'checked':'')+'> Featured</label></div></div>',
-    '<button class="btn-sm" onclick="closeModal()">Cancel</button><button class="btn-sm success" onclick="saveCourse('+(course?.id||0)+')">'+(isEdit?'Update':'Create')+'</button>'
+  var ed=!!course;
+  openModal(ed?'Edit Course':'New Course',
+    '<div class="fg"><label>Title *</label><input type="text" id="cTitle" value="'+esc(course?.title||'')+'"></div>'+
+    '<div class="fg"><label>Description</label><textarea id="cDesc">'+esc(course?.description||'')+'</textarea></div>'+
+    '<div class="fr"><div class="fg"><label>Subject</label><input type="text" id="cSubj" value="'+esc(course?.subject_area||'')+'"></div><div class="fg"><label>Difficulty</label><select id="cDiff"><option value="All Levels">All Levels</option><option value="Beginner" '+(course?.difficulty==='Beginner'?'selected':'')+'>Beginner</option><option value="Intermediate" '+(course?.difficulty==='Intermediate'?'selected':'')+'>Intermediate</option><option value="Advanced" '+(course?.difficulty==='Advanced'?'selected':'')+'>Advanced</option></select></div></div>'+
+    '<div class="fr"><div class="fg"><label>Thumbnail URL</label><input type="text" id="cThumb" value="'+esc(course?.thumbnail_url||'')+'"></div><div class="fg"><label>Badge</label><input type="text" id="cBadge" value="'+esc(course?.badge||'')+'"></div></div>'+
+    '<div class="fr"><div class="fg"><label>Price (0=free)</label><input type="number" id="cPrice" value="'+(course?.price||0)+'" step="1"></div><div class="fg"><label>Featured</label><select id="cFeat"><option value="0">No</option><option value="1" '+(course?.is_featured?'selected':'')+'>Yes</option></select></div></div>',
+    '<button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-s" onclick="saveCourse('+(course?.id||0)+')">'+(ed?'Update':'Create')+'</button>'
   );
 }
 
@@ -282,56 +263,49 @@ async function saveCourse(id){
   var data={
     title:document.getElementById('cTitle').value.trim(),
     description:document.getElementById('cDesc').value.trim(),
-    subject_area:document.getElementById('cSubject').value.trim(),
-    difficulty:document.getElementById('cDifficulty').value,
+    subject_area:document.getElementById('cSubj').value.trim(),
+    difficulty:document.getElementById('cDiff').value,
     thumbnail_url:document.getElementById('cThumb').value.trim(),
     badge:document.getElementById('cBadge').value.trim(),
     price:parseFloat(document.getElementById('cPrice').value)||0,
-    is_featured:document.getElementById('cFeatured').checked?1:0
+    is_featured:parseInt(document.getElementById('cFeat').value)
   };
-  if(!data.title){showModalAlert('Title required','error');return}
-  if(id){
-    var existing=allCourses.find(function(c){return c.id===id});
-    data.tree=existing?existing.tree:'[]';
-    data.resources=existing?existing.resources:'[]';
-  }
-  var res=id?await api('PUT','/admin/courses/'+id,data):await api('POST','/admin/courses',data);
-  if(res.ok){closeModal();loadCourses();showToast(id?'Updated':'Created')}
-  else{showModalAlert(res.data.error||'Failed','error')}
+  if(!data.title){modalAlert('Title is required',true);return}
+  if(id){var ex=allCourses.find(function(c){return c.id===id});data.tree=ex?ex.tree:'[]';data.resources=ex?ex.resources:'[]'}
+  var r=id?await api('PUT','/admin/courses/'+id,data):await api('POST','/admin/courses',data);
+  if(r.ok){closeModal();loadCourses();toast(id?'Updated':'Created')}else{modalAlert(r.data.error||'Failed',true)}
 }
-async function editCourse(id){var res=await api('GET','/courses/'+id);if(res.ok)openCourseModal(res.data)}
-async function deleteCourse(id){if(confirm('Delete course and all enrollments?')){await api('DELETE','/admin/courses/'+id);loadCourses();showToast('Deleted')}}
+async function editCourse(id){var r=await api('GET','/courses/'+id);if(r.ok)openCourseModal(r.data)}
+async function deleteCourse(id){if(confirm('Delete this course?')){await api('DELETE','/admin/courses/'+id);loadCourses();toast('Deleted')}}
 
-// ─── ENROLLMENTS ───
-async function loadEnrollments(){
-  var tbody=document.getElementById('enrollmentsTable');
-  tbody.innerHTML='<tr><td colspan="7" style="color:var(--gray);text-align:center;padding:2rem">Loading payments...</td></tr>';
-  try{
-    var res=await api('GET','/admin/enrollments');
-    if(!res.ok){tbody.innerHTML='<tr><td colspan="7" style="color:var(--red);text-align:center;padding:2rem">Error: '+esc(res.data?.error||'Server error')+'</td></tr>';return}
-    var list=res.data;
-    if(!list||!list.length){tbody.innerHTML='<tr><td colspan="7" style="color:var(--gray);text-align:center;padding:2rem">No payment records yet. When students submit payments, they appear here.</td></tr>';return}
-    tbody.innerHTML=list.map(function(e){
-      var sc='badge-orange';if(e.status==='approved')sc='badge-green';if(e.status==='spam'||e.status==='rejected')sc='badge-red';
-      var actions='';
-      if(e.status==='pending'){actions+='<button class="btn-sm success" onclick="verifyPayment('+e.id+')">Verify</button> <button class="btn-sm danger" onclick="spamPayment('+e.id+')">Spam</button> ';}
-      actions+='<button class="btn-sm danger" onclick="deleteEnrollment('+e.id+')">Delete</button>';
-      return '<tr><td>'+esc(e.user_name||'Unknown')+'</td><td>'+esc(e.course_title||'Deleted')+'</td><td>'+esc(e.payment_method||'-')+'</td><td style="font-family:DM Mono,monospace;font-size:0.8rem">'+esc(e.trx_id||'-')+'</td><td>'+esc(e.sender_phone||'-')+'</td><td><span class="badge '+sc+'">'+esc(e.status)+'</span></td><td>'+actions+'</td></tr>';
-    }).join('');
-  }catch(e){tbody.innerHTML='<tr><td colspan="7" style="color:var(--red);text-align:center;padding:2rem">Network error. <button onclick="loadEnrollments()" style="color:var(--accent);background:none;border:none;cursor:pointer;text-decoration:underline;font-family:DM Sans,sans-serif">Retry</button></td></tr>'}
+// ─── PAYMENTS ───
+async function loadPayments(){
+  var t=document.getElementById('paymentsTbl');
+  t.innerHTML='<tr><td colspan="7" class="empty">Loading...</td></tr>';
+  var r=await api('GET','/admin/enrollments');
+  if(!r.ok){t.innerHTML='<tr><td colspan="7" class="empty">Error: '+esc(r.data?.error||'Failed')+'</td></tr>';return}
+  var list=r.data;
+  if(!list||!list.length){t.innerHTML='<tr><td colspan="7" class="empty">No payments yet. When students submit payments, they appear here.</td></tr>';return}
+  t.innerHTML=list.map(function(e){
+    var sc='b-o';if(e.status==='approved')sc='b-g';if(e.status==='spam'||e.status==='rejected')sc='b-r';
+    var acts='';
+    if(e.status==='pending'){acts+='<button class="btn btn-s" onclick="verifyPay('+e.id+')">Verify</button> <button class="btn btn-d" onclick="spamPay('+e.id+')">Spam</button> ';}
+    acts+='<button class="btn btn-d" onclick="delPay('+e.id+')">Delete</button>';
+    return '<tr><td>'+esc(e.user_name||'?')+'</td><td>'+esc(e.course_title||'?')+'</td><td>'+esc(e.payment_method||'-')+'</td><td style="font-family:DM Mono,monospace;font-size:0.78rem">'+esc(e.trx_id||'-')+'</td><td>'+esc(e.sender_phone||'-')+'</td><td><span class="badge '+sc+'">'+esc(e.status)+'</span></td><td>'+acts+'</td></tr>';
+  }).join('');
 }
-async function verifyPayment(id){if(!confirm('Verify and grant 365-day access?'))return;var res=await api('PUT','/admin/enrollments/'+id+'/verify');if(res.ok){showToast('Verified');loadEnrollments()}else{showToast(res.data?.error||'Failed','error')}}
-async function spamPayment(id){if(!confirm('Mark as spam?'))return;var res=await api('PUT','/admin/enrollments/'+id+'/spam');if(res.ok){showToast('Marked spam');loadEnrollments()}else{showToast(res.data?.error||'Failed','error')}}
-async function deleteEnrollment(id){if(!confirm('Delete?'))return;var res=await api('DELETE','/admin/enrollments/'+id);if(res.ok){showToast('Deleted');loadEnrollments()}else{showToast(res.data?.error||'Failed','error')}}
+async function verifyPay(id){if(!confirm('Verify and grant 365-day access?'))return;var r=await api('PUT','/admin/enrollments/'+id+'/verify');if(r.ok){toast('Verified');loadPayments()}else{toast(r.data?.error||'Failed',false)}}
+async function spamPay(id){if(!confirm('Mark as spam?'))return;var r=await api('PUT','/admin/enrollments/'+id+'/spam');if(r.ok){toast('Marked spam');loadPayments()}else{toast(r.data?.error||'Failed',false)}}
+async function delPay(id){if(!confirm('Delete this record?'))return;var r=await api('DELETE','/admin/enrollments/'+id);if(r.ok){toast('Deleted');loadPayments()}else{toast(r.data?.error||'Failed',false)}}
 
 // ─── SETTINGS ───
 async function loadSettings(){
-  var res=await api('GET','/admin/meta');
-  if(res.ok){document.getElementById('setBkash').value=res.data.bkash_number||'';document.getElementById('setNagad').value=res.data.nagad_number||'';document.getElementById('setShowNumbers').checked=res.data.show_numbers!=='false'}
+  var r=await api('GET','/admin/meta');
+  if(r.ok){document.getElementById('setBkash').value=r.data.bkash_number||'';document.getElementById('setNagad').value=r.data.nagad_number||'';document.getElementById('setShow').checked=r.data.show_numbers!=='false'}
 }
 async function saveSettings(){
-  var res=await api('PUT','/admin/meta',{bkash_number:document.getElementById('setBkash').value.trim(),nagad_number:document.getElementById('setNagad').value.trim(),show_numbers:document.getElementById('setShowNumbers').checked?'true':'false'});
-  if(res.ok)showToast('Saved');else showToast('Failed','error')
+  var r=await api('PUT','/admin/meta',{bkash_number:document.getElementById('setBkash').value.trim(),nagad_number:document.getElementById('setNagad').value.trim(),show_numbers:document.getElementById('setShow').checked?'true':'false'});
+  if(r.ok)toast('Saved');else toast('Failed',false)
 }
 
 loadStats();
