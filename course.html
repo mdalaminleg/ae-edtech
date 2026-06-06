@@ -4,190 +4,131 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Course Details — Excellence Gateway Academy</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
-      --bg:#05080f;--surface:#0b0f1a;--surface2:#111827;--surface3:#161e2e;
-      --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.11);
-      --accent:#C9A84C;--accent2:#b8942f;--accent-dim:rgba(201,168,76,0.08);
-      --white:#f0f4f8;--gray:#7a8899;--gray2:#a0adb8;
-      --red:#f0566a;--green:#10d48e;--orange:#f59e0b;
-      --radius:9px;--radius-lg:13px;
-      --transition:.18s cubic-bezier(.4,0,.2,1)
+      --swatch--ivory-medium:#F5F3EE;--swatch--ivory-light:#FAF9F5;
+      --swatch--slate-dark:#141413;--swatch--slate-light:#3A3936;
+      --swatch--cloud-medium:#8E8C86;--swatch--oat:#F0ECE2;
+      --swatch--rust:#CC7853;--swatch--rust-hover:#B86A47;
+      --_theme---background:var(--swatch--ivory-medium);--_theme---text:var(--swatch--slate-dark);
+      --_theme---text-secondary:var(--swatch--cloud-medium);--_theme---border:rgba(20,20,19,0.12);
+      --_theme---border-strong:rgba(20,20,19,0.22);--_theme---surface:var(--swatch--ivory-light);
+      --_theme---accent:var(--swatch--rust);--_theme---accent-hover:var(--swatch--rust-hover);
+      --font-display:'Instrument Serif',Georgia,serif;--font-body:'Instrument Sans',system-ui,sans-serif;
+      --font-mono:'JetBrains Mono',monospace;--radius-s:4px;--radius-m:8px;--radius-l:12px;
+      --ease-main:cubic-bezier(.4,0,.2,1);--dur-fast:150ms;--dur-main:250ms;
+      --site--margin:clamp(1.5rem,4vw,5rem);--nav--height:4.25rem;
     }
-    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);min-height:100vh}
-    h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:400}
-    .header{
-      position:sticky;top:0;z-index:100;
-      background:rgba(5,8,15,0.92);backdrop-filter:blur(12px);
-      border-bottom:1px solid var(--border);
-      display:flex;align-items:center;justify-content:space-between;
-      padding:0 5%;height:64px
-    }
-    .header-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-    .header-logo img{height:32px}
-    .header-logo span{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--white)}
-    .header-logo span em{font-style:italic;color:var(--accent)}
-    .header-nav{display:flex;gap:1.5rem;list-style:none;align-items:center}
-    .header-nav a{font-size:0.85rem;color:var(--gray);text-decoration:none;transition:color var(--transition)}
-    .header-nav a:hover{color:var(--white)}
-    .btn-nav{background:var(--accent);color:#05080f!important;padding:0.5rem 1.2rem;border-radius:var(--radius);font-weight:500;font-size:0.82rem!important}
-    .btn-nav:hover{background:var(--accent2)!important}
-    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:5px}
-    .hamburger span{width:24px;height:2px;background:var(--white);border-radius:1px}
-    main{padding:3rem 5%;max-width:1100px;margin:0 auto}
-    .back-link{display:inline-flex;align-items:center;gap:0.5rem;color:var(--gray);text-decoration:none;font-size:0.85rem;margin-bottom:2rem}
-    .back-link:hover{color:var(--white)}
-    .course-header{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-bottom:3rem}
-    .course-thumb{
-      background:var(--surface);border:1px solid var(--border);
-      border-radius:var(--radius-lg);min-height:300px;
-      display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden
-    }
-    .course-thumb img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
-    .course-thumb svg{width:64px;height:64px;color:var(--accent)}
-    .course-info h1{font-size:2.2rem;line-height:1.2;margin-bottom:1rem}
-    .course-badge{display:inline-block;background:var(--accent-dim);color:var(--accent);font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.3rem 0.8rem;border-radius:20px;margin-bottom:1rem}
-    .course-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem;font-size:0.85rem;color:var(--gray)}
-    .course-meta span{display:flex;align-items:center;gap:0.4rem}
-    .course-meta svg{width:16px;height:16px;color:var(--accent)}
-    .course-desc{font-size:0.95rem;color:var(--gray);line-height:1.7;margin-bottom:2rem}
-    .course-price-block{display:flex;align-items:center;gap:1.5rem;padding:1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:2rem}
-    .course-price{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600}
-    .course-price.free{color:var(--green)}
-    .btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.85rem 2rem;font-size:0.85rem;font-weight:500;border-radius:var(--radius);border:none;cursor:pointer;text-decoration:none;font-family:'DM Sans',sans-serif;transition:all var(--transition)}
-    .btn-primary{background:var(--accent);color:#05080f}
-    .btn-primary:hover{background:var(--accent2);transform:translateY(-2px)}
-    .btn-outline{background:transparent;color:var(--white);border:1px solid var(--border2)}
-    .btn-outline:hover{border-color:var(--accent);color:var(--accent)}
-    .curriculum{margin-top:3rem;padding-top:3rem;border-top:1px solid var(--border)}
-    .curriculum h2{margin-bottom:2rem;font-size:1.8rem}
-    .tree-subject{margin-bottom:2rem}
-    .tree-subject-title{font-size:1.2rem;font-weight:500;color:var(--accent);margin-bottom:1rem}
-    .tree-paper{margin-bottom:1rem;padding-left:1rem;border-left:1px solid var(--border)}
-    .tree-paper-title{font-size:1rem;font-weight:500;margin-bottom:0.5rem;color:var(--gray2)}
-    .tree-chapter{margin-bottom:0.5rem;padding-left:1.5rem}
-    .tree-chapter-title{font-size:0.9rem;color:var(--gray);display:flex;align-items:center;gap:0.5rem}
-    .tree-chapter-title svg{width:14px;height:14px;color:var(--accent)}
-    .skeleton{background:linear-gradient(90deg,var(--surface2)25%,var(--surface3)50%,var(--surface2)75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:var(--radius)}
-    .toast{position:fixed;bottom:2rem;right:2rem;z-index:500;padding:1rem 1.5rem;border-radius:var(--radius);font-size:0.9rem;opacity:0;transform:translateX(100px);transition:all 0.3s ease;pointer-events:none}
-    .toast.show{opacity:1;transform:translateX(0)}
-    .toast-success{background:rgba(16,212,142,0.09);border:1px solid var(--green);color:var(--green)}
-    .toast-error{background:rgba(240,86,106,0.09);border:1px solid var(--red);color:var(--red)}
-    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-    @media(max-width:768px){
-      .course-header{grid-template-columns:1fr;gap:1.5rem}
-      .header-nav{display:none}.hamburger{display:flex}
-    }
+    body{font-family:var(--font-body);background:var(--_theme---background);color:var(--_theme---text);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+    .nav_wrap{position:sticky;top:0;z-index:100;height:var(--nav--height);background:rgba(245,243,238,0.94);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--_theme---border);display:flex;align-items:center}
+    .nav_contain{width:100%;max-width:1440px;margin:0 auto;padding:0 var(--site--margin);display:flex;align-items:center;justify-content:space-between;gap:2rem}
+    .nav_logo_wrap{display:flex;align-items:center;gap:0.65rem;text-decoration:none;flex-shrink:0}
+    .nav_logo_wrap img{height:28px}
+    .nav_logo_name{font-family:var(--font-display);font-size:1.1rem;font-weight:400;color:var(--_theme---text)}
+    .nav_actions{display:flex;align-items:center;gap:0.5rem}
+    .btn_main_wrap{display:inline-flex;align-items:center;border-radius:var(--radius-s);transition:all var(--dur-fast) var(--ease-main);cursor:pointer;text-decoration:none}
+    .btn_main_wrap.is-nav{background:var(--swatch--slate-dark);color:var(--swatch--ivory-light);border:1px solid var(--swatch--slate-dark)}
+    .btn_main_wrap.is-nav:hover{background:var(--swatch--slate-light)}
+    .btn_main_wrap[data-style="tertiary"]{background:transparent;color:var(--_theme---text);border:1px solid var(--_theme---border-strong)}
+    .btn_main_wrap[data-style="tertiary"]:hover{border-color:var(--_theme---text)}
+    .btn_main_wrap.is-rust{background:var(--_theme---accent);color:#fff;border:1px solid var(--_theme---accent)}
+    .btn_main_wrap.is-rust:hover{background:var(--_theme---accent-hover);transform:translateY(-1px)}
+    .btn_main_text{font-family:var(--font-body);font-size:0.875rem;font-weight:500;letter-spacing:0.01em;padding:0.6rem 1.25rem;line-height:1;white-space:nowrap}
+    .main{flex:1;padding:2rem var(--site--margin);max-width:1100px;margin:0 auto;width:100%}
+    .back-link{display:inline-flex;align-items:center;gap:0.4rem;color:var(--_theme---text-secondary);font-size:0.85rem;margin-bottom:2rem;transition:color var(--dur-fast)}.back-link:hover{color:var(--_theme---text)}
+    .course-layout{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
+    .course-image{background:var(--_theme---surface);border:1px solid var(--_theme---border);border-radius:var(--radius-l);min-height:300px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .course-image img{width:100%;height:100%;object-fit:cover}
+    .course-info h1{font-family:var(--font-display);font-size:2.2rem;line-height:1.15;margin-bottom:1rem}
+    .badge{display:inline-block;font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;padding:0.25rem 0.6rem;border-radius:4px;background:rgba(204,120,83,0.1);color:var(--_theme---accent);margin-bottom:1rem}
+    .meta-row{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem;font-size:0.85rem;color:var(--_theme---text-secondary)}
+    .meta-row span{display:flex;align-items:center;gap:0.3rem}
+    .desc{font-size:0.95rem;color:var(--_theme---text-secondary);line-height:1.7;margin-bottom:2rem}
+    .price-block{display:flex;align-items:center;gap:1.5rem;padding:1.5rem;background:var(--_theme---surface);border:1px solid var(--_theme---border);border-radius:var(--radius-m);margin-bottom:2rem}
+    .price{font-family:var(--font-display);font-size:2rem;font-weight:300}.price.free{color:#16a34a}
+    .curriculum{margin-top:3rem;padding-top:3rem;border-top:1px solid var(--_theme---border)}
+    .curriculum h2{font-family:var(--font-display);font-size:1.6rem;margin-bottom:2rem}
+    .tree-item{margin-bottom:1.5rem}.tree-subject{font-weight:500;color:var(--_theme---accent);margin-bottom:0.5rem}
+    .tree-paper{margin-left:1rem;font-weight:500;color:var(--_theme---text);margin-bottom:0.3rem}
+    .tree-chapter{margin-left:2rem;font-size:0.9rem;color:var(--_theme---text-secondary);display:flex;align-items:center;gap:0.5rem}
+    footer{background:var(--swatch--slate-dark);color:rgba(250,249,245,0.6);padding:3rem var(--site--margin) 2rem;margin-top:auto}
+    .footer-inner{max-width:1300px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+    .footer-logo{display:flex;align-items:center;gap:0.5rem}.footer-logo img{height:24px}
+    .footer-logo span{font-family:var(--font-display);font-size:1rem;color:rgba(250,249,245,0.7)}
+    .footer-text{font-size:0.78rem;color:rgba(250,249,245,0.4)}
+    @media(max-width:768px){.course-layout{grid-template-columns:1fr;gap:1.5rem}}
   </style>
 </head>
 <body>
-
-<header class="header">
-  <a href="/" class="header-logo">
-    <img src="/images/ega.png" height="32" alt="EGA">
-    <span>Excellence <em>Gateway</em></span>
-  </a>
-  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
-  <ul class="header-nav" id="headerNav"></ul>
-</header>
-
-<main>
-  <a href="/explore.html" class="back-link">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-    Back to Courses
-  </a>
-  <div id="courseContent">
-    <div class="course-header">
-      <div class="course-thumb skeleton" style="min-height:300px"></div>
-      <div>
-        <div class="skeleton" style="height:32px;width:60%;margin-bottom:1rem"></div>
-        <div class="skeleton" style="height:16px;width:40%;margin-bottom:1.5rem"></div>
-        <div class="skeleton" style="height:80px;width:100%;margin-bottom:2rem"></div>
-        <div class="skeleton" style="height:80px;width:100%"></div>
-      </div>
-    </div>
+<nav class="nav_wrap"><div class="nav_contain">
+  <a href="/" class="nav_logo_wrap"><img src="/images/ega.png" height="28" alt="EGA"><span class="nav_logo_name">Excellence Gateway</span></a>
+  <div class="nav_actions" id="navActions">
+    <a href="/login.html" class="btn_main_wrap" data-style="tertiary"><span class="btn_main_text">Log in</span></a>
+    <a href="/signup.html" class="btn_main_wrap is-nav"><span class="btn_main_text">Get Started</span></a>
   </div>
+</div></nav>
+
+<main class="main">
+  <a href="/explore.html" class="back-link">&larr; Back to Courses</a>
+  <div id="content"><div style="text-align:center;padding:4rem;color:var(--_theme---text-secondary)">Loading course...</div></div>
 </main>
 
-<div class="toast" id="toast"></div>
+<footer>
+  <div class="footer-inner">
+    <a href="/" class="footer-logo"><img src="/images/ega.png" height="24" alt="EGA"><span>Excellence Gateway</span></a>
+    <p class="footer-text">&copy; 2026 Excellence Gateway Academy. All rights reserved.</p>
+  </div>
+</footer>
 
 <script>
-function esc(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
-function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast toast-'+type+' show';setTimeout(()=>t.classList.remove('show'),3500)}
-
-const token=localStorage.getItem('ega_token');
-const user=JSON.parse(localStorage.getItem('ega_user')||'null');
-const params=new URLSearchParams(window.location.search);
-const courseId=params.get('id');
-
+function esc(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
+var token=localStorage.getItem('ega_token');
+var user=JSON.parse(localStorage.getItem('ega_user')||'null');
 function updateNav(){
-  const nav=document.getElementById('headerNav');
-  if(user){nav.innerHTML='<li><a href="/">Home</a></li><li><a href="/explore.html">Explore</a></li><li><a href="/dashboard.html">Dashboard</a></li><li><a href="#" onclick="logout()" style="color:var(--red)">Sign Out</a></li>'}
-  else{nav.innerHTML='<li><a href="/">Home</a></li><li><a href="/explore.html">Explore</a></li><li><a href="/login.html" class="btn-nav">Get Started</a></li>'}
+  if(!user||!token)return;
+  var init=(user.name||'U').charAt(0).toUpperCase();
+  var isAdmin=user.role==='admin';
+  document.getElementById('navActions').innerHTML=
+    (isAdmin?'<a href="/admin.html" class="btn_main_wrap" data-style="tertiary"><span class="btn_main_text">Admin</span></a>':'')+
+    '<a href="/dashboard.html" class="btn_main_wrap" data-style="tertiary"><span class="btn_main_text">Dashboard</span></a>'+
+    '<button class="btn_main_wrap is-nav" onclick="logout()"><span class="btn_main_text">'+esc(init)+' &middot; Sign Out</span></button>';
 }
 function logout(){localStorage.removeItem('ega_token');localStorage.removeItem('ega_user');window.location.href='/'}
 
-document.getElementById('hamburger').addEventListener('click',()=>{history.back()});
+var params=new URLSearchParams(window.location.search);
+var courseId=params.get('id');
 
 async function loadCourse(){
   if(!courseId){window.location.href='/explore.html';return}
   try{
-    const res=await fetch('/api/courses/'+courseId);
+    var res=await fetch('/api/courses/'+courseId);
     if(!res.ok)throw new Error('Not found');
-    const c=await res.json();
-    const tree=typeof c.tree==='string'?JSON.parse(c.tree):c.tree;
-    const lectureCount=tree.reduce((sum,s)=>sum+s.papers.reduce((s2,p)=>s2+p.chapters.reduce((s3,ch)=>s3+ch.lectures.length,0),0),0);
-    document.getElementById('courseContent').innerHTML=`
-      <div class="course-header">
-        <div class="course-thumb">
-          ${c.thumbnail_url?`<img src="${esc(c.thumbnail_url)}" alt="${esc(c.title)}">`:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>`}
-        </div>
-        <div class="course-info">
-          ${c.badge?`<span class="course-badge">${esc(c.badge)}</span>`:''}
-          <h1>${esc(c.title)}</h1>
-          <div class="course-meta">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>${esc(c.subject_area)}</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${esc(c.difficulty)}</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>${lectureCount} lectures</span>
-          </div>
-          <p class="course-desc">${esc(c.description)}</p>
-          <div class="course-price-block">
-            <span class="course-price ${c.price===0?'free':''}">${c.price===0?'Free':'৳'+c.price}</span>
-            ${c.price===0
-              ?(user?`<a href="/learn.html?id=${c.id}" class="btn btn-primary">Start Learning</a>`:`<a href="/login.html" class="btn btn-primary">Sign In to Start</a>`)
-              :(user?`<a href="/payment.html?id=${c.id}" class="btn btn-primary">Enroll Now</a>`:`<a href="/login.html" class="btn btn-primary">Sign In to Enroll</a>`)
-            }
-          </div>
-        </div>
-      </div>
-      ${tree.length?`
-      <div class="curriculum">
-        <h2>Curriculum</h2>
-        ${tree.map(s=>`
-          <div class="tree-subject">
-            <div class="tree-subject-title">${esc(s.name)}</div>
-            ${s.papers.map(p=>`
-              <div class="tree-paper">
-                <div class="tree-paper-title">${esc(p.name)}</div>
-                ${p.chapters.map(ch=>`
-                  <div class="tree-chapter">
-                    <div class="tree-chapter-title">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-                      ${esc(ch.title)}
-                      <span style="font-size:0.75rem;color:var(--gray)">(${ch.lectures.length} lectures)</span>
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-            `).join('')}
-          </div>
-        `).join('')}
-      </div>`:''}
-    `;
-  }catch{
-    document.getElementById('courseContent').innerHTML='<p style="color:var(--red);text-align:center;padding:4rem">Course not found. <a href="/explore.html" style="color:var(--accent)">Browse courses</a></p>';
+    var c=await res.json();
+    var tree=typeof c.tree==='string'?JSON.parse(c.tree):(c.tree||[]);
+    var lc=0;tree.forEach(function(s){(s.papers||[]).forEach(function(p){(p.chapters||[]).forEach(function(ch){lc+=(ch.lectures||[]).length})})});
+    document.getElementById('content').innerHTML=
+      '<div class="course-layout">'+
+        '<div class="course-image">'+(c.thumbnail_url?'<img src="'+esc(c.thumbnail_url)+'" alt="'+esc(c.title)+'">':'<div style="font-size:4rem;opacity:0.3">&#128218;</div>')+'</div>'+
+        '<div class="course-info">'+
+          (c.badge?'<span class="badge">'+esc(c.badge)+'</span>':'')+
+          '<h1>'+esc(c.title)+'</h1>'+
+          '<div class="meta-row"><span>'+esc(c.subject_area)+'</span><span>'+esc(c.difficulty)+'</span><span>'+lc+' lectures</span></div>'+
+          '<p class="desc">'+esc(c.description||'No description available.')+'</p>'+
+          '<div class="price-block"><span class="price'+(c.price===0?' free':'')+'">'+(c.price===0?'Free':'&#2547;'+c.price)+'</span>'+
+            (c.price===0
+              ?(user?'<a href="/learn.html?id='+c.id+'" class="btn_main_wrap is-rust"><span class="btn_main_text">Start Learning</span></a>':'<a href="/login.html" class="btn_main_wrap is-nav"><span class="btn_main_text">Sign In to Start</span></a>')
+              :(user?'<a href="/payment.html?id='+c.id+'" class="btn_main_wrap is-rust"><span class="btn_main_text">Enroll Now</span></a>':'<a href="/login.html" class="btn_main_wrap is-nav"><span class="btn_main_text">Sign In to Enroll</span></a>')
+            )+
+          '</div>'+
+        '</div>'+
+      '</div>'+
+      (tree.length?'<div class="curriculum"><h2>Curriculum</h2>'+tree.map(function(s){return'<div class="tree-item"><div class="tree-subject">'+esc(s.name)+'</div>'+(s.papers||[]).map(function(p){return'<div class="tree-paper">'+esc(p.name)+'</div>'+(p.chapters||[]).map(function(ch){return'<div class="tree-chapter"><span>&#9654;</span>'+esc(ch.title)+' <span style="font-size:0.75rem">('+(ch.lectures||[]).length+' lectures)</span></div>'}).join('')}).join('')+'</div>'}).join('')+'</div>':'');
+  }catch(e){
+    document.getElementById('content').innerHTML='<div style="text-align:center;padding:4rem"><p style="color:#dc2626">Course not found.</p><a href="/explore.html" style="color:var(--_theme---accent)">Browse courses</a></div>';
   }
 }
 
