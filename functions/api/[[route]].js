@@ -161,42 +161,31 @@ async function handleAuth(method, path, body, db, request) {
     if (!name || !email || !password) return err('Name, email, and password required');
     if (password.length < 6) return err('Password must be at least 6 characters');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return err('Invalid email format');
-
     const fp = await deviceFingerprint(request);
-    const deviceCount = await db.prepare('SELECT COUNT(*) as c FROM users WHERE device_fingerprint = ?').bind(fp).first();
-    if (deviceCount && deviceCount.c >= 3) return err('Maximum accounts reached on this device', 403);
-
-    const existing = await db.prepare('SELECT id FROM users WHERE email = ?').bind(email).first();
-    if (existing) return err('Email already registered', 409);
-
+    const dc = await db.prepare('SELECT COUNT(*) as c FROM users WHERE device_fingerprint = ?').bind(fp).first();
+    if (dc && dc.c >= 3) return err('Maximum accounts reached on this device', 403);
+    const ex = await db.prepare('SELECT id FROM users WHERE email = ?').bind(email).first();
+    if (ex) return err('Email already registered', 409);
     const hash = await sha256(password);
     await db.prepare(`INSERT INTO users (name, email, password, phone, institution, device_fingerprint)
       VALUES (?, ?, ?, ?, ?, ?)`).bind(name, email, hash, phone || '', institution || '', fp).run();
-
     return json({ message: 'Account created. You can now log in.' }, 201);
   }
 
   if (method === 'POST' && path === '/auth/login') {
     const { email, password } = body;
     if (!email || !password) return err('Email and password required');
-
     const hash = await sha256(password);
     const user = await db.prepare('SELECT * FROM users WHERE email = ? AND password = ?').bind(email, hash).first();
     if (!user) return err('Invalid credentials', 401);
-    if (user.is_blocked) return err('Account blocked. Contact support.', 403);
-
-    const newVersion = (user.token_version || 1) + 1;
-    await db.prepare('UPDATE users SET token_version = ? WHERE id = ?').bind(newVersion, user.id).run();
-
+    if (user.is_blocked) return err('Account blocked', 403);
+    const nv = (user.token_version || 1) + 1;
+    await db.prepare('UPDATE users SET token_version = ? WHERE id = ?').bind(nv, user.id).run();
     const token = await signToken({
       id: user.id, email: user.email, name: user.name, role: user.role,
-      token_version: newVersion, exp: Date.now() + TOKEN_EXPIRY
+      token_version: nv, exp: Date.now() + TOKEN_EXPIRY
     });
-
-    return json({
-      token,
-      user: { id: user.id, name: user.name, email: user.email, phone: user.phone, institution: user.institution, role: user.role, is_approved: user.is_approved }
-    });
+    return json({ token, user: { id: user.id, name: user.name, email: user.email, phone: user.phone, institution: user.institution, role: user.role, is_approved: user.is_approved } });
   }
 
   if (method === 'POST' && path === '/auth/logout') {
@@ -282,7 +271,7 @@ async function handleStudent(method, path, body, db, user) {
     if (!['bkash', 'nagad'].includes(payMethod)) return err('Invalid payment method');
     if (!/^01\d{9}$/.test(phone)) return err('Invalid phone format (01XXXXXXXXX)');
 
-    const course = await db.prepare('SELECT id, title FROM courses WHERE id = ? AND is_active = 1').bind(course_id).first();
+    const course = await db.prepare('SELECT id FROM courses WHERE id = ? AND is_active = 1').bind(course_id).first();
     if (!course) return err('Course not found', 404);
 
     const spamCount = await db.prepare("SELECT COUNT(*) as c FROM enrollments WHERE user_id = ? AND status = 'spam'").bind(user.id).first();
@@ -296,7 +285,6 @@ async function handleStudent(method, path, body, db, user) {
     ).bind(user.id, course_id, payMethod, trx_id, phone, 'pending').run();
 
     if (!result.success) return err('Database error — failed to save payment', 500);
-
     return json({ message: 'Payment submitted. Admin will verify and approve your access.' }, 201);
   }
 
@@ -312,7 +300,13 @@ async function handleAdmin(method, path, body, db, user) {
     const courses = await db.prepare('SELECT COUNT(*) as c FROM courses WHERE is_active = 1').first();
     const pendingPayments = await db.prepare("SELECT COUNT(*) as c FROM enrollments WHERE status = 'pending'").first();
     const activeMembers = await db.prepare("SELECT COUNT(*) as c FROM enrollments WHERE status = 'approved'").first();
-    return json({ users: users?.c || 0, pendingUsers: pendingUsers?.c || 0, courses: courses?.c || 0, pendingPayments: pendingPayments?.c || 0, activeMembers: activeMembers?.c || 0 });
+    return json({
+      users: users?.c || 0,
+      pendingUsers: pendingUsers?.c || 0,
+      courses: courses?.c || 0,
+      pendingPayments: pendingPayments?.c || 0,
+      activeMembers: activeMembers?.c || 0
+    });
   }
 
   if (method === 'GET' && path === '/admin/users') {
@@ -378,12 +372,12 @@ async function handleAdmin(method, path, body, db, user) {
   if (method === 'GET' && path === '/admin/enrollments') {
     try {
       const url = new URL(request.url);
-      const statusFilter = url.searchParams.get('status');
-      let query = `SELECT e.id, e.user_id, e.course_id, e.payment_method, e.trx_id, e.sender_phone, e.status, e.expires_at, e.created_at, u.name as user_name, u.email as user_email, c.title as course_title, c.subject_area FROM enrollments e LEFT JOIN users u ON e.user_id = u.id LEFT JOIN courses c ON e.course_id = c.id`;
+      const sf = url.searchParams.get('status');
+      let q = `SELECT e.id, e.user_id, e.course_id, e.payment_method, e.trx_id, e.sender_phone, e.status, e.expires_at, e.created_at, u.name AS user_name, u.email AS user_email, c.title AS course_title FROM enrollments e LEFT JOIN users u ON e.user_id = u.id LEFT JOIN courses c ON e.course_id = c.id`;
       const params = [];
-      if (statusFilter) { query += ' WHERE e.status = ?'; params.push(statusFilter); }
-      query += ' ORDER BY e.created_at DESC LIMIT 500';
-      const result = await db.prepare(query).bind(...params).all();
+      if (sf) { q += ' WHERE e.status = ?'; params.push(sf); }
+      q += ' ORDER BY e.created_at DESC LIMIT 500';
+      const result = await db.prepare(q).bind(...params).all();
       return json(result.results || []);
     } catch (e) { return json([], 200); }
   }
@@ -395,7 +389,7 @@ async function handleAdmin(method, path, body, db, user) {
     const expiry = new Date();
     expiry.setFullYear(expiry.getFullYear() + 1);
     await db.prepare("UPDATE enrollments SET status = 'approved', expires_at = ? WHERE id = ?").bind(expiry.toISOString(), id).run();
-    return json({ message: 'Verified — access granted' });
+    return json({ message: 'Verified — access granted for 365 days' });
   }
 
   if (method === 'PUT' && path.match(/^\/admin\/enrollments\/\d+\/spam$/)) {
