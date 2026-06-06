@@ -81,7 +81,8 @@
     .toast.show{opacity:1;transform:translateX(0)}
     .toast-ok{background:rgba(34,197,94,0.1);border:1px solid #16a34a;color:#16a34a}
     .toast-err{background:rgba(220,38,38,0.08);border:1px solid #dc2626;color:#dc2626}
-    @media(max-width:768px){body{flex-direction:column}.sidebar{width:100%;min-width:100%;flex-direction:row;padding:0.4rem;overflow-x:auto;flex-shrink:0}.sidebar .logo,.sidebar .sfoot{display:none}.sidebar nav{display:flex}.sidebar nav a{padding:0.4rem 0.6rem;font-size:0.7rem;border-left:none;border-bottom:2px solid transparent;white-space:nowrap}.sidebar nav a.active{border-left:none;border-bottom-color:var(--_theme---accent)}.main{padding:1rem}.stats{grid-template-columns:1fr 1fr}}
+    .empty-td{text-align:center;padding:2.5rem;color:var(--_theme---text-secondary)}
+    @media(max-width:768px){body{flex-direction:column}.sidebar{width:100%;min-width:100%;flex-direction:row;padding:0.4rem;overflow-x:auto;flex-shrink:0}.sidebar .logo,.sidebar .sfoot{display:none}.sidebar nav{display:flex;gap:0}.sidebar nav a{padding:0.4rem 0.6rem;font-size:0.7rem;border-left:none;border-bottom:2px solid transparent;white-space:nowrap}.sidebar nav a.active{border-left:none;border-bottom-color:var(--_theme---accent)}.main{padding:1rem}.stats{grid-template-columns:1fr 1fr}}
   </style>
 </head>
 <body>
@@ -117,7 +118,7 @@
 
   <div class="view" id="view-courses">
     <div class="section-h"><h2>Courses</h2><button class="btn btn-s" onclick="openCourseModal()">+ New Course</button></div>
-    <div style="overflow-x:auto"><table><thead><tr><th>Title</th><th>Subject</th><th>Price</th><th>Actions</th></tr></thead><tbody id="coursesTbl"></tbody></table></div>
+    <div style="overflow-x:auto"><table><thead><tr><th>Title</th><th>Subject</th><th>Price</th><th>Lectures</th><th>Actions</th></tr></thead><tbody id="coursesTbl"></tbody></table></div>
   </div>
 
   <div class="view" id="view-payments">
@@ -151,8 +152,13 @@ function esc(s){var d=document.createElement('div');d.textContent=String(s||'');
 function toast(msg,err){var t=document.getElementById('toast');t.textContent=msg;t.className='toast toast-'+(err?'err':'ok')+' show';setTimeout(function(){t.classList.remove('show')},2500)}
 
 async function api(method,path,body){
-  try{var opts={method:method,headers:{'Content-Type':'application/json',Authorization:'Bearer '+T}};if(body)opts.body=JSON.stringify(body);var res=await fetch('/api'+path,opts);var data=await res.json();return{ok:res.ok,data:data,status:res.status}}
-  catch(e){return{ok:false,data:{error:'Network error'},status:0}}
+  try{
+    var opts={method:method,headers:{'Content-Type':'application/json',Authorization:'Bearer '+T}};
+    if(body)opts.body=JSON.stringify(body);
+    var res=await fetch('/api'+path,opts);
+    var data=await res.json();
+    return{ok:res.ok,data:data,status:res.status};
+  }catch(e){return{ok:false,data:{error:'Network error'},status:0}}
 }
 
 function showView(id){
@@ -160,7 +166,11 @@ function showView(id){
   var ve=document.getElementById('view-'+id);if(ve)ve.classList.add('active');
   document.querySelectorAll('.sidebar nav a').forEach(function(a){a.classList.remove('active')});
   var ne=document.querySelector('[data-v="'+id+'"]');if(ne)ne.classList.add('active');
-  if(id==='dashboard')loadStats();if(id==='users')loadUsers();if(id==='courses')loadCourses();if(id==='payments')loadPayments();if(id==='settings')loadSettings();
+  if(id==='dashboard')loadStats();
+  if(id==='users')loadUsers();
+  if(id==='courses')loadCourses();
+  if(id==='payments')loadPayments();
+  if(id==='settings')loadSettings();
 }
 
 function openModal(title,body,footer){
@@ -168,87 +178,172 @@ function openModal(title,body,footer){
   document.getElementById('gModal').classList.add('show');
 }
 function closeModal(){document.getElementById('gModal').classList.remove('show')}
-function modalAlert(msg,err){var a=document.getElementById('_alert');if(a){a.textContent=msg;a.style.cssText='padding:0.4rem 0.6rem;border-radius:var(--radius-s);font-size:0.75rem;margin-bottom:0.5rem;background:'+(err?'rgba(220,38,38,0.06)':'rgba(34,197,94,0.06)')+';border:1px solid '+(err?'#dc2626':'#16a34a')+';color:'+(err?'#dc2626':'#16a34a')}}
+function modalAlert(msg,err){var a=document.getElementById('_alert');if(a){a.textContent=msg;a.style.cssText='padding:0.4rem 0.6rem;border-radius:var(--radius-s);font-size:0.75rem;margin-bottom:0.5rem;background:'+(err?'rgba(220,38,38,0.06)':'rgba(34,197,94,0.06)')+';border:1px solid '+(err?'#dc2626':'#16a34a')+';color:'+(err?'#dc2626':'#16a34a')'}}
 document.getElementById('gModal').addEventListener('click',function(e){if(e.target===document.getElementById('gModal'))closeModal()});
 
-// ─── STATS ───
+function countLectures(tree){
+  var c=0;
+  try{var t=typeof tree==='string'?JSON.parse(tree):(tree||[])}catch(e){t=[]}
+  t.forEach(function(s){(s.papers||[]).forEach(function(p){(p.chapters||[]).forEach(function(ch){c+=(ch.lectures||[]).length})})});
+  return c;
+}
+
+// ═══════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════
 async function loadStats(){
   var r=await api('GET','/admin/stats');
-  if(r.ok){document.getElementById('sUsers').textContent=r.data.users||0;document.getElementById('sCourses').textContent=r.data.courses||0;document.getElementById('sPending').textContent=r.data.pendingPayments||0;document.getElementById('sActive').textContent=r.data.activeMembers||0}
+  if(r.ok){
+    document.getElementById('sUsers').textContent=r.data.users||0;
+    document.getElementById('sCourses').textContent=r.data.courses||0;
+    document.getElementById('sPending').textContent=r.data.pendingPayments||0;
+    document.getElementById('sActive').textContent=r.data.activeMembers||0;
+  }
 }
 
-// ─── USERS ───
+// ═══════════════════════════════════════
+// USERS
+// ═══════════════════════════════════════
 async function loadUsers(){
-  var r=await api('GET','/admin/users');var t=document.getElementById('usersTbl');
-  if(!r.ok){t.innerHTML='<tr><td colspan="6">Failed</td></tr>';return}
-  if(!r.data.length){t.innerHTML='<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--_theme---text-secondary)">No users yet</td></tr>';return}
-  t.innerHTML=r.data.map(function(u){var sb=u.is_blocked?'b-r':(u.is_approved?'b-g':'b-o'),st=u.is_blocked?'Blocked':(u.is_approved?'Approved':'Pending');
-    return'<tr><td>'+esc(u.name)+'</td><td>'+esc(u.email)+'</td><td><span class="badge '+(u.role==='admin'?'b-a':'b-g')+'">'+esc(u.role)+'</span></td><td><span class="badge '+sb+'">'+st+'</span></td><td>'+new Date(u.created_at).toLocaleDateString()+'</td><td>'+
-    (!u.is_approved?'<button class="btn btn-s" onclick="approveUser('+u.id+')">Approve</button> ':'')+
-    '<button class="btn '+(u.is_blocked?'btn-s':'btn-d')+'" onclick="toggleBlock('+u.id+')">'+(u.is_blocked?'Unblock':'Block')+'</button> '+
-    '<button class="btn" onclick="clearDevice('+u.id+')">Clear</button> '+
-    '<button class="btn btn-d" onclick="deleteUser('+u.id+')">Delete</button></td></tr>';
+  var r=await api('GET','/admin/users');
+  var t=document.getElementById('usersTbl');
+  if(!r.ok){t.innerHTML='<tr><td colspan="6" class="empty-td">Failed to load</td></tr>';return}
+  if(!r.data.length){t.innerHTML='<tr><td colspan="6" class="empty-td">No users registered yet</td></tr>';return}
+  t.innerHTML=r.data.map(function(u){
+    var sb=u.is_blocked?'b-r':(u.is_approved?'b-g':'b-o');
+    var st=u.is_blocked?'Blocked':(u.is_approved?'Approved':'Pending');
+    return'<tr>'+
+      '<td>'+esc(u.name)+'</td>'+
+      '<td>'+esc(u.email)+'</td>'+
+      '<td><span class="badge '+(u.role==='admin'?'b-a':'b-g')+'">'+esc(u.role)+'</span></td>'+
+      '<td><span class="badge '+sb+'">'+st+'</span></td>'+
+      '<td>'+new Date(u.created_at).toLocaleDateString()+'</td>'+
+      '<td>'+
+        (!u.is_approved?'<button class="btn btn-s" onclick="approveUser('+u.id+')">Approve</button> ':'')+
+        '<button class="btn '+(u.is_blocked?'btn-s':'btn-d')+'" onclick="toggleBlock('+u.id+')">'+(u.is_blocked?'Unblock':'Block')+'</button> '+
+        '<button class="btn" onclick="clearDevice('+u.id+')">Clear Device</button> '+
+        '<button class="btn btn-d" onclick="deleteUser('+u.id+')">Delete</button>'+
+      '</td>'+
+    '</tr>';
   }).join('');
 }
-async function approveUser(id){await api('PUT','/admin/users/'+id+'/approve');loadUsers();toast('Approved')}
-async function toggleBlock(id){await api('PUT','/admin/users/'+id+'/block');loadUsers();toast('Done')}
-async function clearDevice(id){await api('PUT','/admin/users/'+id+'/clear-device');loadUsers();toast('Cleared')}
-async function deleteUser(id){if(confirm('Delete user?')){await api('DELETE','/admin/users/'+id);loadUsers();toast('Deleted')}}
+async function approveUser(id){await api('PUT','/admin/users/'+id+'/approve');loadUsers();toast('User approved')}
+async function toggleBlock(id){await api('PUT','/admin/users/'+id+'/block');loadUsers();toast('Toggled')}
+async function clearDevice(id){await api('PUT','/admin/users/'+id+'/clear-device');loadUsers();toast('Device cleared')}
+async function deleteUser(id){if(confirm('Delete this user and all their enrollments?')){await api('DELETE','/admin/users/'+id);loadUsers();toast('Deleted')}}
 
-// ─── COURSES ───
+// ═══════════════════════════════════════
+// COURSES
+// ═══════════════════════════════════════
 var allCourses=[];
 async function loadCourses(){
-  var r=await api('GET','/admin/courses');var t=document.getElementById('coursesTbl');
-  if(!r.ok){t.innerHTML='<tr><td colspan="4">Failed</td></tr>';return}
+  var r=await api('GET','/admin/courses');
+  var t=document.getElementById('coursesTbl');
+  if(!r.ok){t.innerHTML='<tr><td colspan="5" class="empty-td">Failed to load</td></tr>';return}
   allCourses=r.data;
-  if(!allCourses.length){t.innerHTML='<tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--_theme---text-secondary)">No courses yet. Create one.</td></tr>';return}
-  t.innerHTML=allCourses.map(function(c){return'<tr><td>'+esc(c.title)+'</td><td>'+esc(c.subject_area||'-')+'</td><td>'+(c.price===0?'Free':'&#2547;'+c.price)+'</td><td>'+
-    '<button class="btn btn-a" onclick="openTreeEditor('+c.id+')">Tree</button> '+
-    '<button class="btn" onclick="editCourse('+c.id+')">Edit</button> '+
-    '<button class="btn btn-d" onclick="deleteCourse('+c.id+')">Delete</button></td></tr>';
+  if(!allCourses.length){t.innerHTML='<tr><td colspan="5" class="empty-td">No courses yet. Create your first course.</td></tr>';return}
+  t.innerHTML=allCourses.map(function(c){
+    var lc=countLectures(c.tree);
+    return'<tr>'+
+      '<td>'+esc(c.title)+'</td>'+
+      '<td>'+esc(c.subject_area||'-')+'</td>'+
+      '<td>'+(c.price===0?'Free':'&#2547;'+c.price)+'</td>'+
+      '<td>'+lc+'</td>'+
+      '<td>'+
+        '<button class="btn btn-a" onclick="openTreeEditor('+c.id+')">Tree</button> '+
+        '<button class="btn" onclick="editCourse('+c.id+')">Edit</button> '+
+        '<button class="btn btn-d" onclick="deleteCourse('+c.id+')">Delete</button>'+
+      '</td>'+
+    '</tr>';
   }).join('');
 }
 
 function openCourseModal(course){
   var ed=!!course;
   openModal(ed?'Edit Course':'New Course',
-    '<div class="fg"><label>Title *</label><input type="text" id="cTitle" value="'+esc(course?.title||'')+'"></div>'+
-    '<div class="fg"><label>Description</label><textarea id="cDesc">'+esc(course?.description||'')+'</textarea></div>'+
-    '<div class="fr"><div class="fg"><label>Subject</label><input type="text" id="cSubj" value="'+esc(course?.subject_area||'')+'"></div><div class="fg"><label>Difficulty</label><select id="cDiff"><option value="All Levels">All Levels</option><option value="Beginner" '+(course?.difficulty==='Beginner'?'selected':'')+'>Beginner</option><option value="Intermediate" '+(course?.difficulty==='Intermediate'?'selected':'')+'>Intermediate</option><option value="Advanced" '+(course?.difficulty==='Advanced'?'selected':'')+'>Advanced</option></select></div></div>'+
-    '<div class="fr"><div class="fg"><label>Thumbnail URL</label><input type="text" id="cThumb" value="'+esc(course?.thumbnail_url||'')+'"></div><div class="fg"><label>Badge</label><input type="text" id="cBadge" value="'+esc(course?.badge||'')+'"></div></div>'+
-    '<div class="fr"><div class="fg"><label>Price (0=free)</label><input type="number" id="cPrice" value="'+(course?.price||0)+'" step="1"></div><div class="fg"><label>Featured</label><select id="cFeat"><option value="0">No</option><option value="1" '+(course?.is_featured?'selected':'')+'>Yes</option></select></div></div>',
-    '<button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-s" onclick="saveCourse('+(course?.id||0)+')">'+(ed?'Update':'Create')+'</button>');
+    '<div class="fg"><label>Title *</label><input type="text" id="cTitle" value="'+esc(course?course.title:'')+'"></div>'+
+    '<div class="fg"><label>Description</label><textarea id="cDesc">'+esc(course?course.description||'':'')+'</textarea></div>'+
+    '<div class="fr"><div class="fg"><label>Subject Area</label><input type="text" id="cSubj" value="'+esc(course?course.subject_area||'':'')+'" placeholder="Physics"></div><div class="fg"><label>Difficulty</label><select id="cDiff"><option value="All Levels">All Levels</option><option value="Beginner" '+(course&&course.difficulty==='Beginner'?'selected':'')+'>Beginner</option><option value="Intermediate" '+(course&&course.difficulty==='Intermediate'?'selected':'')+'>Intermediate</option><option value="Advanced" '+(course&&course.difficulty==='Advanced'?'selected':'')+'>Advanced</option></select></div></div>'+
+    '<div class="fr"><div class="fg"><label>Thumbnail URL (ImgBB)</label><input type="text" id="cThumb" value="'+esc(course?course.thumbnail_url||'':'')+'" placeholder="https://i.ibb.co/..."></div><div class="fg"><label>Badge</label><input type="text" id="cBadge" value="'+esc(course?course.badge||'':'')+'" placeholder="Bestseller / Free / New"></div></div>'+
+    '<div class="fr"><div class="fg"><label>Price (0 = free)</label><input type="number" id="cPrice" value="'+(course?course.price||0:0)+'" step="1"></div><div class="fg"><label>Featured</label><select id="cFeat"><option value="0">No</option><option value="1" '+(course&&course.is_featured?'selected':'')+'>Yes</option></select></div></div>',
+    '<button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-s" onclick="saveCourse('+(course?course.id:0)+')">'+(ed?'Update':'Create')+'</button>'
+  );
 }
-async function saveCourse(id){
-  var data={title:document.getElementById('cTitle').value.trim(),description:document.getElementById('cDesc').value.trim(),subject_area:document.getElementById('cSubj').value.trim(),difficulty:document.getElementById('cDiff').value,thumbnail_url:document.getElementById('cThumb').value.trim(),badge:document.getElementById('cBadge').value.trim(),price:parseFloat(document.getElementById('cPrice').value)||0,is_featured:parseInt(document.getElementById('cFeat').value)};
-  if(!data.title){modalAlert('Title required',true);return}
-  if(id){var ex=allCourses.find(function(c){return c.id===id});data.tree=ex?ex.tree:'[]';data.resources=ex?ex.resources:'[]'}
-  var r=id?await api('PUT','/admin/courses/'+id,data):await api('POST','/admin/courses',data);
-  if(r.ok){closeModal();loadCourses();toast(id?'Updated':'Created')}else{modalAlert(r.data.error||'Failed',true)}
-}
-async function editCourse(id){var r=await api('GET','/courses/'+id);if(r.ok)openCourseModal(r.data)}
-async function deleteCourse(id){if(confirm('Delete course and all enrollments?')){await api('DELETE','/admin/courses/'+id);loadCourses();toast('Deleted')}}
 
-// ─── TREE EDITOR ───
+async function saveCourse(id){
+  var title=document.getElementById('cTitle').value.trim();
+  if(!title){modalAlert('Title is required',true);return}
+  var data={
+    title:title,
+    description:document.getElementById('cDesc').value.trim(),
+    subject_area:document.getElementById('cSubj').value.trim(),
+    difficulty:document.getElementById('cDiff').value,
+    thumbnail_url:document.getElementById('cThumb').value.trim(),
+    badge:document.getElementById('cBadge').value.trim(),
+    price:parseFloat(document.getElementById('cPrice').value)||0,
+    is_featured:parseInt(document.getElementById('cFeat').value)
+  };
+  if(id){
+    var ex=allCourses.find(function(c){return c.id===id});
+    data.tree=ex?ex.tree:'[]';
+    data.resources=ex?ex.resources:'[]';
+  }
+  var r=id?await api('PUT','/admin/courses/'+id,data):await api('POST','/admin/courses',data);
+  if(r.ok){closeModal();loadCourses();toast(id?'Course updated':'Course created')}
+  else{modalAlert(r.data.error||'Failed',true)}
+}
+async function editCourse(id){
+  var r=await api('GET','/courses/'+id);
+  if(r.ok)openCourseModal(r.data);
+  else toast('Failed to load course',true);
+}
+async function deleteCourse(id){
+  if(!confirm('Delete this course and ALL its enrollments? This cannot be undone.'))return;
+  var r=await api('DELETE','/admin/courses/'+id);
+  if(r.ok){loadCourses();toast('Course deleted')}
+  else toast('Failed to delete',true);
+}
+
+// ═══════════════════════════════════════
+// TREE EDITOR
+// ═══════════════════════════════════════
 var _treeCourseId,_treeData,_treeResources;
-function safeParse(s){try{return typeof s==='string'?JSON.parse(s):(s||[])}catch{return[]}}
+
+function safeParse(s){
+  if(!s||s==='[]'||s==='')return[];
+  try{return typeof s==='string'?JSON.parse(s):(Array.isArray(s)?s:[])}catch(e){return[]}
+}
+
 async function openTreeEditor(cid){
   var r=await api('GET','/courses/'+cid);
   if(!r.ok){toast('Course not found',true);return}
-  var c=r.data;_treeCourseId=cid;_treeData=safeParse(c.tree);_treeResources=safeParse(c.resources);
+  var c=r.data;
+  _treeCourseId=cid;
+  _treeData=safeParse(c.tree);
+  _treeResources=safeParse(c.resources);
   renderTreeModal(c.title);
 }
+
 function renderTreeModal(title){
-  var t=_treeData,r=_treeResources;
+  var t=_treeData;
+  var r=_treeResources;
   var h='<div style="max-height:350px;overflow-y:auto">';
   h+='<button class="btn btn-a" onclick="addSubject()" style="margin-bottom:0.8rem">+ Add Subject</button>';
-  if(!t.length)h+='<p style="color:var(--_theme---text-secondary);font-size:0.8rem">No content yet.</p>';
+  
+  if(!t.length){
+    h+='<p style="color:var(--_theme---text-secondary);font-size:0.8rem;padding:1rem 0">No content yet. Add your first Subject to get started.</p>';
+  }
+  
   t.forEach(function(s,si){
-    h+='<div class="tree-section"><div class="tree-section-title"><span>'+esc(s.name)+'</span><div class="tree-actions"><button onclick="addPaper('+si+')">+ Paper</button><button onclick="renameSubject('+si+')">Rename</button><button class="del" onclick="deleteSubject('+si+')">Del</button></div></div>';
+    h+='<div class="tree-section">';
+    h+='<div class="tree-section-title"><span>'+esc(s.name)+'</span><div class="tree-actions"><button onclick="addPaper('+si+')">+ Paper</button><button onclick="renameSubject('+si+')">Rename</button><button class="del" onclick="deleteSubject('+si+')">Del</button></div></div>';
+    
     (s.papers||[]).forEach(function(p,pi){
       h+='<div class="tree-paper"><div class="tree-paper-title"><span>'+esc(p.name)+'</span><div class="tree-actions"><button onclick="addChapter('+si+','+pi+')">+ Chapter</button><button onclick="renamePaper('+si+','+pi+')">Rename</button><button class="del" onclick="deletePaper('+si+','+pi+')">Del</button></div></div>';
+      
       (p.chapters||[]).forEach(function(ch,ci){
         h+='<div class="tree-chapter"><span>'+esc(ch.title)+' ('+(ch.lectures||[]).length+' lec)</span><div class="tree-actions"><button onclick="addLecture('+si+','+pi+','+ci+')">+ Lecture</button><button onclick="renameChapter('+si+','+pi+','+ci+')">Rename</button><button class="del" onclick="deleteChapter('+si+','+pi+','+ci+')">Del</button></div></div>';
+        
         (ch.lectures||[]).forEach(function(l,li){
           h+='<div class="tree-lecture"><span>'+esc(l.title)+'</span><div class="tree-actions"><button onclick="editLecture('+si+','+pi+','+ci+','+li+')">Edit</button><button class="del" onclick="deleteLecture('+si+','+pi+','+ci+','+li+')">Del</button></div></div>';
         });
@@ -257,57 +352,154 @@ function renderTreeModal(title){
     });
     h+='</div>';
   });
-  h+='</div><h4 style="margin-top:1.2rem">Resources</h4><button class="btn btn-a" onclick="addResource()" style="margin-bottom:0.5rem">+ Add Resource</button>';
-  if(!r.length)h+='<p style="color:var(--_theme---text-secondary);font-size:0.8rem">No resources.</p>';
-  r.forEach(function(rs,i){h+='<div class="resource-row"><a href="'+esc(rs.url)+'" target="_blank">'+esc(rs.title)+'</a><button class="btn btn-d" style="font-size:0.6rem;padding:0.1rem 0.4rem" onclick="deleteResource('+i+')">Remove</button></div>'});
-  openModal('Course Tree: '+esc(title),h,'<button class="btn" onclick="closeModal()">Close</button><button class="btn btn-s" onclick="saveTree()">Save All Changes</button>');
+  h+='</div>';
+  
+  h+='<h4 style="margin-top:1.2rem;font-family:var(--font-display)">Course Resources</h4>';
+  h+='<button class="btn btn-a" onclick="addResource()" style="margin-bottom:0.5rem">+ Add Resource</button>';
+  if(!r.length)h+='<p style="color:var(--_theme---text-secondary);font-size:0.8rem">No resources yet.</p>';
+  r.forEach(function(rs,i){
+    h+='<div class="resource-row"><a href="'+esc(rs.url)+'" target="_blank">'+esc(rs.title)+'</a><button class="btn btn-d" style="font-size:0.6rem;padding:0.1rem 0.4rem" onclick="deleteResource('+i+')">Remove</button></div>';
+  });
+  
+  openModal('Course Tree: '+esc(title),h,
+    '<button class="btn" onclick="closeModal()">Close</button><button class="btn btn-s" onclick="saveTree()">Save All Changes</button>'
+  );
 }
+
 async function saveTree(){
-  var r=await api('PUT','/admin/courses/'+_treeCourseId,{title:allCourses.find(function(c){return c.id===_treeCourseId})?.title||'',description:allCourses.find(function(c){return c.id===_treeCourseId})?.description||'',subject_area:allCourses.find(function(c){return c.id===_treeCourseId})?.subject_area||'',difficulty:allCourses.find(function(c){return c.id===_treeCourseId})?.difficulty||'All Levels',thumbnail_url:allCourses.find(function(c){return c.id===_treeCourseId})?.thumbnail_url||'',badge:allCourses.find(function(c){return c.id===_treeCourseId})?.badge||'',price:allCourses.find(function(c){return c.id===_treeCourseId})?.price||0,is_featured:allCourses.find(function(c){return c.id===_treeCourseId})?.is_featured||0,is_active:1,tree:JSON.stringify(_treeData),resources:JSON.stringify(_treeResources)});
-  if(r.ok){closeModal();loadCourses();toast('Tree saved')}else{modalAlert('Failed to save',true)}
+  var cid=_treeCourseId;
+  var existing=allCourses.find(function(c){return c.id===cid});
+  if(!existing){toast('Course not found in list',true);return}
+  
+  var data={
+    title:existing.title,
+    description:existing.description||'',
+    subject_area:existing.subject_area||'',
+    difficulty:existing.difficulty||'All Levels',
+    thumbnail_url:existing.thumbnail_url||'',
+    thumbnail_icon:existing.thumbnail_icon||'book-open',
+    badge:existing.badge||'',
+    price:existing.price||0,
+    is_featured:existing.is_featured||0,
+    is_active:1,
+    tree:JSON.stringify(_treeData),
+    resources:JSON.stringify(_treeResources)
+  };
+  
+  var r=await api('PUT','/admin/courses/'+cid,data);
+  if(r.ok){
+    closeModal();
+    await loadCourses();
+    toast('Tree saved successfully');
+  }else{
+    modalAlert(r.data?.error||'Failed to save tree',true);
+  }
 }
+
 function pI(msg,def,cb){var v=prompt(msg,def||'');if(v!==null&&v.trim())cb(v.trim())}
 function p2(m1,d1,m2,d2,cb){var v1=prompt(m1,d1||'');if(v1===null)return;var v2=prompt(m2,d2||'');if(v2===null)return;cb(v1.trim(),v2.trim())}
+
+// Subject
 function addSubject(){pI('Subject name:','New Subject',function(n){_treeData.push({id:'s_'+Date.now(),name:n,papers:[]});renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')})}
 function renameSubject(si){pI('Rename:',_treeData[si].name,function(n){_treeData[si].name=n;renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')})}
-function deleteSubject(si){if(confirm('Delete subject?')){_treeData.splice(si,1);renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')}}
+function deleteSubject(si){if(confirm('Delete this subject and ALL its content?')){_treeData.splice(si,1);renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')}}
+
+// Paper
 function addPaper(si){pI('Paper name:','New Paper',function(n){_treeData[si].papers.push({id:'p_'+Date.now(),name:n,chapters:[]});renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')})}
 function renamePaper(si,pi){pI('Rename:',_treeData[si].papers[pi].name,function(n){_treeData[si].papers[pi].name=n;renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')})}
-function deletePaper(si,pi){if(confirm('Delete paper?')){_treeData[si].papers.splice(pi,1);renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')}}
+function deletePaper(si,pi){if(confirm('Delete this paper and ALL its chapters?')){_treeData[si].papers.splice(pi,1);renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')}}
+
+// Chapter
 function addChapter(si,pi){pI('Chapter title:','New Chapter',function(n){_treeData[si].papers[pi].chapters.push({id:'ch_'+Date.now(),title:n,lectures:[]});renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')})}
 function renameChapter(si,pi,ci){pI('Rename:',_treeData[si].papers[pi].chapters[ci].title,function(n){_treeData[si].papers[pi].chapters[ci].title=n;renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')})}
-function deleteChapter(si,pi,ci){if(confirm('Delete chapter?')){_treeData[si].papers[pi].chapters.splice(ci,1);renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')}}
-function addLecture(si,pi,ci){p2('Lecture title:','New Lecture','YouTube Video ID:','dQw4w9WgXcQ',function(t,yt){_treeData[si].papers[pi].chapters[ci].lectures.push({id:'l_'+Date.now(),title:t,yt_video_id:yt,pdfs:[]});renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')})}
+function deleteChapter(si,pi,ci){if(confirm('Delete this chapter and ALL its lectures?')){_treeData[si].papers[pi].chapters.splice(ci,1);renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')}}
+
+// Lecture
+function addLecture(si,pi,ci){
+  p2('Lecture title:','New Lecture','YouTube Video ID:','dQw4w9WgXcQ',function(t,yt){
+    _treeData[si].papers[pi].chapters[ci].lectures.push({id:'l_'+Date.now(),title:t,yt_video_id:yt,pdfs:[]});
+    renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'');
+  });
+}
 function editLecture(si,pi,ci,li){
   var lec=_treeData[si].papers[pi].chapters[ci].lectures[li];
-  var h='<div class="fg"><label>Title</label><input type="text" id="lecTitle" value="'+esc(lec.title)+'"></div><div class="fg"><label>YouTube Video ID</label><input type="text" id="lecYtId" value="'+esc(lec.yt_video_id||'')+'"></div><h4>PDFs</h4>';
-  (lec.pdfs||[]).forEach(function(pdf,pi2){h+='<div class="resource-row"><span>'+esc(pdf.title)+'</span><button class="btn btn-d" style="font-size:0.6rem;padding:0.1rem 0.4rem" onclick="deletePdf('+si+','+pi+','+ci+','+li+','+pi2+')">Remove</button></div>'});
+  var h='<div class="fg"><label>Lecture Title</label><input type="text" id="lecTitle" value="'+esc(lec.title)+'"></div>';
+  h+='<div class="fg"><label>YouTube Video ID</label><input type="text" id="lecYtId" value="'+esc(lec.yt_video_id||'')+'" placeholder="dQw4w9WgXcQ"></div>';
+  h+='<h4 style="font-family:var(--font-display);margin:1rem 0 0.5rem">PDFs</h4>';
+  (lec.pdfs||[]).forEach(function(pdf,pi2){
+    h+='<div class="resource-row"><span>'+esc(pdf.title)+'</span><button class="btn btn-d" style="font-size:0.6rem;padding:0.1rem 0.4rem" onclick="deletePdf('+si+','+pi+','+ci+','+li+','+pi2+')">Remove</button></div>';
+  });
   h+='<button class="btn btn-a" style="margin-top:0.5rem" onclick="addPdf('+si+','+pi+','+ci+','+li+')">+ Add PDF</button>';
   openModal('Edit Lecture',h,'<button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-s" onclick="saveLecture('+si+','+pi+','+ci+','+li+')">Save</button>');
 }
-function saveLecture(si,pi,ci,li){_treeData[si].papers[pi].chapters[ci].lectures[li].title=document.getElementById('lecTitle').value.trim();_treeData[si].papers[pi].chapters[ci].lectures[li].yt_video_id=document.getElementById('lecYtId').value.trim();closeModal();renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')}
-function addPdf(si,pi,ci,li){p2('PDF title:','Notes','PDF URL:','https://',function(t,u){_treeData[si].papers[pi].chapters[ci].lectures[li].pdfs.push({title:t,url:u});editLecture(si,pi,ci,li)})}
-function deletePdf(si,pi,ci,li,pi2){if(confirm('Remove PDF?')){_treeData[si].papers[pi].chapters[ci].lectures[li].pdfs.splice(pi2,1);editLecture(si,pi,ci,li)}}
-function deleteLecture(si,pi,ci,li){if(confirm('Delete lecture?')){_treeData[si].papers[pi].chapters[ci].lectures.splice(li,1);renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')}}
-function addResource(){p2('Title:','Resource','URL:','https://',function(t,u){_treeResources.push({title:t,url:u});renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')})}
-function deleteResource(i){if(confirm('Remove?')){_treeResources.splice(i,1);renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')}}
-
-// ─── PAYMENTS ───
-async function loadPayments(){
-  var t=document.getElementById('paymentsTbl');t.innerHTML='<tr><td colspan="7" style="text-align:center;padding:2rem">Loading...</td></tr>';
-  var r=await api('GET','/admin/enrollments');
-  if(!r.ok){t.innerHTML='<tr><td colspan="7">Error</td></tr>';return}
-  var list=r.data;
-  if(!list||!list.length){t.innerHTML='<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--_theme---text-secondary)">No payments yet.</td></tr>';return}
-  t.innerHTML=list.map(function(e){var sc='b-o';if(e.status==='approved')sc='b-g';if(e.status==='spam')sc='b-r';var a='';if(e.status==='pending'){a+='<button class="btn btn-s" onclick="verifyPay('+e.id+')">Verify</button> <button class="btn btn-d" onclick="spamPay('+e.id+')">Spam</button> ';}a+='<button class="btn btn-d" onclick="delPay('+e.id+')">Delete</button>';return'<tr><td>'+esc(e.user_name||'?')+'</td><td>'+esc(e.course_title||'?')+'</td><td>'+esc(e.payment_method||'-')+'</td><td style="font-family:var(--font-mono);font-size:0.75rem">'+esc(e.trx_id||'-')+'</td><td>'+esc(e.sender_phone||'-')+'</td><td><span class="badge '+sc+'">'+esc(e.status)+'</span></td><td>'+a+'</td></tr>'}).join('');
+function saveLecture(si,pi,ci,li){
+  _treeData[si].papers[pi].chapters[ci].lectures[li].title=document.getElementById('lecTitle').value.trim();
+  _treeData[si].papers[pi].chapters[ci].lectures[li].yt_video_id=document.getElementById('lecYtId').value.trim();
+  closeModal();
+  renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'');
 }
-async function verifyPay(id){if(!confirm('Verify and grant access?'))return;var r=await api('PUT','/admin/enrollments/'+id+'/verify');if(r.ok){toast('Verified');loadPayments()}else toast(r.data?.error||'Failed',true)}
-async function spamPay(id){if(!confirm('Mark as spam?'))return;var r=await api('PUT','/admin/enrollments/'+id+'/spam');if(r.ok){toast('Spam');loadPayments()}else toast(r.data?.error||'Failed',true)}
-async function delPay(id){if(!confirm('Delete?'))return;var r=await api('DELETE','/admin/enrollments/'+id);if(r.ok){toast('Deleted');loadPayments()}else toast(r.data?.error||'Failed',true)}
+function addPdf(si,pi,ci,li){
+  p2('PDF title:','Lecture Notes','PDF URL:','https://',function(t,u){
+    _treeData[si].papers[pi].chapters[ci].lectures[li].pdfs.push({title:t,url:u});
+    editLecture(si,pi,ci,li);
+  });
+}
+function deletePdf(si,pi,ci,li,pi2){if(confirm('Remove this PDF?')){_treeData[si].papers[pi].chapters[ci].lectures[li].pdfs.splice(pi2,1);editLecture(si,pi,ci,li)}}
+function deleteLecture(si,pi,ci,li){if(confirm('Delete this lecture?')){_treeData[si].papers[pi].chapters[ci].lectures.splice(li,1);renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')}}
 
-// ─── SETTINGS ───
-async function loadSettings(){var r=await api('GET','/admin/meta');if(r.ok){document.getElementById('setBkash').value=r.data.bkash_number||'';document.getElementById('setNagad').value=r.data.nagad_number||'';document.getElementById('setShow').checked=r.data.show_numbers!=='false'}}
-async function saveSettings(){var r=await api('PUT','/admin/meta',{bkash_number:document.getElementById('setBkash').value.trim(),nagad_number:document.getElementById('setNagad').value.trim(),show_numbers:document.getElementById('setShow').checked?'true':'false'});if(r.ok)toast('Saved');else toast('Failed',true)}
+// Resources
+function addResource(){p2('Resource title:','Study Material','URL:','https://',function(t,u){_treeResources.push({title:t,url:u});renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')})}
+function deleteResource(i){if(confirm('Remove this resource?')){_treeResources.splice(i,1);renderTreeModal(allCourses.find(function(c){return c.id===_treeCourseId})?.title||'')}}
+
+// ═══════════════════════════════════════
+// PAYMENTS
+// ═══════════════════════════════════════
+async function loadPayments(){
+  var t=document.getElementById('paymentsTbl');
+  t.innerHTML='<tr><td colspan="7" class="empty-td">Loading payments...</td></tr>';
+  var r=await api('GET','/admin/enrollments');
+  if(!r.ok){t.innerHTML='<tr><td colspan="7" class="empty-td">Error loading payments</td></tr>';return}
+  var list=r.data;
+  if(!list||!list.length){t.innerHTML='<tr><td colspan="7" class="empty-td">No payment records yet. When students submit bKash/Nagad payments, they appear here.</td></tr>';return}
+  t.innerHTML=list.map(function(e){
+    var sc='b-o';if(e.status==='approved')sc='b-g';if(e.status==='spam'||e.status==='rejected')sc='b-r';
+    var a='';
+    if(e.status==='pending'){a+='<button class="btn btn-s" onclick="verifyPay('+e.id+')">Verify</button> <button class="btn btn-d" onclick="spamPay('+e.id+')">Spam</button> ';}
+    a+='<button class="btn btn-d" onclick="delPay('+e.id+')">Delete</button>';
+    return'<tr>'+
+      '<td>'+esc(e.user_name||'Unknown')+'</td>'+
+      '<td>'+esc(e.course_title||'Deleted')+'</td>'+
+      '<td>'+esc(e.payment_method||'-')+'</td>'+
+      '<td style="font-family:var(--font-mono);font-size:0.75rem">'+esc(e.trx_id||'-')+'</td>'+
+      '<td>'+esc(e.sender_phone||'-')+'</td>'+
+      '<td><span class="badge '+sc+'">'+esc(e.status)+'</span></td>'+
+      '<td>'+a+'</td>'+
+    '</tr>';
+  }).join('');
+}
+async function verifyPay(id){if(!confirm('Verify payment and grant 365-day access?'))return;var r=await api('PUT','/admin/enrollments/'+id+'/verify');if(r.ok){toast('Payment verified — access granted');loadPayments()}else toast(r.data?.error||'Failed',true)}
+async function spamPay(id){if(!confirm('Mark as spam? User may be blocked after 5 spam marks.'))return;var r=await api('PUT','/admin/enrollments/'+id+'/spam');if(r.ok){toast('Marked as spam');loadPayments()}else toast(r.data?.error||'Failed',true)}
+async function delPay(id){if(!confirm('Delete this payment record?'))return;var r=await api('DELETE','/admin/enrollments/'+id);if(r.ok){toast('Deleted');loadPayments()}else toast(r.data?.error||'Failed',true)}
+
+// ═══════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════
+async function loadSettings(){
+  var r=await api('GET','/admin/meta');
+  if(r.ok){
+    document.getElementById('setBkash').value=r.data.bkash_number||'';
+    document.getElementById('setNagad').value=r.data.nagad_number||'';
+    document.getElementById('setShow').checked=r.data.show_numbers!=='false';
+  }
+}
+async function saveSettings(){
+  var r=await api('PUT','/admin/meta',{
+    bkash_number:document.getElementById('setBkash').value.trim(),
+    nagad_number:document.getElementById('setNagad').value.trim(),
+    show_numbers:document.getElementById('setShow').checked?'true':'false'
+  });
+  if(r.ok)toast('Settings saved');else toast('Failed',true);
+}
 
 loadStats();
 </script>
