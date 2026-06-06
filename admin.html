@@ -3,312 +3,213 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel — Excellence Gateway Academy</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <title>Admin — EGA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{
-      --bg:#05080f;--surface:#0b0f1a;--surface2:#111827;--surface3:#161e2e;
-      --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.11);
-      --accent:#C9A84C;--accent2:#b8942f;--accent-dim:rgba(201,168,76,0.08);
-      --white:#f0f4f8;--gray:#7a8899;--gray2:#a0adb8;
-      --red:#f0566a;--green:#10d48e;--orange:#f59e0b;
-      --radius:9px;--radius-lg:13px;--transition:.18s cubic-bezier(.4,0,.2,1)
-    }
-    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);display:flex;height:100vh;overflow:hidden}
-    h2{font-family:'Cormorant Garamond',serif;font-weight:400}
-
-    .sidebar{
-      width:220px;min-width:220px;background:var(--surface);border-right:1px solid var(--border);
-      display:flex;flex-direction:column;padding:1.2rem 0
-    }
-    .sidebar .logo{padding:0 1.5rem 1.2rem;border-bottom:1px solid var(--border);margin-bottom:1rem;display:flex;align-items:center;gap:10px}
-    .sidebar .logo img{height:26px}
-    .sidebar .logo span{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--white)}
-    .sidebar nav{flex:1}
-    .sidebar nav a{
-      display:flex;align-items:center;gap:0.6rem;padding:0.6rem 1.5rem;
-      color:var(--gray);text-decoration:none;font-size:0.83rem;
-      border-left:3px solid transparent;transition:all var(--transition);cursor:pointer
-    }
-    .sidebar nav a:hover{color:var(--white);background:var(--surface2)}
-    .sidebar nav a.active{border-left-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
-    .sidebar nav a svg{width:15px;height:15px;flex-shrink:0}
-    .sidebar .sfooter{padding:1rem 1.5rem;border-top:1px solid var(--border);font-size:0.75rem;color:var(--gray)}
-    .sidebar .sfooter a{color:var(--red);cursor:pointer;text-decoration:none}
-
-    .main{flex:1;overflow-y:auto;padding:2rem}
-    .view{display:none}.view.active{display:block}
-
-    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0.8rem;margin-bottom:2rem}
-    .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem}
-    .stat-card .lbl{font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--gray)}
-    .stat-card .val{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--accent);margin-top:0.2rem}
-
-    .section-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}
-    .section-h h2{font-size:1.5rem}
-
-    table{width:100%;border-collapse:collapse;font-size:0.83rem}
-    th{text-align:left;padding:0.7rem 0.8rem;color:var(--gray2);font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;border-bottom:1px solid var(--border);white-space:nowrap}
-    td{padding:0.6rem 0.8rem;border-bottom:1px solid var(--border)}
-    tr:hover td{background:var(--surface2)}
-
-    .badge{display:inline-block;padding:0.18rem 0.55rem;border-radius:20px;font-size:0.66rem;font-weight:500}
-    .b-g{background:rgba(16,212,142,0.1);color:var(--green)}
-    .b-o{background:rgba(245,158,11,0.1);color:var(--orange)}
-    .b-r{background:rgba(240,86,106,0.1);color:var(--red)}
-    .b-a{background:var(--accent-dim);color:var(--accent)}
-
-    .btn{
-      padding:0.3rem 0.7rem;font-size:0.68rem;font-weight:500;border-radius:var(--radius);
-      border:1px solid var(--border2);cursor:pointer;font-family:'DM Sans',sans-serif;
-      background:var(--surface2);color:var(--white);transition:all var(--transition);margin:1px;white-space:nowrap
-    }
-    .btn:hover{border-color:var(--accent);color:var(--accent)}
-    .btn-d{color:var(--red);border-color:rgba(240,86,106,0.3)}.btn-d:hover{background:rgba(240,86,106,0.1)}
-    .btn-s{color:var(--green);border-color:rgba(16,212,142,0.3)}.btn-s:hover{background:rgba(16,212,142,0.1)}
-
-    .modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center}
-    .modal-overlay.show{display:flex}
-    .modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.8rem;width:90%;max-width:500px;max-height:85vh;overflow-y:auto}
-    .modal h3{font-family:'Cormorant Garamond',serif;font-weight:400;margin-bottom:1.5rem;font-size:1.2rem}
-    .fg{margin-bottom:0.9rem}
-    .fg label{display:block;font-size:0.76rem;color:var(--gray2);margin-bottom:0.25rem}
-    .fg input,.fg select,.fg textarea{width:100%;padding:0.55rem 0.7rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--white);font-size:0.85rem;font-family:'DM Sans',sans-serif;outline:none}
-    .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent)}
-    .fg textarea{resize:vertical;min-height:60px}
-    .fr{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem}
-    .ma{display:flex;gap:0.7rem;justify-content:flex-end;margin-top:1.5rem}
-
-    .toast{position:fixed;bottom:2rem;right:2rem;z-index:600;padding:0.8rem 1.2rem;border-radius:var(--radius);font-size:0.85rem;opacity:0;transform:translateX(100px);transition:all 0.3s ease;pointer-events:none}
-    .toast.show{opacity:1;transform:translateX(0)}
-    .toast-ok{background:rgba(16,212,142,0.09);border:1px solid var(--green);color:var(--green)}
-    .toast-err{background:rgba(240,86,106,0.09);border:1px solid var(--red);color:var(--red)}
-    .empty{text-align:center;padding:2.5rem;color:var(--gray)}
-
-    .settings-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.2rem}
-    .settings-card h4{font-size:0.95rem;margin-bottom:1rem}
-    .cb{display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-size:0.85rem}
-    .cb input{accent-color:var(--accent)}
-
-    @media(max-width:768px){
-      body{flex-direction:column}
-      .sidebar{width:100%;min-width:100%;flex-direction:row;padding:0.4rem;overflow-x:auto;flex-shrink:0}
-      .sidebar .logo,.sidebar .sfooter{display:none}
-      .sidebar nav{display:flex;gap:0}
-      .sidebar nav a{padding:0.45rem 0.6rem;font-size:0.7rem;border-left:none;border-bottom:2px solid transparent;white-space:nowrap}
-      .sidebar nav a.active{border-left:none;border-bottom-color:var(--accent)}
-      .main{padding:1rem}
-      .stats{grid-template-columns:1fr 1fr}
-    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:#05080f;color:#f0f4f8;padding:1rem}
+    h2{font-family:'Cormorant Garamond',serif;font-weight:400;margin-bottom:1rem}
+    table{width:100%;border-collapse:collapse;font-size:0.85rem;margin-top:1rem}
+    th{text-align:left;padding:0.6rem;color:#a0adb8;font-size:0.7rem;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,0.07)}
+    td{padding:0.5rem 0.6rem;border-bottom:1px solid rgba(255,255,255,0.07)}
+    .btn{background:#C9A84C;color:#000;padding:0.5rem 1rem;border:none;border-radius:6px;font-weight:500;cursor:pointer;font-size:0.8rem;margin:2px}
+    .btn-red{background:#f0566a;color:#fff}
+    .btn-green{background:#10d48e;color:#000}
+    .badge{display:inline-block;padding:0.15rem 0.5rem;border-radius:12px;font-size:0.7rem}
+    .bg{background:rgba(16,212,142,0.15);color:#10d48e}
+    .bo{background:rgba(245,158,11,0.15);color:#f59e0b}
+    .br{background:rgba(240,86,106,0.15);color:#f0566a}
+    .tabs{display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap}
+    .tab{padding:0.5rem 1rem;background:#111827;border:1px solid rgba(255,255,255,0.07);border-radius:6px;color:#7a8899;cursor:pointer;font-size:0.85rem}
+    .tab.active{background:rgba(201,168,76,0.15);color:#C9A84C;border-color:#C9A84C}
+    .section{display:none}
+    .section.active{display:block}
   </style>
 </head>
 <body>
 
-<aside class="sidebar">
-  <div class="logo"><img src="/images/ega.png" height="26" alt="EGA"><span>EGA Admin</span></div>
-  <nav>
-    <a data-v="dashboard" class="active" onclick="showView('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
-    <a data-v="users" onclick="showView('users')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Users</a>
-    <a data-v="courses" onclick="showView('courses')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>Courses</a>
-    <a data-v="payments" onclick="showView('payments')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>Payments</a>
-    <a data-v="settings" onclick="showView('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>Settings</a>
-  </nav>
-  <div class="sfooter"><span id="adminEmail"></span><br><a onclick="logout()">Sign Out</a></div>
-</aside>
+<h2>EGA Admin</h2>
+<p style="color:#7a8899;margin-bottom:1rem" id="adminInfo"></p>
 
-<main class="main">
+<div class="tabs">
+  <div class="tab active" onclick="showTab('payments')">Payments</div>
+  <div class="tab" onclick="showTab('courses')">Courses</div>
+  <div class="tab" onclick="showTab('users')">Users</div>
+  <div class="tab" onclick="showTab('settings')">Settings</div>
+  <div class="tab" onclick="logout()" style="margin-left:auto;color:#f0566a">Sign Out</div>
+</div>
 
-  <div class="view active" id="view-dashboard">
-    <div class="section-h"><h2>Dashboard</h2></div>
-    <div class="stats">
-      <div class="stat-card"><div class="lbl">Users</div><div class="val" id="sUsers">-</div></div>
-      <div class="stat-card"><div class="lbl">Courses</div><div class="val" id="sCourses">-</div></div>
-      <div class="stat-card"><div class="lbl">Pending Payments</div><div class="val" id="sPendingPay">-</div></div>
-      <div class="stat-card"><div class="lbl">Active Members</div><div class="val" id="sActiveMem">-</div></div>
-    </div>
+<div class="section active" id="sec-payments">
+  <button class="btn" onclick="loadPayments()">Refresh</button>
+  <div id="paymentsTable"></div>
+</div>
+
+<div class="section" id="sec-courses">
+  <button class="btn btn-green" onclick="openCourseForm()">+ New Course</button>
+  <div id="coursesTable"></div>
+</div>
+
+<div class="section" id="sec-users">
+  <button class="btn" onclick="loadUsers()">Refresh</button>
+  <div id="usersTable"></div>
+</div>
+
+<div class="section" id="sec-settings">
+  <div style="max-width:400px;background:#0b0f1a;padding:1.5rem;border-radius:8px;border:1px solid rgba(255,255,255,0.07)">
+    <p style="margin-bottom:0.5rem">bKash Number</p>
+    <input id="bkash" style="width:100%;padding:0.5rem;background:#111827;border:1px solid rgba(255,255,255,0.11);color:#fff;border-radius:6px;margin-bottom:1rem">
+    <p style="margin-bottom:0.5rem">Nagad Number</p>
+    <input id="nagad" style="width:100%;padding:0.5rem;background:#111827;border:1px solid rgba(255,255,255,0.11);color:#fff;border-radius:6px;margin-bottom:1rem">
+    <label style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1rem"><input type="checkbox" id="showNums" checked> Show numbers</label>
+    <button class="btn" onclick="saveSettings()">Save</button>
   </div>
-
-  <div class="view" id="view-users">
-    <div class="section-h"><h2>Users</h2></div>
-    <div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead><tbody id="usersTbl"></tbody></table></div>
-  </div>
-
-  <div class="view" id="view-courses">
-    <div class="section-h"><h2>Courses</h2><button class="btn btn-s" onclick="openCourseModal()">+ New Course</button></div>
-    <div style="overflow-x:auto"><table><thead><tr><th>Title</th><th>Subject</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead><tbody id="coursesTbl"></tbody></table></div>
-  </div>
-
-  <div class="view" id="view-payments">
-    <div class="section-h"><h2>Payment Verification</h2></div>
-    <div style="overflow-x:auto"><table><thead><tr><th>User</th><th>Course</th><th>Method</th><th>TrxID</th><th>Phone</th><th>Status</th><th>Actions</th></tr></thead><tbody id="paymentsTbl"></tbody></table></div>
-  </div>
-
-  <div class="view" id="view-settings">
-    <div class="section-h"><h2>Settings</h2></div>
-    <div class="settings-card">
-      <h4>Payment Numbers</h4>
-      <div class="fg"><label>bKash Number</label><input type="text" id="setBkash" placeholder="01XXXXXXXXX"></div>
-      <div class="fg"><label>Nagad Number</label><input type="text" id="setNagad" placeholder="01XXXXXXXXX"></div>
-      <label class="cb"><input type="checkbox" id="setShow"> Show numbers on payment page</label>
-      <div style="margin-top:1rem"><button class="btn btn-s" onclick="saveSettings()">Save</button></div>
-    </div>
-  </div>
-
-</main>
-
-<div class="modal-overlay" id="gModal"><div class="modal" id="gModalInner"></div></div>
-<div class="toast" id="toast"></div>
+</div>
 
 <script>
 var T=localStorage.getItem('ega_token');
 var U=JSON.parse(localStorage.getItem('ega_user')||'null');
-if(!T||!U||U.role!=='admin'){window.location.href='/login.html'}
-document.getElementById('adminEmail').textContent=U.email;
-function logout(){localStorage.clear();window.location.href='/'}
+if(!T||!U||U.role!=='admin'){location.href='/login.html'}
+document.getElementById('adminInfo').textContent='Logged in as: '+U.email;
 
 function esc(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
-function toast(msg,ok){var t=document.getElementById('toast');t.textContent=msg;t.className='toast toast-'+(ok===false?'err':'ok')+' show';setTimeout(function(){t.classList.remove('show')},2500)}
+function logout(){localStorage.clear();location.href='/'}
 
-async function api(method,path,body){
-  try{
-    var opts={method:method,headers:{'Content-Type':'application/json',Authorization:'Bearer '+T}};
-    if(body)opts.body=JSON.stringify(body);
-    var res=await fetch('/api'+path,opts);
-    var data=await res.json();
-    return{ok:res.ok,data:data,status:res.status};
-  }catch(e){return{ok:false,data:{error:'Network error'},status:0}}
-}
-
-function showView(id){
-  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active')});
-  var ve=document.getElementById('view-'+id);if(ve)ve.classList.add('active');
-  document.querySelectorAll('.sidebar nav a').forEach(function(a){a.classList.remove('active')});
-  var ne=document.querySelector('[data-v="'+id+'"]');if(ne)ne.classList.add('active');
-  if(id==='dashboard')loadStats();
-  if(id==='users')loadUsers();
-  if(id==='courses')loadCourses();
+function showTab(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
   if(id==='payments')loadPayments();
+  if(id==='courses')loadCourses();
+  if(id==='users')loadUsers();
   if(id==='settings')loadSettings();
 }
 
-function openModal(title,body,footer){
-  document.getElementById('gModalInner').innerHTML='<h3>'+esc(title)+'</h3><div id="_alert"></div>'+body+(footer?'<div class="ma">'+footer+'</div>':'');
-  document.getElementById('gModal').classList.add('show');
+async function api(method,path,body){
+  var opts={method:method,headers:{'Content-Type':'application/json',Authorization:'Bearer '+T}};
+  if(body)opts.body=JSON.stringify(body);
+  var res=await fetch('/api'+path,opts);
+  var data=await res.json();
+  return{ok:res.ok,data:data};
 }
-function closeModal(){document.getElementById('gModal').classList.remove('show')}
-function modalAlert(msg,err){var a=document.getElementById('_alert');if(a){a.textContent=msg;a.style.cssText='padding:0.5rem 0.7rem;border-radius:var(--radius);font-size:0.78rem;margin-bottom:0.5rem;background:'+(err?'rgba(240,86,106,0.09)':'rgba(16,212,142,0.09)')+';border:1px solid var(--'+(err?'red':'green')+');color:var(--'+(err?'red':'green')+')'}}
-document.getElementById('gModal').addEventListener('click',function(e){if(e.target===document.getElementById('gModal'))closeModal()});
-
-// ─── STATS ───
-async function loadStats(){
-  var r=await api('GET','/admin/stats');
-  if(r.ok){
-    document.getElementById('sUsers').textContent=r.data.users||0;
-    document.getElementById('sCourses').textContent=r.data.courses||0;
-    document.getElementById('sPendingPay').textContent=r.data.pendingPayments||0;
-    document.getElementById('sActiveMem').textContent=r.data.activeMembers||0;
-  }
-}
-
-// ─── USERS ───
-async function loadUsers(){
-  var r=await api('GET','/admin/users');
-  var t=document.getElementById('usersTbl');
-  if(!r.ok){t.innerHTML='<tr><td colspan="6" class="empty">Failed to load</td></tr>';return}
-  if(!r.data.length){t.innerHTML='<tr><td colspan="6" class="empty">No users registered yet</td></tr>';return}
-  t.innerHTML=r.data.map(function(u){
-    var sb=u.is_blocked?'b-r':(u.is_approved?'b-g':'b-o');
-    var st=u.is_blocked?'Blocked':(u.is_approved?'Approved':'Pending');
-    return '<tr><td>'+esc(u.name)+'</td><td>'+esc(u.email)+'</td><td><span class="badge '+(u.role==='admin'?'b-a':'b-g')+'">'+esc(u.role)+'</span></td><td><span class="badge '+sb+'">'+st+'</span></td><td>'+new Date(u.created_at).toLocaleDateString()+'</td><td>'+
-    (!u.is_approved?'<button class="btn btn-s" onclick="approveUser('+u.id+')">Approve</button> ':'')+
-    '<button class="btn '+(u.is_blocked?'btn-s':'btn-d')+'" onclick="toggleBlock('+u.id+')">'+(u.is_blocked?'Unblock':'Block')+'</button> '+
-    '<button class="btn" onclick="clearDevice('+u.id+')">Clear</button> '+
-    '<button class="btn btn-d" onclick="deleteUser('+u.id+')">Delete</button></td></tr>';
-  }).join('');
-}
-async function approveUser(id){await api('PUT','/admin/users/'+id+'/approve');loadUsers();toast('Approved')}
-async function toggleBlock(id){await api('PUT','/admin/users/'+id+'/block');loadUsers();toast('Done')}
-async function clearDevice(id){await api('PUT','/admin/users/'+id+'/clear-device');loadUsers();toast('Cleared')}
-async function deleteUser(id){if(confirm('Delete this user?')){await api('DELETE','/admin/users/'+id);loadUsers();toast('Deleted')}}
-
-// ─── COURSES ───
-var allCourses=[];
-async function loadCourses(){
-  var r=await api('GET','/admin/courses');
-  var t=document.getElementById('coursesTbl');
-  if(!r.ok){t.innerHTML='<tr><td colspan="5" class="empty">Failed to load</td></tr>';return}
-  allCourses=r.data;
-  if(!allCourses.length){t.innerHTML='<tr><td colspan="5" class="empty">No courses yet. Create one.</td></tr>';return}
-  t.innerHTML=allCourses.map(function(c){
-    return '<tr><td>'+esc(c.title)+'</td><td>'+esc(c.subject_area||'-')+'</td><td>'+(c.price===0?'Free':'৳'+c.price)+'</td><td><span class="badge '+(c.is_active?'b-g':'b-r')+'">'+(c.is_active?'Active':'Hidden')+'</span></td><td>'+
-    '<button class="btn" onclick="editCourse('+c.id+')">Edit</button> '+
-    '<button class="btn btn-d" onclick="deleteCourse('+c.id+')">Delete</button></td></tr>';
-  }).join('');
-}
-
-function openCourseModal(course){
-  var ed=!!course;
-  openModal(ed?'Edit Course':'New Course',
-    '<div class="fg"><label>Title *</label><input type="text" id="cTitle" value="'+esc(course?.title||'')+'"></div>'+
-    '<div class="fg"><label>Description</label><textarea id="cDesc">'+esc(course?.description||'')+'</textarea></div>'+
-    '<div class="fr"><div class="fg"><label>Subject</label><input type="text" id="cSubj" value="'+esc(course?.subject_area||'')+'"></div><div class="fg"><label>Difficulty</label><select id="cDiff"><option value="All Levels">All Levels</option><option value="Beginner" '+(course?.difficulty==='Beginner'?'selected':'')+'>Beginner</option><option value="Intermediate" '+(course?.difficulty==='Intermediate'?'selected':'')+'>Intermediate</option><option value="Advanced" '+(course?.difficulty==='Advanced'?'selected':'')+'>Advanced</option></select></div></div>'+
-    '<div class="fr"><div class="fg"><label>Thumbnail URL</label><input type="text" id="cThumb" value="'+esc(course?.thumbnail_url||'')+'"></div><div class="fg"><label>Badge</label><input type="text" id="cBadge" value="'+esc(course?.badge||'')+'"></div></div>'+
-    '<div class="fr"><div class="fg"><label>Price (0=free)</label><input type="number" id="cPrice" value="'+(course?.price||0)+'" step="1"></div><div class="fg"><label>Featured</label><select id="cFeat"><option value="0">No</option><option value="1" '+(course?.is_featured?'selected':'')+'>Yes</option></select></div></div>',
-    '<button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-s" onclick="saveCourse('+(course?.id||0)+')">'+(ed?'Update':'Create')+'</button>'
-  );
-}
-
-async function saveCourse(id){
-  var data={
-    title:document.getElementById('cTitle').value.trim(),
-    description:document.getElementById('cDesc').value.trim(),
-    subject_area:document.getElementById('cSubj').value.trim(),
-    difficulty:document.getElementById('cDiff').value,
-    thumbnail_url:document.getElementById('cThumb').value.trim(),
-    badge:document.getElementById('cBadge').value.trim(),
-    price:parseFloat(document.getElementById('cPrice').value)||0,
-    is_featured:parseInt(document.getElementById('cFeat').value)
-  };
-  if(!data.title){modalAlert('Title is required',true);return}
-  if(id){var ex=allCourses.find(function(c){return c.id===id});data.tree=ex?ex.tree:'[]';data.resources=ex?ex.resources:'[]'}
-  var r=id?await api('PUT','/admin/courses/'+id,data):await api('POST','/admin/courses',data);
-  if(r.ok){closeModal();loadCourses();toast(id?'Updated':'Created')}else{modalAlert(r.data.error||'Failed',true)}
-}
-async function editCourse(id){var r=await api('GET','/courses/'+id);if(r.ok)openCourseModal(r.data)}
-async function deleteCourse(id){if(confirm('Delete this course?')){await api('DELETE','/admin/courses/'+id);loadCourses();toast('Deleted')}}
 
 // ─── PAYMENTS ───
 async function loadPayments(){
-  var t=document.getElementById('paymentsTbl');
-  t.innerHTML='<tr><td colspan="7" class="empty">Loading...</td></tr>';
+  var div=document.getElementById('paymentsTable');
+  div.innerHTML='Loading...';
   var r=await api('GET','/admin/enrollments');
-  if(!r.ok){t.innerHTML='<tr><td colspan="7" class="empty">Error: '+esc(r.data?.error||'Failed')+'</td></tr>';return}
+  
+  if(!r.ok){div.innerHTML='<p style="color:#f0566a">Error: '+esc(JSON.stringify(r.data))+'</p>';return}
+  
   var list=r.data;
-  if(!list||!list.length){t.innerHTML='<tr><td colspan="7" class="empty">No payments yet. When students submit payments, they appear here.</td></tr>';return}
-  t.innerHTML=list.map(function(e){
-    var sc='b-o';if(e.status==='approved')sc='b-g';if(e.status==='spam'||e.status==='rejected')sc='b-r';
-    var acts='';
-    if(e.status==='pending'){acts+='<button class="btn btn-s" onclick="verifyPay('+e.id+')">Verify</button> <button class="btn btn-d" onclick="spamPay('+e.id+')">Spam</button> ';}
-    acts+='<button class="btn btn-d" onclick="delPay('+e.id+')">Delete</button>';
-    return '<tr><td>'+esc(e.user_name||'?')+'</td><td>'+esc(e.course_title||'?')+'</td><td>'+esc(e.payment_method||'-')+'</td><td style="font-family:DM Mono,monospace;font-size:0.78rem">'+esc(e.trx_id||'-')+'</td><td>'+esc(e.sender_phone||'-')+'</td><td><span class="badge '+sc+'">'+esc(e.status)+'</span></td><td>'+acts+'</td></tr>';
-  }).join('');
+  
+  // FIX: Ensure list is an array
+  if(!list){list=[]}
+  if(!Array.isArray(list)){
+    // Maybe it's wrapped in an object
+    if(list.results)list=list.results;
+    else if(list.rows)list=list.rows;
+    else list=[list];
+  }
+  
+  if(list.length===0){
+    div.innerHTML='<p style="color:#7a8899;padding:2rem;text-align:center">No payments yet. When a student submits payment, it will appear here.</p>';
+    return;
+  }
+  
+  var html='<table><thead><tr><th>ID</th><th>User</th><th>Course</th><th>Method</th><th>TrxID</th><th>Phone</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+  
+  list.forEach(function(e){
+    var sc='bo';if(e.status==='approved')sc='bg';if(e.status==='spam')sc='br';
+    html+='<tr>';
+    html+='<td>'+e.id+'</td>';
+    html+='<td>'+esc(e.user_name||'User#'+e.user_id)+'</td>';
+    html+='<td>'+esc(e.course_title||'Course#'+e.course_id)+'</td>';
+    html+='<td>'+esc(e.payment_method||'-')+'</td>';
+    html+='<td>'+esc(e.trx_id||'-')+'</td>';
+    html+='<td>'+esc(e.sender_phone||'-')+'</td>';
+    html+='<td><span class="badge '+sc+'">'+esc(e.status)+'</span></td>';
+    html+='<td>';
+    if(e.status==='pending'){
+      html+='<button class="btn btn-green" onclick="verify('+e.id+')">Verify</button> ';
+      html+='<button class="btn btn-red" onclick="spam('+e.id+')">Spam</button> ';
+    }
+    html+='<button class="btn btn-red" onclick="del('+e.id+')">Delete</button>';
+    html+='</td>';
+    html+='</tr>';
+  });
+  
+  html+='</tbody></table>';
+  div.innerHTML=html;
 }
-async function verifyPay(id){if(!confirm('Verify and grant 365-day access?'))return;var r=await api('PUT','/admin/enrollments/'+id+'/verify');if(r.ok){toast('Verified');loadPayments()}else{toast(r.data?.error||'Failed',false)}}
-async function spamPay(id){if(!confirm('Mark as spam?'))return;var r=await api('PUT','/admin/enrollments/'+id+'/spam');if(r.ok){toast('Marked spam');loadPayments()}else{toast(r.data?.error||'Failed',false)}}
-async function delPay(id){if(!confirm('Delete this record?'))return;var r=await api('DELETE','/admin/enrollments/'+id);if(r.ok){toast('Deleted');loadPayments()}else{toast(r.data?.error||'Failed',false)}}
+
+async function verify(id){if(confirm('Verify?')){await api('PUT','/admin/enrollments/'+id+'/verify');loadPayments()}}
+async function spam(id){if(confirm('Mark as spam?')){await api('PUT','/admin/enrollments/'+id+'/spam');loadPayments()}}
+async function del(id){if(confirm('Delete?')){await api('DELETE','/admin/enrollments/'+id);loadPayments()}}
+
+// ─── COURSES ───
+async function loadCourses(){
+  var div=document.getElementById('coursesTable');
+  var r=await api('GET','/admin/courses');
+  if(!r.ok){div.innerHTML='Error';return}
+  var list=r.data||[];
+  if(!list.length){div.innerHTML='<p style="color:#7a8899;padding:2rem">No courses. Create one.</p>';return}
+  var html='<table><thead><tr><th>Title</th><th>Subject</th><th>Price</th><th>Actions</th></tr></thead><tbody>';
+  list.forEach(function(c){
+    html+='<tr><td>'+esc(c.title)+'</td><td>'+esc(c.subject_area||'-')+'</td><td>'+(c.price===0?'Free':'৳'+c.price)+'</td><td><button class="btn" onclick="editCourse('+c.id+')">Edit</button> <button class="btn btn-red" onclick="delCourse('+c.id+')">Delete</button></td></tr>';
+  });
+  html+='</tbody></table>';
+  div.innerHTML=html;
+}
+
+function openCourseForm(course){
+  var ed=!!course;
+  var title=prompt('Course title:',course?course.title:'');
+  if(!title)return;
+  var desc=prompt('Description:',course?course.description:'');
+  var subj=prompt('Subject area:',course?course.subject_area:'');
+  var price=prompt('Price (0=free):',course?course.price:'0');
+  var data={title:title,description:desc||'',subject_area:subj||'',difficulty:'All Levels',price:parseFloat(price)||0};
+  if(ed){data.tree=course.tree;data.resources=course.resources}
+  var fn=ed?api('PUT','/admin/courses/'+course.id,data):api('POST','/admin/courses',data);
+  fn.then(function(r){if(r.ok)loadCourses();else alert('Failed: '+JSON.stringify(r.data))});
+}
+async function editCourse(id){var r=await api('GET','/courses/'+id);if(r.ok)openCourseForm(r.data)}
+async function delCourse(id){if(confirm('Delete?')){await api('DELETE','/admin/courses/'+id);loadCourses()}}
+
+// ─── USERS ───
+async function loadUsers(){
+  var div=document.getElementById('usersTable');
+  var r=await api('GET','/admin/users');
+  if(!r.ok){div.innerHTML='Error';return}
+  var list=r.data||[];
+  var html='<table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+  list.forEach(function(u){
+    var st=u.is_blocked?'Blocked':(u.is_approved?'Approved':'Pending');
+    html+='<tr><td>'+esc(u.name)+'</td><td>'+esc(u.email)+'</td><td>'+esc(u.role)+'</td><td>'+st+'</td><td>'+
+    (!u.is_approved?'<button class="btn btn-green" onclick="approve('+u.id+')">Approve</button> ':'')+
+    '<button class="btn" onclick="block('+u.id+')">'+(u.is_blocked?'Unblock':'Block')+'</button> '+
+    '<button class="btn btn-red" onclick="delUser('+u.id+')">Delete</button></td></tr>';
+  });
+  html+='</tbody></table>';
+  div.innerHTML=html;
+}
+async function approve(id){await api('PUT','/admin/users/'+id+'/approve');loadUsers()}
+async function block(id){await api('PUT','/admin/users/'+id+'/block');loadUsers()}
+async function delUser(id){if(confirm('Delete?')){await api('DELETE','/admin/users/'+id);loadUsers()}}
 
 // ─── SETTINGS ───
 async function loadSettings(){
   var r=await api('GET','/admin/meta');
-  if(r.ok){document.getElementById('setBkash').value=r.data.bkash_number||'';document.getElementById('setNagad').value=r.data.nagad_number||'';document.getElementById('setShow').checked=r.data.show_numbers!=='false'}
+  if(r.ok){document.getElementById('bkash').value=r.data.bkash_number||'';document.getElementById('nagad').value=r.data.nagad_number||'';document.getElementById('showNums').checked=r.data.show_numbers!=='false'}
 }
 async function saveSettings(){
-  var r=await api('PUT','/admin/meta',{bkash_number:document.getElementById('setBkash').value.trim(),nagad_number:document.getElementById('setNagad').value.trim(),show_numbers:document.getElementById('setShow').checked?'true':'false'});
-  if(r.ok)toast('Saved');else toast('Failed',false)
+  await api('PUT','/admin/meta',{bkash_number:document.getElementById('bkash').value,nagad_number:document.getElementById('nagad').value,show_numbers:document.getElementById('showNums').checked?'true':'false'});
+  alert('Saved');
 }
 
-loadStats();
+loadPayments();
+loadSettings();
 </script>
 </body>
 </html>
