@@ -86,6 +86,33 @@
     }
     .btn-nav:hover { background: var(--accent2) !important; transform: translateY(-1px); }
 
+    .user-menu { position: relative; cursor: pointer; }
+    .user-menu-btn {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: var(--surface2); border: 1px solid var(--border);
+      padding: 0.4rem 0.8rem; border-radius: var(--radius);
+      color: var(--white); font-size: 0.82rem; font-family: 'DM Sans', sans-serif; cursor: pointer;
+    }
+    .user-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--accent); color: #05080f;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 0.78rem;
+    }
+    .user-dropdown {
+      position: absolute; top: 100%; right: 0; margin-top: 0.5rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 0.5rem 0; min-width: 180px;
+      display: none; z-index: 101;
+    }
+    .user-dropdown.show { display: block; }
+    .user-dropdown a {
+      display: block; padding: 0.6rem 1rem; color: var(--gray);
+      text-decoration: none; font-size: 0.85rem; transition: all var(--transition);
+    }
+    .user-dropdown a:hover { background: var(--surface2); color: var(--white); }
+    .user-dropdown .logout-link { color: var(--red); }
+
     .hamburger {
       display: none;
       flex-direction: column; gap: 5px;
@@ -314,7 +341,8 @@
       transition: color var(--transition);
     }
     .value-card:hover .value-num { color: var(--accent); }
-    .value-icon { margin: 0.8rem 0; font-size: 1.5rem; }
+    .value-icon { margin: 0.8rem 0; }
+    .value-icon svg { width: 28px; height: 28px; color: var(--accent); }
     .value-card h4 { font-size: 1.1rem; margin-bottom: 0.5rem; }
     .value-card p { font-size: 0.82rem; color: var(--gray); line-height: 1.6; }
 
@@ -330,6 +358,9 @@
       border-radius: var(--radius-lg);
       overflow: hidden;
       transition: all var(--transition);
+      display: block;
+      text-decoration: none;
+      color: inherit;
     }
     .course-card:hover {
       transform: translateY(-8px);
@@ -339,10 +370,10 @@
       height: 180px;
       background: var(--surface2);
       display: flex; align-items: center; justify-content: center;
-      font-size: 3.5rem;
       position: relative;
     }
     .course-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .course-thumb svg { width: 48px; height: 48px; color: var(--accent); }
     .course-badge {
       position: absolute; top: 1rem; left: 1rem;
       background: rgba(0,0,0,0.6);
@@ -404,9 +435,9 @@
       transform: translateX(4px);
       border-left: 3px solid var(--accent);
     }
-    .feature-icon { font-size: 1.5rem; flex-shrink: 0; }
     .feature-item h4 { font-size: 0.95rem; margin-bottom: 0.3rem; }
     .feature-item p { font-size: 0.8rem; color: var(--gray); line-height: 1.5; }
+    .feature-icon { font-size: 1.5rem; flex-shrink: 0; }
 
     /* How it works */
     .how-grid {
@@ -562,7 +593,6 @@
       border-radius: var(--radius);
     }
 
-    /* Animations */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(24px); }
       to { opacity: 1; transform: translateY(0); }
@@ -580,7 +610,6 @@
       100% { background-position: -200% 0; }
     }
 
-    /* Responsive */
     @media (max-width: 900px) {
       .header-nav { display: none; }
       .hamburger { display: flex; }
@@ -603,7 +632,6 @@
 </head>
 <body>
 
-<!-- Header -->
 <header class="header">
   <a href="/" class="header-logo">
     <img src="/images/ega.png" height="32" alt="EGA">
@@ -612,7 +640,7 @@
   <button class="hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
-  <ul class="header-nav">
+  <ul class="header-nav" id="headerNav">
     <li><a href="#courses">Courses</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="/explore.html">Explore</a></li>
@@ -620,23 +648,20 @@
   </ul>
 </header>
 
-<!-- Sidebar Overlay -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-<!-- Sidebar -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
     <img src="/images/ega.png" height="28" alt="EGA">
     <span style="font-family:'Cormorant Garamond',serif;color:var(--white)">EGA</span>
   </div>
-  <ul class="sidebar-nav">
-    <li><a href="/" class="active">Home</a></li>
+  <ul class="sidebar-nav" id="sidebarNav">
+    <li><a href="/">Home</a></li>
     <li><a href="/explore.html">Explore Courses</a></li>
     <li><a href="/login.html">Sign In</a></li>
     <li><a href="/signup.html">Create Account</a></li>
   </ul>
   <div class="sidebar-footer">
-    <a href="/login.html">Sign In →</a>
+    <a href="/login.html">Sign In</a>
   </div>
 </aside>
 
@@ -671,7 +696,7 @@
   </div>
   <div class="hero-stats">
     <div class="stat"><div class="stat-num" id="statCourses">0<span>+</span></div><div class="stat-label">Courses</div></div>
-    <div class="stat"><div class="stat-num" id="statLectures">0<span>+</span></div><div class="stat-label">Lectures</div></div>
+    <div class="stat"><div class="stat-num" id="statLectures">0<span>+</span></div><div class="stat-label">Enrollments</div></div>
     <div class="stat"><div class="stat-num" id="statStudents">0<span>+</span></div><div class="stat-label">Students</div></div>
   </div>
 </section>
@@ -703,33 +728,25 @@
   <div class="values-grid">
     <div class="value-card">
       <div class="value-num">01</div>
-      <div class="value-icon">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
-      </div>
+      <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg></div>
       <h4>Deep Structure</h4>
-      <p>Every subject organized into Subjects → Papers → Chapters → Lectures for systematic learning.</p>
+      <p>Every subject organized into Subjects &rarr; Papers &rarr; Chapters &rarr; Lectures for systematic learning.</p>
     </div>
     <div class="value-card">
       <div class="value-num">02</div>
-      <div class="value-icon">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/></svg>
-      </div>
+      <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/></svg></div>
       <h4>Genuine Depth</h4>
       <p>No surface-level content. Every lecture builds real understanding from first principles.</p>
     </div>
     <div class="value-card">
       <div class="value-num">03</div>
-      <div class="value-icon">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      </div>
+      <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
       <h4>Self-Paced Freedom</h4>
       <p>Study when you're ready. No schedules, no pressure. Replay lectures forever.</p>
     </div>
     <div class="value-card">
       <div class="value-num">04</div>
-      <div class="value-icon">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      </div>
+      <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
       <h4>Rich Resources</h4>
       <p>Downloadable PDFs, practice materials, and reference sheets with every course.</p>
     </div>
@@ -758,37 +775,14 @@
     <div class="features-sticky">
       <p class="section-label">Platform Features</p>
       <h2 class="section-title">Everything you need to <em style="color:var(--accent);font-style:italic">excel</em>.</h2>
-      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem">
-        <span class="hero-tag">Premium Player</span>
-        <span class="hero-tag">PDF Downloads</span>
-        <span class="hero-tag">Mobile Ready</span>
-      </div>
     </div>
     <div class="features-grid">
-      <div class="feature-item">
-        <div class="feature-icon">▶️</div>
-        <div><h4>Premium Video Player</h4><p>Ad-free HD player with speed controls, skip, and keyboard shortcuts.</p></div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">📚</div>
-        <div><h4>Structured Curriculum</h4><p>Subject → Paper → Chapter → Lecture hierarchy keeps learning organized.</p></div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">📄</div>
-        <div><h4>Downloadable PDFs</h4><p>Lecture notes, formula sheets, and practice sets available offline.</p></div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">📊</div>
-        <div><h4>Visual Progress Tracking</h4><p>See completed chapters and track your journey through each course.</p></div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">🔔</div>
-        <div><h4>Smart Notifications</h4><p>Get alerts when payments are verified or new content is added.</p></div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">📱</div>
-        <div><h4>Seamless Mobile Experience</h4><p>Full-featured on mobile — watch, read, and track progress anywhere.</p></div>
-      </div>
+      <div class="feature-item"><div class="feature-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><div><h4>Premium Video Player</h4><p>Ad-free HD player with speed controls, skip, and keyboard shortcuts.</p></div></div>
+      <div class="feature-item"><div class="feature-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg></div><div><h4>Structured Curriculum</h4><p>Subject &rarr; Paper &rarr; Chapter &rarr; Lecture hierarchy keeps learning organized.</p></div></div>
+      <div class="feature-item"><div class="feature-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><h4>Downloadable PDFs</h4><p>Lecture notes, formula sheets, and practice sets available offline.</p></div></div>
+      <div class="feature-item"><div class="feature-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div><h4>Visual Progress Tracking</h4><p>See completed chapters and track your journey through each course.</p></div></div>
+      <div class="feature-item"><div class="feature-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="6" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div><h4>Smart Notifications</h4><p>Get alerts when payments are verified or new content is added.</p></div></div>
+      <div class="feature-item"><div class="feature-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><div><h4>Seamless Mobile Experience</h4><p>Full-featured on mobile — watch, read, and track progress anywhere.</p></div></div>
     </div>
   </div>
 </section>
@@ -811,54 +805,16 @@
   </div>
 </section>
 
-<!-- Testimonials -->
-<section style="background:var(--surface)">
-  <p class="section-label">Student Stories</p>
-  <h2 class="section-title">What our students say.</h2>
-  <div class="testi-grid">
-    <div class="testi-card featured">
-      <div class="testi-quote">"The structured approach changed how I study. Instead of jumping between random YouTube videos, I follow a clear path. Physics finally makes sense."</div>
-      <div class="testi-author">Aryan Mehta</div>
-      <div class="testi-role">JEE Advanced 2024</div>
-    </div>
-    <div class="testi-card">
-      <div class="testi-quote">"The PDF resources are gold. I print them out and study offline. The lecture notes are better than my coaching center's material."</div>
-      <div class="testi-author">Priya Nair</div>
-      <div class="testi-role">NEET 2024 — 680/720</div>
-    </div>
-    <div class="testi-card">
-      <div class="testi-quote">"Self-paced is exactly what I needed. I work during the day and study at night. EGA lets me learn when I'm actually ready to focus."</div>
-      <div class="testi-author">Rohan Sharma</div>
-      <div class="testi-role">CBSE Class 12</div>
-    </div>
-  </div>
-</section>
-
 <!-- FAQ -->
 <section>
   <p class="section-label">FAQ</p>
   <h2 class="section-title" style="text-align:center">Common questions.</h2>
   <div class="faq-list">
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">How do I access courses after payment? <span>+</span></div>
-      <div class="faq-a"><p>After submitting your payment via bKash or Nagad, our team verifies the transaction. Once approved, you get instant access through your dashboard.</p></div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">What payment methods are available? <span>+</span></div>
-      <div class="faq-a"><p>We accept bKash and Nagad. After selecting a course, you'll see the payment number and can submit your transaction ID for verification.</p></div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">How long do I have access to courses? <span>+</span></div>
-      <div class="faq-a"><p>All course enrollments are valid for 365 days from the date of payment verification. You can revisit lectures anytime during this period.</p></div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">Can I download course materials? <span>+</span></div>
-      <div class="faq-a"><p>Yes! Every course includes downloadable PDFs — lecture notes, formula sheets, and practice sets. Download and study offline anytime.</p></div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">Is there a mobile app? <span>+</span></div>
-      <div class="faq-a"><p>Our platform is fully mobile-responsive. You can access everything — videos, PDFs, progress tracking — directly from your phone browser.</p></div>
-    </div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I access courses after payment? <span>+</span></div><div class="faq-a"><p>After submitting your payment via bKash or Nagad, our team verifies the transaction. Once approved, you get instant access through your dashboard.</p></div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What payment methods are available? <span>+</span></div><div class="faq-a"><p>We accept bKash and Nagad. After selecting a course, you'll see the payment number and can submit your transaction ID for verification.</p></div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How long do I have access? <span>+</span></div><div class="faq-a"><p>All course enrollments are valid for 365 days from the date of payment verification.</p></div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I download materials? <span>+</span></div><div class="faq-a"><p>Yes! Every course includes downloadable PDFs — lecture notes, formula sheets, and practice sets.</p></div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is there a mobile app? <span>+</span></div><div class="faq-a"><p>Our platform is fully mobile-responsive. Access everything directly from your phone browser.</p></div></div>
   </div>
 </section>
 
@@ -883,123 +839,175 @@
     </div>
     <div class="footer-col">
       <h5>Learning</h5>
-      <ul>
-        <li><a href="/explore.html">Browse Courses</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#">Physics</a></li>
-        <li><a href="#">Chemistry</a></li>
-        <li><a href="#">Mathematics</a></li>
-      </ul>
+      <ul><li><a href="/explore.html">Browse Courses</a></li><li><a href="#features">Features</a></li><li><a href="#">Physics</a></li><li><a href="#">Chemistry</a></li><li><a href="#">Mathematics</a></li></ul>
     </div>
     <div class="footer-col">
       <h5>Account</h5>
-      <ul>
-        <li><a href="/login.html">Sign In</a></li>
-        <li><a href="/signup.html">Create Account</a></li>
-        <li><a href="/dashboard.html">Dashboard</a></li>
-      </ul>
+      <ul><li><a href="/login.html">Sign In</a></li><li><a href="/signup.html">Create Account</a></li><li><a href="/dashboard.html">Dashboard</a></li></ul>
     </div>
     <div class="footer-col">
       <h5>Company</h5>
-      <ul>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Terms of Service</a></li>
-      </ul>
+      <ul><li><a href="#">About Us</a></li><li><a href="#">Contact</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li></ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 Excellence Gateway Academy. All rights reserved.</span>
-    <span>Privacy · Terms · Refunds</span>
+    <span>2026 Excellence Gateway Academy. All rights reserved.</span>
+    <span>Privacy &middot; Terms &middot; Refunds</span>
   </div>
 </footer>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
-  // Sidebar
-  const hamburger = document.getElementById('hamburger');
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('sidebarOverlay');
-  
-  function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('open'); }
-  function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('open'); }
-  hamburger.addEventListener('click', openSidebar);
-  overlay.addEventListener('click', closeSidebar);
+// ─── Auth state ───
+const token = localStorage.getItem('ega_token');
+const user = JSON.parse(localStorage.getItem('ega_user') || 'null');
 
-  // FAQ
-  function toggleFaq(el) {
-    const item = el.parentElement;
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-    el.querySelector('span').textContent = isOpen ? '+' : '−';
+function updateNav() {
+  const headerNav = document.getElementById('headerNav');
+  const sidebarNav = document.getElementById('sidebarNav');
+  const sidebarFooter = document.querySelector('.sidebar-footer');
+
+  if (user && token) {
+    const initials = (user.name || 'U').charAt(0).toUpperCase();
+    const isAdmin = user.role === 'admin';
+
+    headerNav.innerHTML = `
+      <li><a href="/#courses">Courses</a></li>
+      <li><a href="/#features">Features</a></li>
+      <li><a href="/explore.html">Explore</a></li>
+      ${isAdmin ? '<li><a href="/admin.html">Admin</a></li>' : ''}
+      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li class="user-menu">
+        <button class="user-menu-btn" onclick="toggleUserMenu()">
+          <span class="user-avatar">${esc(initials)}</span>
+          ${esc(user.name)}
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="/dashboard.html">Dashboard</a>
+          ${isAdmin ? '<a href="/admin.html">Admin Panel</a>' : ''}
+          <a href="#" class="logout-link" onclick="logout()">Sign Out</a>
+        </div>
+      </li>
+    `;
+
+    sidebarNav.innerHTML = `
+      <li><a href="/">Home</a></li>
+      <li><a href="/explore.html">Explore Courses</a></li>
+      <li><a href="/dashboard.html">Dashboard</a></li>
+      ${isAdmin ? '<li><a href="/admin.html">Admin Panel</a></li>' : ''}
+    `;
+    sidebarFooter.innerHTML = '<a href="#" onclick="logout()">Sign Out</a>';
   }
+}
 
-  // Toast
-  function showToast(msg, type = 'success') {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = `toast toast-${type} show`;
-    setTimeout(() => t.classList.remove('show'), 3500);
+function toggleUserMenu() {
+  document.getElementById('userDropdown').classList.toggle('show');
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.user-menu')) {
+    document.getElementById('userDropdown').classList.remove('show');
   }
+});
 
-  // Escape
-  function esc(s) {
-    const d = document.createElement('div');
-    d.textContent = String(s || '');
-    return d.innerHTML;
-  }
+function logout() {
+  localStorage.removeItem('ega_token');
+  localStorage.removeItem('ega_user');
+  window.location.href = '/';
+}
 
-  // Load stats
-  async function loadStats() {
-    try {
-      const res = await fetch('/api/stats');
-      const data = await res.json();
-      document.getElementById('statCourses').innerHTML = data.courses + '<span>+</span>';
-      document.getElementById('statStudents').innerHTML = data.students + '<span>+</span>';
-      document.getElementById('statLectures').innerHTML = data.enrollments + '<span>+</span>';
-    } catch {}
-  }
+// Sidebar
+const hamburger = document.getElementById('hamburger');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('sidebarOverlay');
 
-  // Load courses
-  async function loadCourses() {
-    try {
-      const res = await fetch('/api/courses?limit=6');
-      const courses = await res.json();
-      const grid = document.getElementById('coursesGrid');
-      if (!courses.length) {
-        grid.innerHTML = '<p style="color:var(--gray);grid-column:1/-1">No courses available yet.</p>';
-        return;
-      }
-      grid.innerHTML = courses.map(c => `
-        <a href="/course.html?id=${c.id}" style="text-decoration:none;color:inherit">
-          <div class="course-card">
-            <div class="course-thumb">
-              ${c.thumbnail_url ? `<img src="${esc(c.thumbnail_url)}" alt="${esc(c.title)}">` : c.thumbnail_icon || '📚'}
-              ${c.badge ? `<span class="course-badge">${esc(c.badge)}</span>` : ''}
-            </div>
-            <div class="course-body">
-              <div class="course-subject">${esc(c.subject_area)}</div>
-              <div class="course-title">${esc(c.title)}</div>
-              <div class="course-meta">${esc(c.difficulty)} · ${c.tree ? JSON.parse(c.tree).reduce((sum, s) => sum + s.papers.reduce((s2, p) => s2 + p.chapters.reduce((s3, ch) => s3 + ch.lectures.length, 0), 0), 0) : 0} lectures</div>
-              <div class="course-footer">
-                <span class="course-price ${c.price === 0 ? 'free' : ''}">${c.price === 0 ? 'Free' : '৳' + c.price}</span>
-                <span class="btn btn-primary" style="font-size:0.75rem;padding:0.5rem 1rem">Enroll Now</span>
-              </div>
-            </div>
-          </div>
-        </a>
-      `).join('');
-    } catch {
-      document.getElementById('coursesGrid').innerHTML = '<p style="color:var(--red);grid-column:1/-1">Failed to load courses. <button onclick="loadCourses()" style="color:var(--accent);background:none;border:none;cursor:pointer;text-decoration:underline">Retry</button></p>';
+function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('open'); }
+function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('open'); }
+hamburger.addEventListener('click', openSidebar);
+overlay.addEventListener('click', closeSidebar);
+
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = String(s || '');
+  return d.innerHTML;
+}
+
+// FAQ
+function toggleFaq(el) {
+  const item = el.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// Toast
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast toast-' + (type || 'success') + ' show';
+  setTimeout(function() { t.classList.remove('show'); }, 3500);
+}
+
+// Stats
+async function loadStats() {
+  try {
+    var res = await fetch('/api/stats');
+    var data = await res.json();
+    document.getElementById('statCourses').innerHTML = data.courses + '<span>+</span>';
+    document.getElementById('statStudents').innerHTML = data.students + '<span>+</span>';
+    document.getElementById('statLectures').innerHTML = data.enrollments + '<span>+</span>';
+  } catch(e) {}
+}
+
+// Courses
+async function loadCourses() {
+  try {
+    var res = await fetch('/api/courses?limit=6');
+    var courses = await res.json();
+    var grid = document.getElementById('coursesGrid');
+    if (!courses.length) {
+      grid.innerHTML = '<p style="color:var(--gray);grid-column:1/-1">No courses available yet.</p>';
+      return;
     }
+    grid.innerHTML = courses.map(function(c) {
+      var tree = [];
+      try { tree = typeof c.tree === 'string' ? JSON.parse(c.tree) : c.tree; } catch(e) {}
+      var lectureCount = 0;
+      if (tree && tree.length) {
+        tree.forEach(function(s) {
+          (s.papers||[]).forEach(function(p) {
+            (p.chapters||[]).forEach(function(ch) {
+              lectureCount += (ch.lectures||[]).length;
+            });
+          });
+        });
+      }
+      return '<a href="/course.html?id=' + c.id + '" class="course-card">' +
+        '<div class="course-thumb">' +
+          (c.thumbnail_url ? '<img src="' + esc(c.thumbnail_url) + '" alt="' + esc(c.title) + '">' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>') +
+          (c.badge ? '<span class="course-badge">' + esc(c.badge) + '</span>' : '') +
+        '</div>' +
+        '<div class="course-body">' +
+          '<div class="course-subject">' + esc(c.subject_area) + '</div>' +
+          '<div class="course-title">' + esc(c.title) + '</div>' +
+          '<div class="course-meta">' + esc(c.difficulty) + ' &middot; ' + lectureCount + ' lectures</div>' +
+          '<div class="course-footer">' +
+            '<span class="course-price' + (c.price === 0 ? ' free' : '') + '">' + (c.price === 0 ? 'Free' : '৳' + c.price) + '</span>' +
+            '<span class="btn btn-primary" style="font-size:0.75rem;padding:0.5rem 1rem">Enroll Now</span>' +
+          '</div>' +
+        '</div>' +
+      '</a>';
+    }).join('');
+  } catch(e) {
+    document.getElementById('coursesGrid').innerHTML = '<p style="color:var(--red);grid-column:1/-1">Failed to load. <button onclick="loadCourses()" style="color:var(--accent);background:none;border:none;cursor:pointer;text-decoration:underline">Retry</button></p>';
   }
+}
 
-  loadStats();
-  loadCourses();
+updateNav();
+loadStats();
+loadCourses();
 </script>
 </body>
 </html>
