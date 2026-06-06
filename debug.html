@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debug Payments</title>
+  <style>
+    body{background:#000;color:#fff;font-family:monospace;padding:1rem;font-size:14px}
+    pre{background:#111;padding:1rem;border-radius:8px;overflow-x:auto;white-space:pre-wrap;word-break:break-all}
+    .btn{background:#C9A84C;color:#000;padding:0.7rem 1.5rem;border:none;border-radius:8px;font-size:1rem;margin:0.5rem 0}
+    .err{color:#f0566a}
+  </style>
+</head>
+<body>
+  <h2>Payment Debug</h2>
+  <button class="btn" onclick="test()">Test Payments API</button>
+  <button class="btn" onclick="testRaw()">Test Raw SQL</button>
+  <pre id="out">Click a button...</pre>
+
+  <script>
+    var T=localStorage.getItem('ega_token');
+    var U=JSON.parse(localStorage.getItem('ega_user')||'null');
+    document.getElementById('out').textContent='Token: '+(T?'YES':'NO')+' | Role: '+(U?U.role:'none');
+
+    async function test(){
+      document.getElementById('out').textContent='Loading...';
+      try{
+        var r=await fetch('/api/admin/enrollments',{headers:{Authorization:'Bearer '+T}});
+        var d=await r.json();
+        document.getElementById('out').textContent='Status: '+r.status+'\n\nData:\n'+JSON.stringify(d,null,2);
+      }catch(e){
+        document.getElementById('out').textContent='ERROR: '+e.message;
+      }
+    }
+
+    async function testRaw(){
+      document.getElementById('out').textContent='Loading...';
+      try{
+        var r=await fetch('/api/admin/enrollments?status=pending',{headers:{Authorization:'Bearer '+T}});
+        var d=await r.json();
+        document.getElementById('out').textContent='Status: '+r.status+'\nCount: '+(Array.isArray(d)?d.length:'NOT ARRAY')+'\n\nData:\n'+JSON.stringify(d,null,2);
+      }catch(e){
+        document.getElementById('out').textContent='ERROR: '+e.message;
+      }
+    }
+  </script>
+</body>
+</html>
