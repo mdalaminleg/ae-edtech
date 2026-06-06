@@ -78,8 +78,9 @@ async function deviceFingerprint(request) {
   return sha256(ua + platform);
 }
 
-// ─── DB Setup (Clean - No Demo Data) ───
+// ─── DB Setup (Clean — No Demo Courses) ───
 async function ensureTables(db) {
+  // Users
   await db.prepare(`CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
@@ -98,6 +99,7 @@ async function ensureTables(db) {
     updated_at TEXT DEFAULT (datetime('now'))
   )`).run();
 
+  // Courses
   await db.prepare(`CREATE TABLE IF NOT EXISTS courses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
@@ -116,6 +118,7 @@ async function ensureTables(db) {
     updated_at TEXT DEFAULT (datetime('now'))
   )`).run();
 
+  // Enrollments
   await db.prepare(`CREATE TABLE IF NOT EXISTS enrollments (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
@@ -130,6 +133,7 @@ async function ensureTables(db) {
     FOREIGN KEY (course_id) REFERENCES courses(id)
   )`).run();
 
+  // Meta
   await db.prepare(`CREATE TABLE IF NOT EXISTS meta (
     key TEXT PRIMARY KEY,
     value TEXT
@@ -141,13 +145,14 @@ async function ensureTables(db) {
   await db.prepare('CREATE INDEX IF NOT EXISTS idx_courses_active ON courses(is_active)').run();
   await db.prepare('CREATE INDEX IF NOT EXISTS idx_enrollments_user ON enrollments(user_id)').run();
   await db.prepare('CREATE INDEX IF NOT EXISTS idx_enrollments_status ON enrollments(status)').run();
+  await db.prepare('CREATE INDEX IF NOT EXISTS idx_enrollments_course ON enrollments(course_id)').run();
 
-  // Seed ONLY admin user
+  // Seed ONLY admin user — NO demo courses
   const adminHash = await sha256('admin123');
   await db.prepare(`INSERT OR IGNORE INTO users (name, email, password, role, is_approved)
     VALUES ('Admin', 'admin@ega.com', ?, 'admin', 1)`).bind(adminHash).run();
 
-  // Default meta
+  // Default meta keys
   await db.prepare(`INSERT OR IGNORE INTO meta (key, value) VALUES ('bkash_number', '')`).run();
   await db.prepare(`INSERT OR IGNORE INTO meta (key, value) VALUES ('nagad_number', '')`).run();
   await db.prepare(`INSERT OR IGNORE INTO meta (key, value) VALUES ('show_numbers', 'true')`).run();
@@ -163,6 +168,7 @@ async function runMigrations(db) {
 
 // ─── Auth Routes ───
 async function handleAuth(method, path, body, db, request) {
+  // POST /api/auth/signup
   if (method === 'POST' && path === '/auth/signup') {
     const { name, email, password, phone, institution } = body;
     if (!name || !email || !password) return err('Name, email, and password required');
@@ -183,6 +189,7 @@ async function handleAuth(method, path, body, db, request) {
     return json({ message: 'Account created. You can now log in.' }, 201);
   }
 
+  // POST /api/auth/login
   if (method === 'POST' && path === '/auth/login') {
     const { email, password } = body;
     if (!email || !password) return err('Email and password required');
@@ -214,6 +221,7 @@ async function handleAuth(method, path, body, db, request) {
     });
   }
 
+  // POST /api/auth/logout
   if (method === 'POST' && path === '/auth/logout') {
     const user = await getUser(request);
     if (!user) return err('Unauthorized', 401);
@@ -226,6 +234,7 @@ async function handleAuth(method, path, body, db, request) {
 
 // ─── Public Routes ───
 async function handlePublic(method, path, body, db, request) {
+  // GET /api/courses
   if (method === 'GET' && path === '/courses') {
     const url = new URL(request.url);
     const subject = url.searchParams.get('subject');
@@ -239,15 +248,17 @@ async function handlePublic(method, path, body, db, request) {
     return json(result.results);
   }
 
+  // GET /api/courses/:id
   if (method === 'GET' && path.match(/^\/courses\/\d+$/)) {
     const id = parseInt(path.split('/')[2]);
     const course = await db.prepare('SELECT * FROM courses WHERE id = ? AND is_active = 1').bind(id).first();
     if (!course) return err('Course not found', 404);
-    course.tree = safeParse(course.tree);
-    course.resources = safeParse(course.resources);
+    try { course.tree = JSON.parse(course.tree || '[]'); } catch { course.tree = []; }
+    try { course.resources = JSON.parse(course.resources || '[]'); } catch { course.resources = []; }
     return json(course);
   }
 
+  // GET /api/stats
   if (method === 'GET' && path === '/stats') {
     const courses = await db.prepare('SELECT COUNT(*) as c FROM courses WHERE is_active = 1').first();
     const users = await db.prepare('SELECT COUNT(*) as c FROM users').first();
@@ -255,6 +266,7 @@ async function handlePublic(method, path, body, db, request) {
     return json({ courses: courses?.c || 0, students: users?.c || 0, enrollments: enrollments?.c || 0 });
   }
 
+  // GET /api/meta/payment-info
   if (method === 'GET' && path === '/meta/payment-info') {
     const bkash = await db.prepare("SELECT value FROM meta WHERE key = 'bkash_number'").first();
     const nagad = await db.prepare("SELECT value FROM meta WHERE key = 'nagad_number'").first();
@@ -262,11 +274,12 @@ async function handlePublic(method, path, body, db, request) {
     return json({ bkash: bkash?.value || '', nagad: nagad?.value || '', show: show?.value !== 'false' });
   }
 
+  // POST /api/contact
   if (method === 'POST' && path === '/contact') {
     const { name, email, subject, message } = body;
     if (!name || !email || !message) return err('Name, email, and message required');
-    const tickets = await db.prepare("SELECT value FROM meta WHERE key = 'support_tickets'").first();
-    const list = tickets ? JSON.parse(tickets.value) : [];
+    const ticketsRow = await db.prepare("SELECT value FROM meta WHERE key = 'support_tickets'").first();
+    const list = ticketsRow ? JSON.parse(ticketsRow.value) : [];
     list.push({ id: Date.now(), name, email, subject, message, status: 'open', created_at: new Date().toISOString() });
     await db.prepare("INSERT OR REPLACE INTO meta (key, value) VALUES ('support_tickets', ?)").bind(JSON.stringify(list)).run();
     return json({ message: 'Message sent' }, 201);
@@ -277,12 +290,14 @@ async function handlePublic(method, path, body, db, request) {
 
 // ─── Student Routes ───
 async function handleStudent(method, path, body, db, user) {
+  // GET /api/user/profile
   if (method === 'GET' && path === '/user/profile') {
     const u = await db.prepare('SELECT id, name, email, phone, institution, role, is_approved, created_at FROM users WHERE id = ?').bind(user.id).first();
     if (!u) return err('User not found', 404);
     return json(u);
   }
 
+  // GET /api/user/enrollments
   if (method === 'GET' && path === '/user/enrollments') {
     const result = await db.prepare(`
       SELECT e.*, c.title as course_title, c.subject_area, c.thumbnail_url, c.thumbnail_icon, c.difficulty
@@ -293,6 +308,7 @@ async function handleStudent(method, path, body, db, user) {
     return json(result.results);
   }
 
+  // POST /api/payment/submit
   if (method === 'POST' && path === '/payment/submit') {
     const { course_id, method: payMethod, trx_id, phone } = body;
     if (!course_id || !payMethod || !trx_id || !phone) return err('All payment fields required');
@@ -318,28 +334,36 @@ async function handleStudent(method, path, body, db, user) {
 async function handleAdmin(method, path, body, db, user) {
   if (user.role !== 'admin') return err('Forbidden', 403);
 
-  // Stats
+  // GET /api/admin/stats
   if (method === 'GET' && path === '/admin/stats') {
     const users = await db.prepare('SELECT COUNT(*) as c FROM users').first();
     const pendingUsers = await db.prepare('SELECT COUNT(*) as c FROM users WHERE is_approved = 0').first();
     const courses = await db.prepare('SELECT COUNT(*) as c FROM courses WHERE is_active = 1').first();
     const pendingPayments = await db.prepare("SELECT COUNT(*) as c FROM enrollments WHERE status = 'pending'").first();
     const activeMembers = await db.prepare("SELECT COUNT(*) as c FROM enrollments WHERE status = 'approved'").first();
-    return json({ users: users?.c || 0, pendingUsers: pendingUsers?.c || 0, courses: courses?.c || 0, pendingPayments: pendingPayments?.c || 0, activeMembers: activeMembers?.c || 0 });
+    return json({
+      users: users?.c || 0,
+      pendingUsers: pendingUsers?.c || 0,
+      courses: courses?.c || 0,
+      pendingPayments: pendingPayments?.c || 0,
+      activeMembers: activeMembers?.c || 0
+    });
   }
 
-  // Users
+  // GET /api/admin/users
   if (method === 'GET' && path === '/admin/users') {
     const result = await db.prepare('SELECT id, name, email, phone, institution, role, is_approved, is_blocked, device_fingerprint, spam_count, created_at FROM users ORDER BY created_at DESC').all();
     return json(result.results);
   }
 
+  // PUT /api/admin/users/:id/approve
   if (method === 'PUT' && path.match(/^\/admin\/users\/\d+\/approve$/)) {
     const id = parseInt(path.split('/')[3]);
     await db.prepare("UPDATE users SET is_approved = 1, updated_at = datetime('now') WHERE id = ?").bind(id).run();
     return json({ message: 'User approved' });
   }
 
+  // PUT /api/admin/users/:id/block
   if (method === 'PUT' && path.match(/^\/admin\/users\/\d+\/block$/)) {
     const id = parseInt(path.split('/')[3]);
     const u = await db.prepare('SELECT is_blocked FROM users WHERE id = ?').bind(id).first();
@@ -348,12 +372,14 @@ async function handleAdmin(method, path, body, db, user) {
     return json({ message: u.is_blocked ? 'User unblocked' : 'User blocked' });
   }
 
+  // PUT /api/admin/users/:id/clear-device
   if (method === 'PUT' && path.match(/^\/admin\/users\/\d+\/clear-device$/)) {
     const id = parseInt(path.split('/')[3]);
     await db.prepare("UPDATE users SET device_fingerprint = NULL, updated_at = datetime('now') WHERE id = ?").bind(id).run();
     return json({ message: 'Device cleared' });
   }
 
+  // DELETE /api/admin/users/:id
   if (method === 'DELETE' && path.match(/^\/admin\/users\/\d+$/)) {
     const id = parseInt(path.split('/')[3]);
     await db.prepare('DELETE FROM enrollments WHERE user_id = ?').bind(id).run();
@@ -361,12 +387,13 @@ async function handleAdmin(method, path, body, db, user) {
     return json({ message: 'User deleted' });
   }
 
-  // Courses
+  // GET /api/admin/courses
   if (method === 'GET' && path === '/admin/courses') {
     const result = await db.prepare('SELECT * FROM courses ORDER BY created_at DESC').all();
     return json(result.results);
   }
 
+  // POST /api/admin/courses
   if (method === 'POST' && path === '/admin/courses') {
     const { title, description, subject_area, difficulty, thumbnail_url, thumbnail_icon, badge, price, tree, resources, is_featured } = body;
     if (!title) return err('Title required');
@@ -376,6 +403,7 @@ async function handleAdmin(method, path, body, db, user) {
     return json({ message: 'Course created' }, 201);
   }
 
+  // PUT /api/admin/courses/:id
   if (method === 'PUT' && path.match(/^\/admin\/courses\/\d+$/)) {
     const id = parseInt(path.split('/')[3]);
     const { title, description, subject_area, difficulty, thumbnail_url, thumbnail_icon, badge, price, tree, resources, is_featured, is_active } = body;
@@ -384,6 +412,7 @@ async function handleAdmin(method, path, body, db, user) {
     return json({ message: 'Course updated' });
   }
 
+  // DELETE /api/admin/courses/:id
   if (method === 'DELETE' && path.match(/^\/admin\/courses\/\d+$/)) {
     const id = parseInt(path.split('/')[3]);
     await db.prepare('DELETE FROM enrollments WHERE course_id = ?').bind(id).run();
@@ -391,33 +420,44 @@ async function handleAdmin(method, path, body, db, user) {
     return json({ message: 'Course deleted' });
   }
 
-  // Enrollments
+  // GET /api/admin/enrollments (FIXED)
   if (method === 'GET' && path === '/admin/enrollments') {
-    const url = new URL(request.url);
-    const status = url.searchParams.get('status');
-    let query = `SELECT e.*, u.name as user_name, u.email as user_email, c.title as course_title
-      FROM enrollments e JOIN users u ON e.user_id = u.id JOIN courses c ON e.course_id = c.id`;
-    const params = [];
-    if (status) { query += ' WHERE e.status = ?'; params.push(status); }
-    query += ' ORDER BY e.created_at DESC';
-    const result = await db.prepare(query).bind(...params).all();
-    return json(result.results);
+    try {
+      const url = new URL(request.url);
+      const status = url.searchParams.get('status');
+      let query = `SELECT e.*, u.name as user_name, u.email as user_email, c.title as course_title
+        FROM enrollments e 
+        JOIN users u ON e.user_id = u.id 
+        JOIN courses c ON e.course_id = c.id`;
+      const params = [];
+      if (status) {
+        query += ' WHERE e.status = ?';
+        params.push(status);
+      }
+      query += ' ORDER BY e.created_at DESC LIMIT 200';
+      const result = await db.prepare(query).bind(...params).all();
+      return json(result.results || []);
+    } catch (e) {
+      return json([]);
+    }
   }
 
+  // PUT /api/admin/enrollments/:id/verify
   if (method === 'PUT' && path.match(/^\/admin\/enrollments\/\d+\/verify$/)) {
     const id = parseInt(path.split('/')[3]);
     const enrollment = await db.prepare('SELECT * FROM enrollments WHERE id = ?').bind(id).first();
-    if (!enrollment) return err('Not found', 404);
+    if (!enrollment) return err('Enrollment not found', 404);
     const expiry = new Date();
     expiry.setFullYear(expiry.getFullYear() + 1);
     await db.prepare("UPDATE enrollments SET status = 'approved', expires_at = ? WHERE id = ?").bind(expiry.toISOString(), id).run();
     return json({ message: 'Payment verified, access granted' });
   }
 
+  // PUT /api/admin/enrollments/:id/spam
   if (method === 'PUT' && path.match(/^\/admin\/enrollments\/\d+\/spam$/)) {
     const id = parseInt(path.split('/')[3]);
     const enrollment = await db.prepare('SELECT * FROM enrollments WHERE id = ?').bind(id).first();
-    if (!enrollment) return err('Not found', 404);
+    if (!enrollment) return err('Enrollment not found', 404);
     await db.prepare("UPDATE enrollments SET status = 'spam' WHERE id = ?").bind(id).run();
     await db.prepare('UPDATE users SET spam_count = spam_count + 1 WHERE id = ?').bind(enrollment.user_id).run();
     const u = await db.prepare('SELECT spam_count FROM users WHERE id = ?').bind(enrollment.user_id).first();
@@ -427,20 +467,22 @@ async function handleAdmin(method, path, body, db, user) {
     return json({ message: 'Marked as spam' });
   }
 
+  // DELETE /api/admin/enrollments/:id
   if (method === 'DELETE' && path.match(/^\/admin\/enrollments\/\d+$/)) {
     const id = parseInt(path.split('/')[3]);
     await db.prepare('DELETE FROM enrollments WHERE id = ?').bind(id).run();
     return json({ message: 'Enrollment deleted' });
   }
 
-  // Meta/Settings
+  // GET /api/admin/meta
   if (method === 'GET' && path === '/admin/meta') {
     const rows = await db.prepare("SELECT * FROM meta WHERE key NOT LIKE 'notif_%' AND key != 'support_tickets'").all();
     const result = {};
-    rows.results.forEach(r => result[r.key] = r.value);
+    (rows.results || []).forEach(r => { result[r.key] = r.value; });
     return json(result);
   }
 
+  // PUT /api/admin/meta
   if (method === 'PUT' && path === '/admin/meta') {
     for (const [key, value] of Object.entries(body)) {
       await db.prepare('INSERT OR REPLACE INTO meta (key, value) VALUES (?, ?)').bind(key, String(value)).run();
@@ -451,10 +493,6 @@ async function handleAdmin(method, path, body, db, user) {
   return null;
 }
 
-function safeParse(str) {
-  try { return typeof str === 'string' ? JSON.parse(str) : str; } catch { return []; }
-}
-
 // ─── Main Handler ───
 export async function onRequest(context) {
   const { request, env } = context;
@@ -462,12 +500,14 @@ export async function onRequest(context) {
   const url = new URL(request.url);
   const method = request.method;
   const path = url.pathname.replace('/api', '');
-  const body = method !== 'GET' && method !== 'OPTIONS' ? await getBody(request) : {};
+  const body = (method !== 'GET' && method !== 'OPTIONS') ? await getBody(request) : {};
 
+  // CORS preflight
   if (method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: CORS });
   }
 
+  // Initialize DB once per worker
   if (!globalThis.__egaTablesReady) {
     await ensureTables(db);
     await runMigrations(db);
@@ -478,17 +518,22 @@ export async function onRequest(context) {
 
   let response;
 
+  // Route: Auth (public)
   response = await handleAuth(method, path, body, db, request);
   if (response) return response;
 
+  // Route: Public
   response = await handlePublic(method, path, body, db, request);
   if (response) return response;
 
+  // All routes below require authentication
   if (!user) return err('Unauthorized', 401);
 
+  // Route: Student
   response = await handleStudent(method, path, body, db, user);
   if (response) return response;
 
+  // Route: Admin
   response = await handleAdmin(method, path, body, db, user);
   if (response) return response;
 
