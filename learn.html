@@ -4,222 +4,162 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Learn — Excellence Gateway Academy</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
-      --bg:#05080f;--surface:#0b0f1a;--surface2:#111827;--surface3:#161e2e;
-      --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.11);
-      --accent:#C9A84C;--accent2:#b8942f;--accent-dim:rgba(201,168,76,0.08);
-      --white:#f0f4f8;--gray:#7a8899;--gray2:#a0adb8;
-      --red:#f0566a;--green:#10d48e;--orange:#f59e0b;
-      --radius:9px;--radius-lg:13px;
-      --transition:.18s cubic-bezier(.4,0,.2,1)
+      --swatch--ivory-medium:#F5F3EE;--swatch--ivory-light:#FAF9F5;
+      --swatch--slate-dark:#141413;--swatch--slate-light:#3A3936;
+      --swatch--cloud-medium:#8E8C86;--swatch--oat:#F0ECE2;
+      --swatch--rust:#CC7853;--swatch--rust-hover:#B86A47;
+      --_theme---background:var(--swatch--ivory-medium);--_theme---text:var(--swatch--slate-dark);
+      --_theme---text-secondary:var(--swatch--cloud-medium);--_theme---border:rgba(20,20,19,0.12);
+      --_theme---surface:var(--swatch--ivory-light);--_theme---accent:var(--swatch--rust);
+      --_theme---accent-dim:rgba(204,120,83,0.08);
+      --font-display:'Instrument Serif',Georgia,serif;--font-body:'Instrument Sans',system-ui,sans-serif;
+      --font-mono:'JetBrains Mono',monospace;--radius-s:4px;--radius-m:8px;--radius-l:12px;
+      --ease-main:cubic-bezier(.4,0,.2,1);--dur-fast:150ms;--dur-main:250ms;
+      --nav--height:3.5rem;--sidebar-width:300px;
     }
-    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);height:100vh;overflow:hidden}
-    h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:400}
-    .topbar{
-      height:56px;background:var(--surface);border-bottom:1px solid var(--border);
-      display:flex;align-items:center;padding:0 1.5rem;gap:1rem;z-index:10;position:relative
-    }
-    .topbar-back{color:var(--gray);text-decoration:none;display:flex;align-items:center;gap:0.3rem;font-size:0.85rem}
-    .topbar-back:hover{color:var(--white)}
-    .topbar-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .topbar-meta{font-size:0.75rem;color:var(--gray)}
-    .layout{display:flex;height:calc(100vh - 56px)}
-    .sidebar-tree{
-      width:300px;min-width:300px;background:var(--surface);border-right:1px solid var(--border);
-      overflow-y:auto;padding:1rem 0;transition:transform var(--transition)
-    }
-    .main-content{flex:1;overflow-y:auto;padding:1.5rem}
-    .tree-item{padding:0.5rem 1rem;cursor:pointer;transition:all var(--transition);border-left:3px solid transparent}
-    .tree-item:hover{background:var(--surface2)}
-    .tree-item.active{border-left-color:var(--accent);background:var(--accent-dim)}
-    .tree-subject{font-weight:500;font-size:0.9rem;padding:0.7rem 1rem;color:var(--accent);display:flex;align-items:center;gap:0.5rem;cursor:pointer}
-    .tree-subject svg{width:14px;height:14px;transition:transform var(--transition)}
-    .tree-subject.open svg{transform:rotate(90deg)}
-    .tree-children{display:none}
-    .tree-subject.open+.tree-children{display:block}
-    .tree-paper{font-weight:500;font-size:0.85rem;padding:0.5rem 1.5rem;color:var(--gray2);cursor:pointer;display:flex;align-items:center;gap:0.5rem}
-    .tree-paper svg{width:12px;height:12px;transition:transform var(--transition)}
-    .tree-paper.open svg{transform:rotate(90deg)}
-    .tree-chapter{padding:0.4rem 2rem;font-size:0.82rem;color:var(--gray);cursor:pointer;display:flex;align-items:center;gap:0.5rem}
-    .tree-chapter:hover{color:var(--white)}
-    .tree-chapter.active{color:var(--accent)}
-    .status-dot{width:8px;height:8px;border-radius:50%;background:var(--gray);flex-shrink:0}
-    .status-dot.done{background:var(--green)}
-    .status-dot.current{background:var(--accent)}
-    .breadcrumb{font-size:0.8rem;color:var(--gray);margin-bottom:1.5rem}
-    .breadcrumb a{color:var(--gray);text-decoration:none}
-    .breadcrumb a:hover{color:var(--white)}
+    body{font-family:var(--font-body);background:var(--_theme---background);color:var(--_theme---text);height:100vh;overflow:hidden;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}button{cursor:pointer;font-family:inherit}
+    .topbar{height:var(--nav--height);background:var(--_theme---surface);border-bottom:1px solid var(--_theme---border);display:flex;align-items:center;padding:0 1.5rem;gap:1rem;flex-shrink:0;z-index:50}
+    .topbar-back{color:var(--_theme---text-secondary);font-size:0.85rem;transition:color var(--dur-fast)}.topbar-back:hover{color:var(--_theme---text)}
+    .topbar-title{font-family:var(--font-display);font-size:1.1rem;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .topbar-meta{font-size:0.75rem;color:var(--_theme---text-secondary);white-space:nowrap}
+    .layout{display:flex;flex:1;overflow:hidden}
+    .sidebar{width:var(--sidebar-width);min-width:var(--sidebar-width);background:var(--_theme---surface);border-right:1px solid var(--_theme---border);overflow-y:auto;padding:1rem 0;transition:transform var(--dur-main) var(--ease-main)}
+    .sidebar-btn{display:none;background:none;border:none;color:var(--_theme---text);padding:0.5rem;cursor:pointer}
+    .main-content{flex:1;overflow-y:auto;padding:2rem}
+    .tree-subject{padding:0.6rem 1rem;font-weight:500;color:var(--_theme---accent);cursor:pointer;display:flex;align-items:center;gap:0.4rem;font-size:0.9rem;border-left:3px solid transparent;transition:all var(--dur-fast)}
+    .tree-subject:hover{background:var(--_theme---accent-dim)}
+    .tree-subject.open{border-left-color:var(--_theme---accent)}
+    .tree-subject svg{width:12px;height:12px;transition:transform var(--dur-fast)}.tree-subject.open svg{transform:rotate(90deg)}
+    .tree-children{display:none}.tree-subject.open+.tree-children{display:block}
+    .tree-paper{padding:0.45rem 1.5rem;font-weight:500;color:var(--_theme---text);cursor:pointer;display:flex;align-items:center;gap:0.4rem;font-size:0.85rem}
+    .tree-paper svg{width:10px;height:10px;transition:transform var(--dur-fast)}.tree-paper.open svg{transform:rotate(90deg)}
+    .tree-chapter{padding:0.35rem 2rem;font-size:0.82rem;color:var(--_theme---text-secondary);cursor:pointer;display:flex;align-items:center;gap:0.5rem;transition:all var(--dur-fast)}
+    .tree-chapter:hover{color:var(--_theme---text)}.tree-chapter.active{color:var(--_theme---accent);font-weight:500}
+    .status-dot{width:7px;height:7px;border-radius:50%;background:var(--_theme---text-secondary);flex-shrink:0}.status-dot.done{background:#16a34a}
+    .breadcrumb{font-size:0.8rem;color:var(--_theme---text-secondary);margin-bottom:1.5rem}
     .lecture-list{display:flex;flex-direction:column;gap:0.5rem}
-    .lecture-row{
-      display:flex;align-items:center;gap:1rem;padding:1rem;
-      background:var(--surface);border:1px solid var(--border);
-      border-radius:var(--radius);transition:all var(--transition);cursor:pointer;text-decoration:none;color:inherit
-    }
-    .lecture-row:hover{border-color:var(--accent);transform:translateX(4px)}
-    .lecture-num{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--accent);min-width:30px}
-    .lecture-info{flex:1}
-    .lecture-title{font-weight:500;font-size:0.9rem;margin-bottom:0.2rem}
-    .lecture-meta{font-size:0.75rem;color:var(--gray)}
-    .pdf-badge{display:inline-flex;align-items:center;gap:0.3rem;background:var(--accent-dim);color:var(--accent);padding:0.2rem 0.6rem;border-radius:4px;font-size:0.7rem;font-weight:500;text-decoration:none}
-    .pdf-badge:hover{background:var(--accent);color:#05080f}
-    .empty-state{text-align:center;padding:4rem 2rem}
-    .empty-state svg{margin-bottom:1rem;color:var(--gray)}
-    .empty-state h3{font-size:1.3rem;margin-bottom:0.5rem}
-    .empty-state p{color:var(--gray);font-size:0.85rem}
-    .section-divider{border-top:1px solid var(--border);margin:2rem 0;padding-top:1.5rem}
-    .resource-link{display:flex;align-items:center;gap:0.5rem;color:var(--gray2);text-decoration:none;padding:0.5rem 0;font-size:0.85rem}
-    .resource-link:hover{color:var(--accent)}
-    .sidebar-toggle{display:none;background:none;border:none;color:var(--white);cursor:pointer;padding:5px}
-    .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:20}
+    .lecture-row{display:flex;align-items:center;gap:1rem;padding:1rem;background:var(--_theme---surface);border:1px solid var(--_theme---border);border-radius:var(--radius-m);transition:all var(--dur-fast);text-decoration:none;color:inherit}
+    .lecture-row:hover{border-color:var(--_theme---accent);transform:translateX(3px)}
+    .lecture-num{font-family:var(--font-display);font-size:1.2rem;color:var(--_theme---accent);min-width:30px}
+    .lecture-info{flex:1}.lecture-title{font-weight:500;font-size:0.9rem}.lecture-meta{font-size:0.72rem;color:var(--_theme---text-secondary)}
+    .pdf-badge{display:inline-flex;align-items:center;gap:0.3rem;background:var(--_theme---accent-dim);color:var(--_theme---accent);padding:0.2rem 0.6rem;border-radius:4px;font-size:0.7rem;text-decoration:none;margin-left:0.5rem}
+    .pdf-badge:hover{background:var(--_theme---accent);color:#fff}
+    .empty-state{text-align:center;padding:3rem;color:var(--_theme---text-secondary)}
+    .resource-link{display:flex;align-items:center;gap:0.5rem;color:var(--_theme---accent);text-decoration:none;padding:0.4rem 0;font-size:0.85rem}.resource-link:hover{text-decoration:underline}
+    .section-divider{border-top:1px solid var(--_theme---border);margin:2rem 0;padding-top:1.5rem}
+    .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:40}
     @media(max-width:768px){
-      .sidebar-tree{position:fixed;left:-300px;top:56px;bottom:0;z-index:30;transition:left var(--transition)}
-      .sidebar-tree.open{left:0}
-      .sidebar-overlay.show{display:block}
-      .sidebar-toggle{display:block}
-      .main-content{padding:1rem}
+      .sidebar{position:fixed;left:calc(-1*var(--sidebar-width));top:var(--nav--height);bottom:0;z-index:50}
+      .sidebar.open{left:0}.sidebar-overlay.show{display:block}.sidebar-btn{display:block}
+      .main-content{padding:1.5rem}
     }
   </style>
 </head>
 <body>
 
 <div class="topbar">
-  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Menu">
+  <button class="sidebar-btn" id="sidebarToggle" aria-label="Menu">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
-  <a href="/dashboard.html" class="topbar-back">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-    Dashboard
-  </a>
+  <a href="/dashboard.html" class="topbar-back">&larr; Dashboard</a>
   <span class="topbar-title" id="courseName">Loading...</span>
   <span class="topbar-meta" id="courseMeta"></span>
 </div>
 
 <div class="layout">
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
-  <aside class="sidebar-tree" id="sidebarTree"></aside>
+  <aside class="sidebar" id="sidebar"></aside>
   <main class="main-content" id="mainContent">
-    <div style="text-align:center;padding:4rem;color:var(--gray)">Loading course content...</div>
+    <div class="empty-state">Loading course content...</div>
   </main>
 </div>
 
 <script>
-function esc(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
-
-const token=localStorage.getItem('ega_token');
-const user=JSON.parse(localStorage.getItem('ega_user')||'null');
+function esc(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
+var token=localStorage.getItem('ega_token');
+var user=JSON.parse(localStorage.getItem('ega_user')||'null');
 if(!token||!user){window.location.href='/login.html'}
 
-const params=new URLSearchParams(window.location.search);
-const courseId=params.get('id');
-let courseData=null;
-let activeChapter=null;
+var params=new URLSearchParams(window.location.search);
+var courseId=params.get('id');
+var courseData=null;
+var treeMap={};
 
-// Sidebar toggle
-document.getElementById('sidebarToggle').addEventListener('click',()=>{
-  document.getElementById('sidebarTree').classList.add('open');
+document.getElementById('sidebarToggle').addEventListener('click',function(){
+  document.getElementById('sidebar').classList.add('open');
   document.getElementById('sidebarOverlay').classList.add('show');
 });
-document.getElementById('sidebarOverlay').addEventListener('click',()=>{
-  document.getElementById('sidebarTree').classList.remove('open');
+document.getElementById('sidebarOverlay').addEventListener('click',function(){
+  document.getElementById('sidebar').classList.remove('open');
   document.getElementById('sidebarOverlay').classList.remove('show');
 });
 
 function buildSidebar(tree){
-  return tree.map((s,si)=>`
-    <div class="tree-subject" onclick="toggleTreeNode(this)" data-id="s${si}">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-      ${esc(s.name)}
-    </div>
-    <div class="tree-children">
-      ${s.papers.map((p,pi)=>`
-        <div class="tree-paper" onclick="toggleTreeNode(this)" data-id="p${si}-${pi}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-          ${esc(p.name)}
-        </div>
-        <div class="tree-children">
-          ${p.chapters.map((ch,ci)=>`
-            <div class="tree-chapter" data-id="ch${si}-${pi}-${ci}" onclick="selectChapter('${si}-${pi}-${ci}')">
-              <span class="status-dot"></span>
-              ${esc(ch.title)}
-            </div>
-          `).join('')}
-        </div>
-      `).join('')}
-    </div>
-  `).join('');
+  return tree.map(function(s,si){
+    return'<div class="tree-subject" onclick="toggleTree(this)" data-id="s'+si+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>'+esc(s.name)+'</div><div class="tree-children">'+
+    (s.papers||[]).map(function(p,pi){
+      return'<div class="tree-paper" onclick="toggleTree(this)" data-id="p'+si+'-'+pi+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>'+esc(p.name)+'</div><div class="tree-children">'+
+      (p.chapters||[]).map(function(ch,ci){
+        return'<div class="tree-chapter" data-id="ch'+si+'-'+pi+'-'+ci+'" onclick="selectChapter(\''+si+'-'+pi+'-'+ci+'\')"><span class="status-dot"></span>'+esc(ch.title)+'</div>';
+      }).join('')+'</div>';
+    }).join('')+'</div>';
+  }).join('');
 }
 
-function toggleTreeNode(el){
-  el.classList.toggle('open');
-}
+function toggleTree(el){el.classList.toggle('open')}
 
-let treeMap={};
 function buildTreeMap(tree){
-  tree.forEach((s,si)=>{
-    s.papers.forEach((p,pi)=>{
-      p.chapters.forEach((ch,ci)=>{
-        treeMap[`ch${si}-${pi}-${ci}`]={subject:s,paper:p,chapter:ch,si,pi,ci};
+  tree.forEach(function(s,si){
+    (s.papers||[]).forEach(function(p,pi){
+      (p.chapters||[]).forEach(function(ch,ci){
+        treeMap['ch'+si+'-'+pi+'-'+ci]={subject:s,paper:p,chapter:ch,si:si,pi:pi,ci:ci};
       });
     });
   });
 }
 
 function selectChapter(key){
-  const data=treeMap[key];
-  if(!data)return;
-  activeChapter=data;
-  document.querySelectorAll('.tree-chapter').forEach(el=>el.classList.remove('active'));
-  document.querySelector(`[data-id="${key}"]`)?.classList.add('active');
+  var data=treeMap[key];if(!data)return;
+  document.querySelectorAll('.tree-chapter').forEach(function(el){el.classList.remove('active')});
+  document.querySelector('[data-id="'+key+'"]').classList.add('active');
   renderChapter(data);
-  // Close sidebar on mobile
-  document.getElementById('sidebarTree').classList.remove('open');
+  document.getElementById('sidebar').classList.remove('open');
   document.getElementById('sidebarOverlay').classList.remove('show');
 }
 
 function renderChapter(data){
-  const {subject,paper,chapter}=data;
-  document.getElementById('mainContent').innerHTML=`
-    <div class="breadcrumb">
-      <a href="#" onclick="document.getElementById('sidebarTree').classList.add('open')">${esc(subject.name)}</a>
-      <span style="margin:0 0.5rem">/</span>
-      <a href="#" onclick="document.getElementById('sidebarTree').classList.add('open')">${esc(paper.name)}</a>
-      <span style="margin:0 0.5rem">/</span>
-      <span style="color:var(--white)">${esc(chapter.title)}</span>
-    </div>
-    <h3 style="margin-bottom:1.5rem">${esc(chapter.title)}</h3>
-    <div class="lecture-list">
-      ${chapter.lectures.length?chapter.lectures.map((l,i)=>`
-        <a href="/watch.html?courseId=${courseId}&lectureId=${l.id}&title=${encodeURIComponent(l.title)}" class="lecture-row">
-          <div class="lecture-num">${String(i+1).padStart(2,'0')}</div>
-          <div class="lecture-info">
-            <div class="lecture-title">${esc(l.title)}</div>
-            <div class="lecture-meta">${esc(chapter.title)}</div>
-          </div>
-          ${l.pdfs&&l.pdfs.length?l.pdfs.map(p=>`<a href="${esc(p.url)}" class="pdf-badge" target="_blank" onclick="event.stopPropagation()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</a>`).join(''):''}
-        </a>
-      `).join(''):`<div class="empty-state"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg><h3>No lectures yet</h3><p>Lectures will be added to this chapter soon.</p></div>`}
-    </div>
-  `;
+  var s=data.subject,p=data.paper,ch=data.chapter;
+  document.getElementById('mainContent').innerHTML=
+    '<div class="breadcrumb">'+esc(s.name)+' / '+esc(p.name)+' / <span style="color:var(--_theme---text)">'+esc(ch.title)+'</span></div>'+
+    '<h3 style="font-family:var(--font-display);font-size:1.3rem;margin-bottom:1.5rem">'+esc(ch.title)+'</h3>'+
+    '<div class="lecture-list">'+
+    ((ch.lectures||[]).length?ch.lectures.map(function(l,i){
+      return'<a href="/watch.html?courseId='+courseId+'&lectureId='+(l.yt_video_id||l.id)+'&title='+encodeURIComponent(l.title)+'" class="lecture-row"><div class="lecture-num">'+String(i+1).padStart(2,'0')+'</div><div class="lecture-info"><div class="lecture-title">'+esc(l.title)+'</div><div class="lecture-meta">'+esc(ch.title)+'</div></div>'+
+      ((l.pdfs||[]).length?l.pdfs.map(function(p){return'<a href="'+esc(p.url)+'" class="pdf-badge" target="_blank" onclick="event.stopPropagation()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</a>'}).join(''):'')+'</a>';
+    }).join(''):'<div class="empty-state">No lectures in this chapter yet.</div>')+
+    '</div>';
 }
 
 async function loadCourse(){
   try{
-    const res=await fetch('/api/courses/'+courseId);
-    if(!res.ok)throw new Error('Not found');
+    var res=await fetch('/api/courses/'+courseId);
+    if(!res.ok)throw new Error();
     courseData=await res.json();
-    const tree=typeof courseData.tree==='string'?JSON.parse(courseData.tree):courseData.tree;
+    var tree=typeof courseData.tree==='string'?JSON.parse(courseData.tree):(courseData.tree||[]);
     document.getElementById('courseName').textContent=courseData.title;
-    document.getElementById('courseMeta').textContent=courseData.subject_area+' | '+courseData.difficulty;
-    document.getElementById('sidebarTree').innerHTML=buildSidebar(tree);
+    document.getElementById('courseMeta').textContent=(courseData.subject_area||'')+' | '+(courseData.difficulty||'');
+    document.getElementById('sidebar').innerHTML=buildSidebar(tree);
     buildTreeMap(tree);
-    // Open first subject and select first chapter
-    const firstSubject=document.querySelector('.tree-subject');
-    if(firstSubject){firstSubject.classList.add('open');const firstChapter=document.querySelector('.tree-chapter');if(firstChapter)selectChapter(firstChapter.dataset.id)}
-  }catch{
-    document.getElementById('mainContent').innerHTML='<div class="empty-state"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><h3>Course not found</h3><p><a href="/dashboard.html" style="color:var(--accent)">Back to dashboard</a></p></div>';
+    var firstSubj=document.querySelector('.tree-subject');
+    if(firstSubj){firstSubj.classList.add('open');var firstCh=document.querySelector('.tree-chapter');if(firstCh)selectChapter(firstCh.dataset.id)}
+  }catch(e){
+    document.getElementById('mainContent').innerHTML='<div class="empty-state"><p style="color:#dc2626">Course not found.</p><a href="/dashboard.html" style="color:var(--_theme---accent)">Back to dashboard</a></div>';
   }
 }
 
