@@ -72,13 +72,12 @@ async function deviceFingerprint(request) {
 }
 
 async function ensureTables(db) {
-  await db.prepare("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, phone TEXT DEFAULT '', institution TEXT DEFAULT '', role TEXT DEFAULT 'student', is_approved INTEGER DEFAULT 0, is_blocked INTEGER DEFAULT 0, device_fingerprint TEXT, token_version INTEGER DEFAULT 1, spam_count INTEGER DEFAULT 0, spam_until TEXT, created_at TEXT DEFAULT (datetime('now')), updated_at TEXT DEFAULT (datetime('now')))").run();
-  await db.prepare("CREATE TABLE IF NOT EXISTS courses (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, description TEXT DEFAULT '', subject_area TEXT DEFAULT '', difficulty TEXT DEFAULT 'All Levels', thumbnail_url TEXT DEFAULT '', thumbnail_icon TEXT DEFAULT 'book-open', badge TEXT DEFAULT '', price REAL DEFAULT 0, tree TEXT DEFAULT '[]', resources TEXT DEFAULT '[]', is_featured INTEGER DEFAULT 0, is_active INTEGER DEFAULT 1, created_at TEXT DEFAULT (datetime('now')), updated_at TEXT DEFAULT (datetime('now')))").run();
-  await db.prepare("CREATE TABLE IF NOT EXISTS enrollments (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, course_id INTEGER NOT NULL, payment_method TEXT, trx_id TEXT, sender_phone TEXT, status TEXT DEFAULT 'pending', expires_at TEXT, created_at TEXT DEFAULT (datetime('now')), FOREIGN KEY (user_id) REFERENCES users(id), FOREIGN KEY (course_id) REFERENCES courses(id))").run();
-  await db.prepare("CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT)").run();
+  await db.prepare(`CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, phone TEXT DEFAULT '', institution TEXT DEFAULT '', role TEXT DEFAULT 'student', is_approved INTEGER DEFAULT 0, is_blocked INTEGER DEFAULT 0, device_fingerprint TEXT, token_version INTEGER DEFAULT 1, spam_count INTEGER DEFAULT 0, spam_until TEXT, created_at TEXT DEFAULT (datetime('now')), updated_at TEXT DEFAULT (datetime('now')))`).run();
+  await db.prepare(`CREATE TABLE IF NOT EXISTS courses (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, description TEXT DEFAULT '', subject_area TEXT DEFAULT '', difficulty TEXT DEFAULT 'All Levels', thumbnail_url TEXT DEFAULT '', thumbnail_icon TEXT DEFAULT 'book-open', badge TEXT DEFAULT '', price REAL DEFAULT 0, tree TEXT DEFAULT '[]', resources TEXT DEFAULT '[]', is_featured INTEGER DEFAULT 0, is_active INTEGER DEFAULT 1, created_at TEXT DEFAULT (datetime('now')), updated_at TEXT DEFAULT (datetime('now')))`).run();
+  await db.prepare(`CREATE TABLE IF NOT EXISTS enrollments (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, course_id INTEGER NOT NULL, payment_method TEXT, trx_id TEXT, sender_phone TEXT, status TEXT DEFAULT 'pending', expires_at TEXT, created_at TEXT DEFAULT (datetime('now')), FOREIGN KEY (user_id) REFERENCES users(id), FOREIGN KEY (course_id) REFERENCES courses(id))`).run();
+  await db.prepare(`CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT)`).run();
   await db.prepare('CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)').run();
   await db.prepare('CREATE INDEX IF NOT EXISTS idx_enrollments_status ON enrollments(status)').run();
-  await db.prepare('CREATE INDEX IF NOT EXISTS idx_enrollments_user ON enrollments(user_id)').run();
   const adminHash = await sha256('admin123');
   await db.prepare("INSERT OR IGNORE INTO users (name, email, password, role, is_approved) VALUES ('Admin', 'admin@ega.com', ?, 'admin', 1)").bind(adminHash).run();
   await db.prepare("INSERT OR IGNORE INTO meta (key, value) VALUES ('bkash_number', '')").run();
@@ -103,37 +102,7 @@ export async function onRequest(context) {
     globalThis.__egaTablesReady = true;
   }
 
-  // ─── DEBUG ROUTE ───
-  if (method === 'GET' && path === '/debug') {
-    try {
-      const usersCount = await db.prepare('SELECT COUNT(*) as c FROM users').first();
-      const coursesCount = await db.prepare('SELECT COUNT(*) as c FROM courses').first();
-      const enrollmentsRaw = await db.prepare('SELECT * FROM enrollments').all();
-      const enrollmentsList = enrollmentsRaw.results || [];
-      
-      // Enrich with names
-      const enriched = [];
-      for (const e of enrollmentsList) {
-        let un = '', ct = '';
-        try { const u = await db.prepare('SELECT name FROM users WHERE id=?').bind(e.user_id).first(); if(u) un = u.name; } catch {}
-        try { const c = await db.prepare('SELECT title FROM courses WHERE id=?').bind(e.course_id).first(); if(c) ct = c.title; } catch {}
-        enriched.push({ ...e, user_name: un || '?', course_title: ct || '?' });
-      }
-      
-      return json({
-        users: usersCount?.c || 0,
-        courses: coursesCount?.c || 0,
-        enrollments_count: enrollmentsList.length,
-        enrollments: enriched
-      });
-    } catch(e) {
-      return json({ error: e.message });
-    }
-  }
-
-  const user = await getUser(request);
-
-  // ─── AUTH ───
+  // ═══ AUTH ROUTES ═══
   if (method === 'POST' && path === '/auth/signup') {
     const { name, email, password, phone, institution } = body;
     if (!name || !email || !password) return err('Name, email, and password required');
@@ -169,7 +138,7 @@ export async function onRequest(context) {
     return json({ message: 'Logged out' });
   }
 
-  // ─── PUBLIC ───
+  // ═══ PUBLIC ROUTES ═══
   if (method === 'GET' && path === '/courses') {
     const subject = url.searchParams.get('subject');
     const limit = parseInt(url.searchParams.get('limit') || '50');
@@ -179,7 +148,7 @@ export async function onRequest(context) {
     q += ' ORDER BY is_featured DESC, created_at DESC LIMIT ?';
     p.push(limit);
     const r = await db.prepare(q).bind(...p).all();
-    return json(r.results);
+    return json(r.results || []);
   }
 
   if (method === 'GET' && path.match(/^\/courses\/\d+$/)) {
@@ -215,9 +184,10 @@ export async function onRequest(context) {
     return json({ message: 'Message sent' }, 201);
   }
 
+  const user = await getUser(request);
   if (!user) return err('Unauthorized', 401);
 
-  // ─── STUDENT ───
+  // ═══ STUDENT ROUTES ═══
   if (method === 'GET' && path === '/user/profile') {
     const u = await db.prepare('SELECT id, name, email, phone, institution, role, is_approved, created_at FROM users WHERE id = ?').bind(user.id).first();
     return u ? json(u) : err('Not found', 404);
@@ -225,7 +195,7 @@ export async function onRequest(context) {
 
   if (method === 'GET' && path === '/user/enrollments') {
     const r = await db.prepare("SELECT e.*, c.title as course_title, c.subject_area, c.thumbnail_url, c.thumbnail_icon, c.difficulty FROM enrollments e JOIN courses c ON e.course_id = c.id WHERE e.user_id = ? AND e.status = 'approved' ORDER BY e.created_at DESC").bind(user.id).all();
-    return json(r.results);
+    return json(r.results || []);
   }
 
   if (method === 'POST' && path === '/payment/submit') {
@@ -238,26 +208,26 @@ export async function onRequest(context) {
     const spamCount = await db.prepare("SELECT COUNT(*) as c FROM enrollments WHERE user_id = ? AND status = 'spam'").bind(user.id).first();
     if (spamCount && spamCount.c >= 3) return err('Account flagged', 403);
     const existing = await db.prepare("SELECT id FROM enrollments WHERE user_id = ? AND course_id = ? AND status = 'pending'").bind(user.id, course_id).first();
-    if (existing) return err('Already have pending payment for this course', 409);
+    if (existing) return err('Already have pending payment', 409);
     const result = await db.prepare("INSERT INTO enrollments (user_id, course_id, payment_method, trx_id, sender_phone, status) VALUES (?, ?, ?, ?, ?, 'pending')").bind(user.id, course_id, payMethod, trx_id, phone).run();
     if (!result.success) return err('Database error', 500);
-    return json({ message: 'Payment submitted. Admin will verify.' }, 201);
+    return json({ message: 'Payment submitted' }, 201);
   }
 
+  // ═══ ADMIN ROUTES ═══
   if (user.role !== 'admin') return err('Forbidden', 403);
 
-  // ─── ADMIN ───
   if (method === 'GET' && path === '/admin/stats') {
     const users = await db.prepare('SELECT COUNT(*) as c FROM users').first();
     const courses = await db.prepare('SELECT COUNT(*) as c FROM courses WHERE is_active = 1').first();
     const pendingPayments = await db.prepare("SELECT COUNT(*) as c FROM enrollments WHERE status = 'pending'").first();
     const activeMembers = await db.prepare("SELECT COUNT(*) as c FROM enrollments WHERE status = 'approved'").first();
-    return json({ users: users?.c || 0, courses: courses?.c || 0, pendingPayments: pendingPayments?.c || 0, activeMembers: activeMembers?.c || 0 });
+    return json({ users: users?.c || 0, pendingUsers: 0, courses: courses?.c || 0, pendingPayments: pendingPayments?.c || 0, activeMembers: activeMembers?.c || 0 });
   }
 
   if (method === 'GET' && path === '/admin/users') {
     const r = await db.prepare('SELECT id, name, email, phone, institution, role, is_approved, is_blocked, created_at FROM users ORDER BY created_at DESC').all();
-    return json(r.results);
+    return json(r.results || []);
   }
 
   if (method === 'PUT' && path.match(/^\/admin\/users\/\d+\/approve$/)) {
@@ -289,7 +259,7 @@ export async function onRequest(context) {
 
   if (method === 'GET' && path === '/admin/courses') {
     const r = await db.prepare('SELECT * FROM courses ORDER BY created_at DESC').all();
-    return json(r.results);
+    return json(r.results || []);
   }
 
   if (method === 'POST' && path === '/admin/courses') {
@@ -301,8 +271,8 @@ export async function onRequest(context) {
 
   if (method === 'PUT' && path.match(/^\/admin\/courses\/\d+$/)) {
     const id = parseInt(path.split('/')[3]);
-    const { title, description, subject_area, difficulty, thumbnail_url, badge, price, is_featured, is_active } = body;
-    await db.prepare("UPDATE courses SET title=?, description=?, subject_area=?, difficulty=?, thumbnail_url=?, badge=?, price=?, is_featured=?, is_active=? WHERE id=?").bind(title, description, subject_area, difficulty, thumbnail_url, badge, price, is_featured || 0, is_active !== undefined ? is_active : 1, id).run();
+    const { title, description, subject_area, difficulty, thumbnail_url, badge, price, is_featured, is_active, tree, resources } = body;
+    await db.prepare("UPDATE courses SET title=?, description=?, subject_area=?, difficulty=?, thumbnail_url=?, badge=?, price=?, is_featured=?, is_active=?, tree=?, resources=? WHERE id=?").bind(title, description, subject_area, difficulty, thumbnail_url, badge, price, is_featured || 0, is_active !== undefined ? is_active : 1, tree || '[]', resources || '[]', id).run();
     return json({ message: 'Updated' });
   }
 
@@ -343,7 +313,7 @@ export async function onRequest(context) {
     await db.prepare('UPDATE users SET spam_count = spam_count + 1 WHERE id = ?').bind(e.user_id).run();
     const u = await db.prepare('SELECT spam_count FROM users WHERE id = ?').bind(e.user_id).first();
     if (u && u.spam_count >= 5) { await db.prepare("UPDATE users SET is_blocked = 1 WHERE id = ?").bind(e.user_id).run(); }
-    return json({ message: 'Marked spam' });
+    return json({ message: 'Spam' });
   }
 
   if (method === 'DELETE' && path.match(/^\/admin\/enrollments\/\d+$/)) {
